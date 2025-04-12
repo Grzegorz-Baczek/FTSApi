@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "http": {
+    "FTS.Api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
