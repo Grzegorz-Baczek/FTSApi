@@ -7,3 +7,10 @@ Content-Type: application/json
 {
     "name": "Napoje"
 }
+
+### get categories
+Get {{api}}/categories
+Content-Type: application/json
+
+{
+}
