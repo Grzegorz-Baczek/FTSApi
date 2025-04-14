@@ -1,0 +1,9 @@
+@api = http://localhost:5298
+
+### add category
+Post {{api}}/category
+Content-Type: application/json
+
+{
+    "name": "Napoje"
+}

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FTS.Application.Abstractions;
+using FTS.Infrastructure.DAL.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,8 +15,10 @@ internal static class Extensions
         services.Configure<MSqlOptions>(configuration.GetRequiredSection(OptionsSectionName));
         var mSqlOptions = configuration.GetOptions<MSqlOptions>(OptionsSectionName);
         services.AddDbContext<FTSDbContext>(x => x.UseSqlServer(mSqlOptions.ConnectionString));
-
         services.AddHostedService<DatabaseInitializer>();
+
+        services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
 
         return services;
     }

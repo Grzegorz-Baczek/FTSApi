@@ -6,4 +6,15 @@ public class Category
     public string? Name { get; set; }
 
     public IEnumerable<Product> Products { get; set; } = new List<Product>();
+
+    public Category(Guid id, string name)
+    {
+        Id = id;
+        Name = name;
+    }
+
+    public static Category Create(string name)
+    {
+        return new Category(Guid.NewGuid(), name);
+    }
 }
