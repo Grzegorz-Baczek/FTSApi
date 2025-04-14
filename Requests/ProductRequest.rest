@@ -1,0 +1,10 @@
+@api = http://localhost:5298
+
+### add product
+Post {{api}}/product
+Content-Type: application/json
+
+{
+    "name": "Woda",
+    "CategoryId": "65F57FB8-740B-4AD5-871C-8BC850F377A4"
+}

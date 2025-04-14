@@ -1,10 +1,10 @@
 ﻿using FTS.Core.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FTS.Infrastructure.DAL.Configurations;
 
-internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
+internal sealed class CategoryConfiguration : IEntityTypeConfiguration<Category>
 {
     public void Configure(EntityTypeBuilder<Category> builder)
     {
