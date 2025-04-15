@@ -5,4 +5,5 @@ namespace FTS.Application.Abstractions;
 public interface IProductRepository
 {
     Task AddProductAsync(Product product, CancellationToken ct);
+    Task<IEnumerable<Product>> GetProductsAsync(CancellationToken ct);
 }
