@@ -18,13 +18,9 @@ public class CategoriesController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
-<<<<<<< HEAD
     [HttpGet("categories")]
-    public async Task<IEnumerable<Category>> GetCategories(GetCategoriesQuery query,
-=======
-    [HttpGet("/categories")]
     public async Task<IEnumerable<Category>> GetCategories([FromQuery] GetCategoriesQuery query,
->>>>>>> 4343155 (add attribute to project)
+
         CancellationToken ct)
     {
         var categories = await mediator.Send(query, ct);
