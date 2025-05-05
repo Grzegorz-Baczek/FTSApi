@@ -1,7 +1,7 @@
 @api = http://localhost:5298
 
 ### add category
-Post {{api}}/category
+Post {{api}}/api/category
 Content-Type: application/json
 
 {
@@ -9,7 +9,14 @@ Content-Type: application/json
 }
 
 ### get categories
-Get {{api}}/categories
+Get {{api}}/api/categories
+Content-Type: application/json
+
+{
+}
+
+### get categoryId
+Get {{api}}/api/category/{65f57fb8-740b-4ad5-871c-8bc850f377a4}
 Content-Type: application/json
 
 {
