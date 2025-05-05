@@ -6,4 +6,5 @@ public interface ICategoryRepository
 {
     Task AddCategoryAsync(Category category, CancellationToken ct);
     Task<IEnumerable<Category>> GetCategoriesAsync(CancellationToken ct);
+    Task<Category> GetCategoryAsync(Guid id,CancellationToken ct);
 }
