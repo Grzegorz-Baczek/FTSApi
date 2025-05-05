@@ -6,11 +6,12 @@ using FTS.Application.Queries.Products.Handlers;
 
 namespace FTS.Api.Controllers;
 
-[Route("product")]
+
+[Route("api")]
 [ApiController]
 public class ProductsController(IMediator mediator) : ControllerBase
 {
-    [HttpPost]
+    [HttpPost("product")]
     public async Task<ActionResult> CreateProduct(CreateProductCommand command,
         CancellationToken ct)
     {
@@ -18,7 +19,7 @@ public class ProductsController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("/products")]
+    [HttpGet("products")]
     public async Task<IEnumerable<Product>> GetProducts([FromQuery] GetProductsQuery query,
         CancellationToken ct)
     {

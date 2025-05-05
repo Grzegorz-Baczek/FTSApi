@@ -1,7 +1,7 @@
 @api = http://localhost:5298
 
 ### add product
-Post {{api}}/product
+Post {{api}}/api/product
 Content-Type: application/json
 
 {
@@ -9,8 +9,8 @@ Content-Type: application/json
     "CategoryId": "65F57FB8-740B-4AD5-871C-8BC850F377A4"
 }
 
-### get product
-Get {{api}}/products
+### get products
+Get {{api}}/api/products
 Content-Type: application/json
 
 {
