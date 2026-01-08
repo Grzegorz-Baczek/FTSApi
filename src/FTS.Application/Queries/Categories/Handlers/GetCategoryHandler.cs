@@ -22,7 +22,7 @@ internal sealed class GetCategoryHandler : IRequestHandler<GetCategoryQuery, Cat
 
         if (category is null)
         {
-            throw new NotFoundCategoryException(category.Id);
+            throw new NotFoundCategoryException(query.Id);
         }
 
         return category;

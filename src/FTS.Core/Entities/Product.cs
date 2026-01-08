@@ -13,10 +13,10 @@ public class Product
         Id = id;
         Name = name;
         CategoryId = categoryId;
-    }
-
-    public static Product Create(string name, Guid CategoryId)
+    } 
+    
+    public static Product Create(string name, Guid categoryId)
     {
-        return new Product(Guid.NewGuid(), name, CategoryId);
+        return new Product(Guid.NewGuid(), name, categoryId);
     }
 }

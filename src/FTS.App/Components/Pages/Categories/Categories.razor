@@ -1,0 +1,19 @@
+﻿@page "/categories"
+
+<PageTitle>Categories</PageTitle>
+
+@if (categories is null)
+{
+	<MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+}
+else
+{
+	<MudTable Items="categories" Hover="true" Bordered="true" Striped="true">
+		<HeaderContent>
+			@* <MudTh>Name</MudTh> *@
+		</HeaderContent>
+		<RowTemplate>
+			<MudTd DataLabel="Name">@context.Name</MudTd>
+		</RowTemplate>
+	</MudTable>
+}

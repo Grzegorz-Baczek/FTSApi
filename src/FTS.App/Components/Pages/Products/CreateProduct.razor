@@ -1,0 +1,34 @@
+﻿@page "/createproduct"
+@rendermode InteractiveServer
+
+@using FTS.App.Components.Pages.Categories.Models
+@using FTS.App.Components.Pages.Products.Models
+
+<div class="d-flex justify-content-center mt-6">
+	<h3>Add product</h3>
+</div>
+
+<div class="d-flex justify-content-center mt-6">
+	<EditForm Model="@ProductDto" OnSubmit="CreateProductAsync">
+		<DataAnnotationsValidator />
+		<MudCard Class="d-flex justify-content-center" Width="500px">
+			<MudCardContent>
+				<MudTextField Label="Name"
+							  @bind-Value="ProductDto.Name" For="@(() => ProductDto.Name)"
+							  ShrinkLabel="true" />
+
+				<InputSelect @bind-Value="SelectedCategoryId" class="form-select">
+					<option value="0" disabled="disabled" selected> --Wybierz--</option>
+					@foreach (var item in CategoryDtos)
+					{
+						<option value="@item.Id">@item.Name</option>
+					}
+
+				</InputSelect>
+
+				<MudButton OnClick="NavigateToProducts" Class="mt-2" Variant="Variant.Filled" ButtonType="ButtonType.Button" Color="Color.Dark">Back</MudButton>
+				<MudButton Class="mt-2" Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary">Add</MudButton>
+			</MudCardContent>
+		</MudCard>
+	</EditForm>
+</div>
