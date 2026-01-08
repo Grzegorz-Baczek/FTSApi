@@ -6,7 +6,6 @@ using FTS.Application.Queries.Products.Handlers;
 
 namespace FTS.Api.Controllers;
 
-
 [Route("api")]
 [ApiController]
 public class ProductsController(IMediator mediator) : ControllerBase

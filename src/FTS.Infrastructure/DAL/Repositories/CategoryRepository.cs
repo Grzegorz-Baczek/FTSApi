@@ -18,7 +18,7 @@ internal sealed class CategoryRepository(FTSDbContext dbContext) : ICategoryRepo
         return categories;
     }
 
-    public async Task<Category> GetCategoryAsync(Guid id,CancellationToken ct)
+    public async Task<Category> GetCategoryAsync(Guid id, CancellationToken ct)
     {
         var category = await dbContext.Categories.FirstOrDefaultAsync(c => c.Id == id, ct);
         return category;
