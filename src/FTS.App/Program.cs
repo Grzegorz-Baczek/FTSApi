@@ -10,19 +10,19 @@ builder.Services.AddMudServices()
     .AddRazorComponents()
     .AddInteractiveServerComponents();
 
+var baseUrl = builder.Configuration["BaseUrl"];
+
 builder.Services.AddHttpClient<CategoryApiClient>(client =>
 {
-    client.BaseAddress = new Uri("http://localhost:5298");
+    client.BaseAddress = new Uri(baseUrl);
 });
 
 builder.Services.AddHttpClient<ProductApiClient>(client =>
 {
-    client.BaseAddress = new Uri("http://localhost:5298");
+    client.BaseAddress = new Uri(baseUrl);
 });
 
-
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

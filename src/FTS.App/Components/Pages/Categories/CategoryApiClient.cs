@@ -1,4 +1,5 @@
 ﻿using FTS.App.Components.Pages.Categories.Models;
+using FTS.App.Components.Pages.Products.Models;
 
 namespace FTS.App.Components.Pages.Categories;
 
@@ -24,5 +25,10 @@ public class CategoryApiClient(HttpClient HttpClient)
         }
 
         throw new Exception($"Something went wrong. Result code from server: {result.StatusCode}");
+    }
+
+    public async Task CreateCategoryAsync(CreateCategoryModel createCategory)
+    {
+        await HttpClient.PostAsJsonAsync("api/category", createCategory);
     }
 }
