@@ -22,4 +22,9 @@ public partial class Products : ComponentBase
     {
         NavigationManager.NavigateTo("/createproduct");
     }
+
+    private void NavigateCreateCategory()
+    {
+        NavigationManager.NavigateTo("/createcategory");
+    }
 }
