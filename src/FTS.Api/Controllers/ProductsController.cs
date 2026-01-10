@@ -1,8 +1,8 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using FTS.Application.Commands.Products.Handlers;
-using FTS.Core.Entities;
+﻿using FTS.Application.Commands.Products.Handlers;
 using FTS.Application.Queries.Products.Handlers;
+using FTS.Core.Entities;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FTS.Api.Controllers;
 
@@ -24,5 +24,12 @@ public class ProductsController(IMediator mediator) : ControllerBase
     {
         var products = await mediator.Send(query, ct);
         return products;
+    }
+
+    [HttpGet("product/{id:guid}")]
+    public async Task<Product> GetProduct(Guid id, CancellationToken ct)
+    {
+        var product = await mediator.Send(new GetProductQuery(id), ct);
+        return product;
     }
 }
