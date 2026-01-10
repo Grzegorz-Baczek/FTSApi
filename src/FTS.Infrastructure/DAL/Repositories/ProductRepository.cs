@@ -12,6 +12,12 @@ internal sealed class ProductRepository(FTSDbContext dbContext) : IProductReposi
         await dbContext.SaveChangesAsync(ct);
     }
 
+    public async Task<Product?> GetProductAsync(Guid id, CancellationToken ct)
+    {
+        var product = await dbContext.Products.FirstOrDefaultAsync(p => p.Id == id, ct);
+        return product;
+    }
+
     public async Task<IEnumerable<Product>> GetProductsAsync(CancellationToken ct)
     {
         var products = await dbContext.Products.ToListAsync(ct);

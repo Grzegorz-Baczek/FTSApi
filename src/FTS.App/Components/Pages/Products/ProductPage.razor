@@ -1,0 +1,21 @@
+﻿@page "/product/{Id:guid}"
+@rendermode InteractiveServer
+
+<PageTitle>Product</PageTitle>
+
+
+@if (product is null)
+{
+	<MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+}
+else
+{
+	<MudPaper Height="700px" Width="100%">
+		<MudContainer Fixed="true">
+			<MudPaper Square="true">
+				<MudText Style="display:flex; justify-content:center;" Typo="Typo.h1">@product.Name</MudText>
+			</MudPaper>
+		</MudContainer>
+	</MudPaper>
+
+}

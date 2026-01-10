@@ -1,6 +1,5 @@
 ﻿using FTS.App.Components.Pages.Products.Models;
 using Microsoft.AspNetCore.Components;
-using MudBlazor.Extensions;
 
 namespace FTS.App.Components.Pages.Products;
 
@@ -26,5 +25,10 @@ public partial class Products : ComponentBase
     private void NavigateCreateCategory()
     {
         NavigationManager.NavigateTo("/createcategory");
+    }
+
+    private void NavigateToDetails(Guid id)
+    {
+        NavigationManager.NavigateTo($"/product/{id}");
     }
 }
