@@ -1,4 +1,5 @@
-﻿using FTS.Application.Abstractions;
+﻿using System.Threading.Tasks;
+using FTS.Application.Abstractions;
 using FTS.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,7 +12,11 @@ internal sealed class ProductRepository(FTSDbContext dbContext) : IProductReposi
         await dbContext.Products.AddAsync(product, ct);
         await dbContext.SaveChangesAsync(ct);
     }
-
+    public async Task DeleteProductAsync(Product product, CancellationToken ct)
+    {
+        dbContext.Products.Remove(product);
+        await dbContext.SaveChangesAsync(ct);
+    }
     public async Task<Product?> GetProductAsync(Guid id, CancellationToken ct)
     {
         var product = await dbContext.Products.FirstOrDefaultAsync(p => p.Id == id, ct);

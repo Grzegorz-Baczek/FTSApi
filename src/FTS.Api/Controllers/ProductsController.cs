@@ -3,6 +3,7 @@ using FTS.Application.Queries.Products.Handlers;
 using FTS.Core.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using FTS.Application.Commands.Products.Handlers.DeleteProduct;
 
 namespace FTS.Api.Controllers;
 
@@ -31,5 +32,13 @@ public class ProductsController(IMediator mediator) : ControllerBase
     {
         var product = await mediator.Send(new GetProductQuery(id), ct);
         return product;
+    }
+
+    [HttpDelete("product/{id}")]
+    public async Task<ActionResult> DeleteProduct(Guid id,
+        CancellationToken ct)
+    {
+        await mediator.Send(new DeleteProductCommand(id), ct);
+        return NoContent();
     }
 }

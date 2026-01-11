@@ -6,6 +6,8 @@ public class NotFoundCategoryException : CustomException
 {
     public Guid Id { get; }
 
-    public NotFoundCategoryException(Guid id) : base($"CategoryId: {id} not found") 
-        => Id = id;
+    public NotFoundCategoryException(Guid id) : base($"CategoryId: {id} not found")
+    {
+        Id = id;
+    }
 }
