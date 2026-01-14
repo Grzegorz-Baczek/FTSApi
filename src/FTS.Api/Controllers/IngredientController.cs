@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FTS.Api.Controllers;
 
+[Route("api")]
+[ApiController]
 public class IngredientController(IMediator mediator) : ControllerBase
 {
     [HttpPost("ingredient")]
