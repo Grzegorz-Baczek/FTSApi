@@ -26,11 +26,4 @@ public class CategoriesController(IMediator mediator) : ControllerBase
         var categories = await mediator.Send(query, ct);
         return categories;
     }
-
-    [HttpGet("category/{id}")]
-    public async Task<Category> GetCategory([FromQuery] Guid id, CancellationToken ct)
-    {
-        var category = await mediator.Send(new GetCategoryQuery(id), ct);
-        return category;
-    }
 }
