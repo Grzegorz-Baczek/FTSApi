@@ -1,8 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using FTS.Application.Commands.Categories.Handlers;
-using FTS.Core.Entities;
-using FTS.Application.Queries.Categories.Handlers;
 
 namespace FTS.Api.Controllers;
 
@@ -16,14 +14,5 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     {
         await mediator.Send(command, token);
         return NoContent();
-    }
-
-    [HttpGet("categories")]
-    public async Task<IEnumerable<Category>> GetCategories([FromQuery] GetCategoriesQuery query,
-
-        CancellationToken ct)
-    {
-        var categories = await mediator.Send(query, ct);
-        return categories;
     }
 }
