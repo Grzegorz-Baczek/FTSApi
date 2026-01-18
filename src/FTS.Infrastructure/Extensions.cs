@@ -4,6 +4,7 @@ using FTS.Infrastructure.Exceptions;
 using FTS.Infrastructure.DAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.OpenApi.Models;
+using FTS.Infrastructure.Security;
 
 namespace FTS.Infrastructure;
 
@@ -17,6 +18,7 @@ public static class Extensions
         services.AddHttpContextAccessor();
         services.AddMSql(configuration);
 
+        services.AddSecurity();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(swagger =>
         {

@@ -4,8 +4,8 @@ using FTS.Application.Commands.Categories.Handlers;
 
 namespace FTS.Api.Controllers;
 
-[Route("api")]
 [ApiController]
+[Route("api")]
 public class CategoriesController(IMediator mediator) : ControllerBase
 {
     [HttpPost("category")]

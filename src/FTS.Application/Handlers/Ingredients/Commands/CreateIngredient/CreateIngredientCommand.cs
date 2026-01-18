@@ -1,7 +1,8 @@
 ﻿using FTS.Application.Abstractions;
+using FTS.Core.Entities;
 using MediatR;
 
-namespace FTS.Application.Handlers.Ingredient.Commands.CreateIngredient;
+namespace FTS.Application.Handlers.Ingredients.Commands.CreateIngredient;
 
 public class CreateIngredientCommand : IRequest
 {
@@ -12,7 +13,7 @@ internal sealed class CreateIngredientCommandHandler(IIngredientRepository ingre
 {
     public async Task Handle(CreateIngredientCommand command, CancellationToken cancellationToken)
     {
-        var ingredient = Core.Entities.Ingredient.Create(command.Name);
+        var ingredient = Ingredient.Create(command.Name);
         await ingredientRepository.AddIngredientAsync(ingredient, cancellationToken);
     }
 }
