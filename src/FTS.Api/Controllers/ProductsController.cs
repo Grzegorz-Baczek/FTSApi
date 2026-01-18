@@ -7,8 +7,8 @@ using FTS.Application.Commands.Products.Handlers.DeleteProduct;
 
 namespace FTS.Api.Controllers;
 
-[Route("api")]
 [ApiController]
+[Route("api")]
 public class ProductsController(IMediator mediator) : ControllerBase
 {
     [HttpPost("product")]

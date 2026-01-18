@@ -1,13 +1,13 @@
-﻿using FTS.Application.Handlers.Ingredient.Commands.CreateIngredient;
-using FTS.Application.Handlers.Ingredient.Queries.GetIngredients;
+﻿using FTS.Application.Handlers.Ingredients.Commands.CreateIngredient;
+using FTS.Application.Handlers.Ingredients.Queries.GetIngredients;
 using FTS.Core.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FTS.Api.Controllers;
 
-[Route("api")]
 [ApiController]
+[Route("api")]
 public class IngredientController(IMediator mediator) : ControllerBase
 {
     [HttpPost("ingredient")]
