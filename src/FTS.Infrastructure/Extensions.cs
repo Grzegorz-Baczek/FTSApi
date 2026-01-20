@@ -35,6 +35,8 @@ public static class Extensions
             options.AddPolicy("Open", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
         });
 
+        services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(Extensions).Assembly));
+
         return services;
     }
 
