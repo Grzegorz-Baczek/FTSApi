@@ -1,6 +1,6 @@
-﻿using FTS.Application.Handlers.Ingredients.Commands.CreateIngredient;
+﻿using FTS.Application.DTO;
+using FTS.Application.Handlers.Ingredients.Commands.CreateIngredient;
 using FTS.Application.Handlers.Ingredients.Queries.GetIngredients;
-using FTS.Core.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +19,7 @@ public class IngredientController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("ingredients")]
-    public async Task<IEnumerable<Ingredient>> GetIngredients([FromQuery] GetIngredientsQuery query,
+    public async Task<IEnumerable<IngredientDto>> GetIngredients([FromQuery] GetIngredientsQuery query,
         CancellationToken ct)
     {
         var ingredients = await mediator.Send(query, ct);
