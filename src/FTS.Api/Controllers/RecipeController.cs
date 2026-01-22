@@ -1,5 +1,6 @@
 ﻿using FTS.Application.DTO;
 using FTS.Application.Handlers.Recipes.Commands.CreateRecipe;
+using FTS.Application.Handlers.Recipes.Queries.GetRecipeById;
 using FTS.Application.Handlers.Recipes.Queries.GetRecipes;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,14 @@ public class RecipeController(IMediator mediator) : ControllerBase
     public async Task<IEnumerable<RecipeDto>> GetRecipes([FromQuery] GetRecipesQuery query,
       CancellationToken ct)
     {
-        var recipes = await mediator.Send(query, ct);
-         return recipes;
+        var recipesDto = await mediator.Send(query, ct);
+         return recipesDto;
+    }
+
+    [HttpGet("recipe/{id:guid}")]
+    public async Task<RecipeDto> GetRecipe(Guid id, CancellationToken ct)
+    {
+        var recipeDto = await mediator.Send(new GetRecipeQuery(id), ct);
+        return recipeDto;
     }
 }
