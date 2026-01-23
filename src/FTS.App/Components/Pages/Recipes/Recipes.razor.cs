@@ -17,18 +17,18 @@ public partial class Recipes : ComponentBase
         RecipesViewModel = await RecipeApiClient.GetRecipesAsync();
     }
 
-    private void NavigateCreateProduct()
-    {
-        NavigationManager.NavigateTo("/createproduct");
-    }
+    //private void NavigateCreateProduct()
+    //{
+    //    NavigationManager.NavigateTo("/createproduct");
+    //}
 
-    private void NavigateCreateCategory()
-    {
-        NavigationManager.NavigateTo("/createcategory");
-    }
+    //private void NavigateCreateCategory()
+    //{
+    //    NavigationManager.NavigateTo("/createcategory");
+    //}
 
     private void NavigateToDetails(Guid id)
     {
-        NavigationManager.NavigateTo($"/product/{id}");
+        NavigationManager.NavigateTo($"/recipe/{id}");
     }
 }

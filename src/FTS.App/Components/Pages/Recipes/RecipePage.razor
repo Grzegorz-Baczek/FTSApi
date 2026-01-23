@@ -1,0 +1,31 @@
+﻿@page "/recipe/{Id:guid}"
+@rendermode InteractiveServer
+
+<PageTitle>Recipe</PageTitle>
+
+@if (recipe is null)
+{
+	<MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+}
+else
+{
+	<MudPaper Height="700px" Width="100%">
+		<MudContainer Fixed="true">
+			<MudPaper Square="true">
+				<MudText Style="display:flex; justify-content:center;" Typo="Typo.h4">@recipe.Title</MudText>
+			</MudPaper>
+
+				<MudText Style="display:flex; justify-content:center;" Typo="Typo.body1">@recipe.Steps</MudText>
+				<MudText Style="display:flex; justify-content:center;">przepis dostepny publicznie:@recipe.IsPublic</MudText>
+
+			<MudPaper Square="true">
+				<MudText Style="display:flex; justify-content:center;" Typo="Typo.h1">@recipe.ImageUrl</MudText>
+			</MudPaper>
+
+			<MudPaper Square="true">
+				<MudText Style="display:flex; justify-content:center;" Typo="Typo.overline">Author: @recipe.Author</MudText>
+			</MudPaper>
+		</MudContainer>
+	</MudPaper>
+
+}

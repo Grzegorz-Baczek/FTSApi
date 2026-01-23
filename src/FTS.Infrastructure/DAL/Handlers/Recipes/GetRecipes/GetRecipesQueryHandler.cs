@@ -10,8 +10,8 @@ public sealed class GetRecipesQueryHandler(
 {
     public async Task<IEnumerable<RecipeDto>> Handle(GetRecipesQuery query, CancellationToken cancellationToken)
     {
-        var recipesDto =  await dbContext.Recipes
-            .Select(r => new RecipeDto(r.Title, r.Steps, r.IsPublic, r.ImageUrl, r.Author.Name))
+        var recipesDto = await dbContext.Recipes
+            .Select(r => new RecipeDto(r.Id, r.Title, r.Steps, r.IsPublic, r.ImageUrl, r.Author.Name))
             .ToListAsync(cancellationToken);
 
         return recipesDto;

@@ -31,16 +31,18 @@ else
 			<MudItem xs="12" sm="6" md="4" lg="3">
 				<MudCard Style="height: 100%;">
 					<MudText Style="display:flex; justify-content:center;" Typo="Typo.body2">@recipe.Title</MudText>
-					<MudCardMedia Image="zdjecie w przyszlosci" Height="100" />
+					<MudCardMedia Image="zdjecie w przyszlosci" Height="100">
+						@recipe.ImageUrl
+					</MudCardMedia>
 					<MudCardContent>
 						<MudText Typo="Typo.body2" Class="mt-2">Author: @recipe.Author</MudText>
 					</MudCardContent>
 
-					@* <MudButton OnClick="@(() => NavigateToDetails(product.Id))"
+					<MudButton OnClick="@(() => NavigateToDetails(recipe.Id))"
 							   Variant="Variant.Text"
 							   Color="Color.Default">
 						Przejdź do przepisu
-					</MudButton> *@
+					</MudButton>
 				</MudCard>
 			</MudItem>
 		}
