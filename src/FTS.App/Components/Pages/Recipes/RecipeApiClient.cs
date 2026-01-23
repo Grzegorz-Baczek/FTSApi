@@ -14,4 +14,15 @@ public class RecipeApiClient(HttpClient HttpClient)
 
         throw new Exception($"Something went wrong. Result code from server: {result.StatusCode}");
     }
+
+    public async Task<RecipeViewModel?> GetRecipeAsync(Guid id)
+    {
+        var result = await HttpClient.GetAsync($"api/recipe/{id}");
+        if (result.IsSuccessStatusCode)
+        {
+            return await result.Content.ReadFromJsonAsync<RecipeViewModel?>();
+        }
+
+        throw new Exception($"Something went wrong. Result code from server: {result.StatusCode}");
+    }
 }

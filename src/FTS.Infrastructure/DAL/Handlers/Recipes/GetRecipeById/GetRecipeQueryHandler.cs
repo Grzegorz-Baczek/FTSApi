@@ -12,7 +12,7 @@ internal sealed class GetRecipeQueryHandler(FTSDbContext dbContext) : IRequestHa
     {
         var recipeDto = await dbContext.Recipes
             .Where(r => r.Id == query.Id)
-            .Select(r => new RecipeDto(r.Title, r.Steps, r.IsPublic, r.ImageUrl, r.Author.Name))
+            .Select(r => new RecipeDto(r.Id, r.Title, r.Steps, r.IsPublic, r.ImageUrl, r.Author.Name))
             .FirstOrDefaultAsync(cancellationToken);
         if (recipeDto == null)
         {

@@ -2,6 +2,7 @@
 
 public class RecipeViewModel
 {
+    public Guid Id { get; set; }
     public string Title { get; set; }
     public string Steps { get; set; }
     public bool IsPublic { get; set; }
