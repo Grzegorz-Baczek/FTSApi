@@ -31,9 +31,6 @@ else
 				<MudCard Style="height: 100%;">
 					<MudText Style="display:flex; justify-content:center;" Typo="Typo.body2">@product.Name</MudText>
 					<MudCardMedia Image="zdjecie w przyszlosci" Height="100" />
-					<MudCardContent>
-						@* <MudText Typo="Typo.body2" Class="mt-2">Category: @product.CategoryName</MudText> *@
-					</MudCardContent>
 
 					<MudButton OnClick="@(() => NavigateToDetails(product.Id))"
 							   Variant="Variant.Text"
