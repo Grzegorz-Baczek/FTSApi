@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using FTS.Application.Abstractions;
+﻿using FTS.Application.Abstractions;
 using FTS.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,11 +20,5 @@ internal sealed class ProductRepository(FTSDbContext dbContext) : IProductReposi
     {
         var product = await dbContext.Products.FirstOrDefaultAsync(p => p.Id == id, ct);
         return product;
-    }
-
-    public async Task<IEnumerable<Product>> GetProductsAsync(CancellationToken ct)
-    {
-        var products = await dbContext.Products.ToListAsync(ct);
-        return products;
     }
 }

@@ -19,14 +19,6 @@ public class ProductsController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("products")]
-    public async Task<IEnumerable<Product>> GetProducts([FromQuery] GetProductsQuery query,
-        CancellationToken ct)
-    {
-        var products = await mediator.Send(query, ct);
-        return products;
-    }
-
     [HttpGet("product/{id:guid}")]
     public async Task<Product> GetProduct(Guid id, CancellationToken ct)
     {
