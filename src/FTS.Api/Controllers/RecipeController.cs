@@ -20,7 +20,7 @@ public class RecipeController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("recipes")]
-    public async Task<IEnumerable<RecipeDto>> GetRecipes([FromQuery] GetRecipesQuery query,
+    public async Task<IReadOnlyCollection<RecipeDto>> GetRecipes([FromQuery] GetRecipesQuery query,
       CancellationToken ct)
     {
         var recipesDto = await mediator.Send(query, ct);

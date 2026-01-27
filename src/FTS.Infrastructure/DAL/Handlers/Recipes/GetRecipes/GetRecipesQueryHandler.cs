@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 namespace FTS.Infrastructure.DAL.Handlers.Recipes.GetRecipes;
 
 public sealed class GetRecipesQueryHandler(
-    FTSDbContext dbContext) : IRequestHandler<GetRecipesQuery, IEnumerable<RecipeDto>>
+    FTSDbContext dbContext) : IRequestHandler<GetRecipesQuery, IReadOnlyCollection<RecipeDto>>
 {
-    public async Task<IEnumerable<RecipeDto>> Handle(GetRecipesQuery query, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<RecipeDto>> Handle(GetRecipesQuery query, CancellationToken cancellationToken)
     {
         var recipesDto = await dbContext.Recipes
             .Select(r => new RecipeDto(r.Id, r.Title, r.Steps, r.IsPublic, r.ImageUrl, r.Author.Name))

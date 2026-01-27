@@ -3,4 +3,4 @@ using MediatR;
 
 namespace FTS.Application.Handlers.Recipes.Queries.GetRecipes;
 
-public class GetRecipesQuery : IRequest<IEnumerable<RecipeDto>>;
+public class GetRecipesQuery : IRequest<IReadOnlyCollection<RecipeDto>>;
