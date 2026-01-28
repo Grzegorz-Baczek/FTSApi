@@ -10,7 +10,7 @@ public partial class Recipes : ComponentBase
     [Inject]
     public NavigationManager NavigationManager { get; set; }
 
-    public IEnumerable<RecipeViewModel>? RecipesViewModel;
+    public IReadOnlyCollection<RecipeViewModel>? RecipesViewModel;
 
     protected override async Task OnInitializedAsync()
     {
