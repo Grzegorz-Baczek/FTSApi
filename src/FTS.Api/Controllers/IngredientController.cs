@@ -19,7 +19,7 @@ public class IngredientController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("ingredients")]
-    public async Task<IEnumerable<IngredientDto>> GetIngredients([FromQuery] GetIngredientsQuery query,
+    public async Task<IReadOnlyCollection<IngredientDto>> GetIngredients([FromQuery] GetIngredientsQuery query,
         CancellationToken ct)
     {
         var ingredients = await mediator.Send(query, ct);
