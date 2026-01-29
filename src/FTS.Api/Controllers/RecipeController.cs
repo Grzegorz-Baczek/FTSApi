@@ -1,5 +1,6 @@
 ﻿using FTS.Application.DTO;
 using FTS.Application.Handlers.Recipes.Commands.CreateRecipe;
+using FTS.Application.Handlers.Recipes.Commands.DeleteRecipe;
 using FTS.Application.Handlers.Recipes.Queries.GetRecipeById;
 using FTS.Application.Handlers.Recipes.Queries.GetRecipes;
 using MediatR;
@@ -32,5 +33,12 @@ public class RecipeController(IMediator mediator) : ControllerBase
     {
         var recipeDto = await mediator.Send(new GetRecipeQuery(id), ct);
         return recipeDto;
+    }
+
+    [HttpDelete("recipe/{id:guid}")]
+    public async Task<ActionResult> DeleteRecipe(Guid id, CancellationToken ct)
+    {
+        await mediator.Send(new DeleteRecipeCommand(id), ct);
+        return NoContent();
     }
 }
