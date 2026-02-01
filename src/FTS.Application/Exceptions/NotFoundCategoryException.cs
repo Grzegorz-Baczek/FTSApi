@@ -2,7 +2,7 @@
 
 namespace FTS.Application.Exceptions;
 
-public class NotFoundCategoryException : CustomException
+internal class NotFoundCategoryException : CustomException
 {
     public Guid Id { get; }
 
