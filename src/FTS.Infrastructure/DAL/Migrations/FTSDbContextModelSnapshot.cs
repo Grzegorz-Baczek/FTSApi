@@ -212,23 +212,6 @@ namespace FTS.Infrastructure.DAL.Migrations
                     b.ToTable("RecipeIngredients");
                 });
 
-            modelBuilder.Entity("FTS.Core.Entities.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
-                });
-
             modelBuilder.Entity("FTS.Core.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -256,46 +239,16 @@ namespace FTS.Infrastructure.DAL.Migrations
                     b.Property<int>("RankPoints")
                         .HasColumnType("int");
 
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
                         .IsUnique();
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("FTS.Core.Entities.UserRole", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("AssignedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("AssignedById")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssignedById");
-
-                    b.HasIndex("RoleId");
-
-                    b.HasIndex("UserId", "IsActive");
-
-                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("FTS.Core.Entities.Cookbook", b =>
@@ -388,33 +341,6 @@ namespace FTS.Infrastructure.DAL.Migrations
                     b.Navigation("Recipe");
                 });
 
-            modelBuilder.Entity("FTS.Core.Entities.UserRole", b =>
-                {
-                    b.HasOne("FTS.Core.Entities.User", "AssignedBy")
-                        .WithMany()
-                        .HasForeignKey("AssignedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("FTS.Core.Entities.Role", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FTS.Core.Entities.User", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("AssignedBy");
-
-                    b.Navigation("Role");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("FTS.Core.Entities.Category", b =>
                 {
                     b.Navigation("Products");
@@ -439,11 +365,6 @@ namespace FTS.Infrastructure.DAL.Migrations
                     b.Navigation("RecipeIngredients");
                 });
 
-            modelBuilder.Entity("FTS.Core.Entities.Role", b =>
-                {
-                    b.Navigation("UserRoles");
-                });
-
             modelBuilder.Entity("FTS.Core.Entities.User", b =>
                 {
                     b.Navigation("Cookbooks");
@@ -451,8 +372,6 @@ namespace FTS.Infrastructure.DAL.Migrations
                     b.Navigation("PointsLogs");
 
                     b.Navigation("Recipes");
-
-                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

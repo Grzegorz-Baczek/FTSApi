@@ -10,6 +10,7 @@ public class User
     public string Email { get; set; } = null!;
     public string Password { get; set; } = null!;
     public int RankPoints { get; set; }
+    public string Role { get; set; }
     public UserLevel Level { get; set; }
     public DateTime CreatedAt { get; set; }
 
@@ -17,7 +18,6 @@ public class User
     public ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
     public ICollection<Cookbook> Cookbooks { get; set; } = new List<Cookbook>();
     public ICollection<PointsLog> PointsLogs { get; set; } = new List<PointsLog>();
-    public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 
     public User() { }
 

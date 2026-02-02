@@ -15,5 +15,7 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired();
         builder.HasIndex(u => u.Email)
             .IsUnique();
+        builder.Property(u => u.Role)
+            .IsRequired();
     }
 }
