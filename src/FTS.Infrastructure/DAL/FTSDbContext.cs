@@ -1,9 +1,11 @@
 ﻿using FTS.Core.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace FTS.Infrastructure.DAL;
 
-public sealed class FTSDbContext : DbContext
+public sealed class FTSDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 {
     public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
@@ -21,6 +23,7 @@ public sealed class FTSDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
     }
 }
