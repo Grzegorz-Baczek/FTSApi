@@ -1,5 +1,7 @@
 ﻿using FTS.Application.Abstractions;
+using FTS.Core.Entities;
 using FTS.Infrastructure.DAL.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +24,10 @@ internal static class Extensions
         services.AddScoped<IIngredientRepository, IngredientRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRecipeRepository, RecipeRepository>();
+
+        services.AddIdentity<User, IdentityRole<Guid>>()
+            .AddEntityFrameworkStores<FTSDbContext>()
+            .AddDefaultTokenProviders();
 
         return services;
     }

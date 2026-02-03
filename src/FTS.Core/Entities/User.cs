@@ -1,16 +1,13 @@
 ﻿using FTS.Core.Enum;
 using FTS.Core.Exceptions;
+using Microsoft.AspNetCore.Identity;
 
 namespace FTS.Core.Entities;
 
-public class User
+public class User : IdentityUser<Guid>
 {
-    public Guid Id { get; set; }
     public string Name { get; set; } = null!;
-    public string Email { get; set; } = null!;
-    public string Password { get; set; } = null!;
     public int RankPoints { get; set; }
-    public string Role { get; set; }
     public UserLevel Level { get; set; }
     public DateTime CreatedAt { get; set; }
 
@@ -24,7 +21,7 @@ public class User
     public static User Create(
         string name,
         string email, 
-        string password, 
+        string passwordHash,
         int rankPoints, 
         UserLevel level, 
         DateTime createdAt)
@@ -44,7 +41,7 @@ public class User
             Id = Guid.NewGuid(),
             Name = name,
             Email = email,
-            Password = password,
+            PasswordHash = passwordHash,
             RankPoints = rankPoints,
             Level = level,
             CreatedAt = createdAt
