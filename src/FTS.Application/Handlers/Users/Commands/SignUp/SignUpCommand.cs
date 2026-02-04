@@ -1,50 +1,53 @@
 ﻿using FluentValidation;
-using FTS.Application.Abstractions;
-using FTS.Application.Exceptions;
-using FTS.Application.Security;
 using FTS.Core.Entities;
 using FTS.Core.Enum;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
+using FTS.Core.Security;
+using FTS.Application.Exceptions;
 
 namespace FTS.Application.Handlers.Users.Commands.SignUp;
 
 public class SignUpCommand : IRequest
 {
-    public Guid Id { get; set; }
     public string Name { get; set; } = null!;
     public string Email { get; set; } = null!;
     public string Password { get; set; } = null!;
-    public int RankPoints { get; set; }
-    public UserLevel Level { get; set; }
-    public DateTime CreatedAt { get; set; }
 }
 
 public class SignUpCommandHandler(
-    IUserRepository repository,
-    IPasswordManager passwordManager,
-    IValidator<SignUpCommand> signUpValidator,
-    IUserRepository userRepository) : IRequestHandler<SignUpCommand>
+    UserManager<User> userManager,
+    IValidator<SignUpCommand> signUpValidator) : IRequestHandler<SignUpCommand>
 {
     public async Task Handle(SignUpCommand command, CancellationToken cancellationToken)
     {
         var validationResult = await signUpValidator.ValidateAsync(command, cancellationToken);
-        if(!validationResult.IsValid)
+        if (!validationResult.IsValid)
         {
             throw new ValidationException(validationResult.Errors);
         }
 
-        if (await userRepository.GetByEmailAsync(command.Email) is not null)
+        var user = User.Create(command.Name, command.Email, command.Email, command.Password, 0, UserLevel.Beginner, DateTime.UtcNow);
+
+        IdentityResult identityResult = await userManager.CreateAsync(user, command.Password);
+        if (!identityResult.Succeeded)
         {
-            throw new EmailAlreadyInUseException(command.Email);
+            if (identityResult.Errors.Any(e => e.Code == "DuplicateEmail" || e.Code == "DuplicateUserName"))
+            {
+                throw new EmailAlreadyInUseException(command.Email);
+            }
+            else
+            {
+                var errorDescription = identityResult.Errors.First().Description;
+                throw new IdentityValidationException(errorDescription);
+            }
         }
 
-        if (await userRepository.GetByUsernameAsync(command.Name) is not null)
+        IdentityResult addToRoleResult = await userManager.AddToRoleAsync(user, Roles.User);
+        if (!addToRoleResult.Succeeded)
         {
-            throw new UsernameAlreadyInUseException(command.Name);
+            var error = addToRoleResult.Errors.FirstOrDefault()?.Description;
+            throw new RoleAssignmentException(Roles.User, error);
         }
-
-        var securedPassword = passwordManager.Secure(command.Password);
-        var user = User.Create(command.Name, command.Email, securedPassword, command.RankPoints, command.Level, command.CreatedAt);
-        await repository.AddAsync(user);
     }
 }

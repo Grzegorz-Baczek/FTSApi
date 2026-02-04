@@ -18,9 +18,6 @@ public class SignUpCommandValidator : AbstractValidator<SignUpCommand>
         RuleFor(x => x.Password)
             .NotEmpty()
             .MinimumLength(8);
-
-        RuleFor(x => x.RankPoints)
-            .GreaterThanOrEqualTo(0);
     }
 }
 
