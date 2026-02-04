@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
+﻿using FTS.Application.Exceptions;
 using FTS.Core.Exceptions;
 using Humanizer;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 
 namespace FTS.Infrastructure.Exceptions;

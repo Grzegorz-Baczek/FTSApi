@@ -20,6 +20,7 @@ public class User : IdentityUser<Guid>
 
     public static User Create(
         string name,
+        string userName,
         string email, 
         string passwordHash,
         int rankPoints, 
@@ -40,6 +41,7 @@ public class User : IdentityUser<Guid>
         {
             Id = Guid.NewGuid(),
             Name = name,
+            UserName = userName,
             Email = email,
             PasswordHash = passwordHash,
             RankPoints = rankPoints,

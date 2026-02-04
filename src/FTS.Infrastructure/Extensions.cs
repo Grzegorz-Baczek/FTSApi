@@ -1,10 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using FTS.Infrastructure.Exceptions;
+﻿using FTS.Core.Abstractions;
+using FTS.Infrastructure.Auth;
 using FTS.Infrastructure.DAL;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.OpenApi.Models;
+using FTS.Infrastructure.Exceptions;
 using FTS.Infrastructure.Security;
+using FTS.Infrastructure.Time;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 namespace FTS.Infrastructure;
 
@@ -17,6 +20,8 @@ public static class Extensions
         services.AddSingleton<ExceptionMiddleware>();
         services.AddHttpContextAccessor();
         services.AddMSql(configuration);
+        services.AddSingleton<IClock, Clock>();
+        services.AddAuth(configuration);
 
         services.AddSecurity();
         services.AddEndpointsApiExplorer();
@@ -47,6 +52,8 @@ public static class Extensions
         app.UseSwaggerUI();
         app.UseCors("Open");
         app.MapControllers();
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         return app;
     }
