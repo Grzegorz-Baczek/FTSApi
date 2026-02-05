@@ -3,6 +3,8 @@ using FTS.Core.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using FTS.Application.Commands.Products.Handlers.DeleteProduct;
+using Microsoft.AspNetCore.Authorization;
+using FTS.Core.Security;
 
 namespace FTS.Api.Controllers;
 
@@ -17,6 +19,7 @@ public class ProductsController(IMediator mediator) : ControllerBase
         return product;
     }
 
+    [Authorize(Roles = Roles.User)]
     [HttpDelete("product/{id}")]
     public async Task<ActionResult> DeleteProduct(Guid id,
         CancellationToken ct)
