@@ -3,7 +3,9 @@ using FTS.Application.Handlers.Recipes.Commands.CreateRecipe;
 using FTS.Application.Handlers.Recipes.Commands.DeleteRecipe;
 using FTS.Application.Handlers.Recipes.Queries.GetRecipeById;
 using FTS.Application.Handlers.Recipes.Queries.GetRecipes;
+using FTS.Core.Security;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FTS.Api.Controllers;
@@ -12,6 +14,7 @@ namespace FTS.Api.Controllers;
 [Route("api")]
 public class RecipeController(IMediator mediator) : ControllerBase
 {
+    [Authorize(Roles = Roles.User)]
     [HttpPost("recipe")]
     public async Task<ActionResult> CreateRecipe(CreateRecipeCommand command,
         CancellationToken token)
@@ -35,6 +38,7 @@ public class RecipeController(IMediator mediator) : ControllerBase
         return recipeDto;
     }
 
+    [Authorize(Roles = Roles.User)]
     [HttpDelete("recipe/{id:guid}")]
     public async Task<ActionResult> DeleteRecipe(Guid id, CancellationToken ct)
     {
