@@ -1,5 +1,4 @@
 ﻿using FTS.App.Components.Pages.Categories.Models;
-using FTS.App.Components.Pages.Products.Models;
 
 namespace FTS.App.Components.Pages.Categories;
 
