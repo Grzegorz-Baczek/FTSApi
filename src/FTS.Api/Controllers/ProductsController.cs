@@ -19,7 +19,6 @@ public class ProductsController(IMediator mediator) : ControllerBase
         return product;
     }
 
-    [Authorize(Roles = Roles.User)]
     [HttpDelete("product/{id}")]
     public async Task<ActionResult> DeleteProduct(Guid id,
         CancellationToken ct)
