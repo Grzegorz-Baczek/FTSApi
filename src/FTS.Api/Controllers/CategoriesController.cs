@@ -13,7 +13,6 @@ namespace FTS.Api.Controllers;
 
 public class CategoriesController(IMediator mediator) : ControllerBase
 {
-    [Authorize(Roles = Roles.Admin)]
     [HttpPost("category")]
     public async Task<ActionResult> CreateCategory(CreateCategoryCommand command,
         CancellationToken token)
@@ -22,6 +21,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
+    [Authorize(Roles = Roles.Admin)]
     [HttpGet("categories")]
     public async Task<IReadOnlyCollection<CategoryDto>> GetCategories([FromQuery] GetCategoriesQuery query,
     CancellationToken ct)
