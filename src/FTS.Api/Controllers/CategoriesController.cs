@@ -21,7 +21,6 @@ public class CategoriesController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
-    [Authorize(Roles = Roles.Admin)]
     [HttpGet("categories")]
     public async Task<IReadOnlyCollection<CategoryDto>> GetCategories([FromQuery] GetCategoriesQuery query,
     CancellationToken ct)

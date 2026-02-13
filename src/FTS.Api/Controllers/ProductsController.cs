@@ -8,6 +8,8 @@ namespace FTS.Api.Controllers;
 
 [ApiController]
 [Route("api")]
+[Authorize(Roles = Roles.Admin)]
+
 public class ProductsController(IMediator mediator) : ControllerBase
 {
     [HttpGet("product/{id:guid}")]
