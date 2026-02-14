@@ -1,5 +1,6 @@
 using FTS.App.Components;
 using FTS.App.Components.Pages.Categories;
+using FTS.App.Components.Pages.Ingredients;
 using FTS.App.Components.Pages.Products;
 using FTS.App.Components.Pages.Recipes;
 using MudBlazor.Services;
@@ -24,6 +25,11 @@ builder.Services.AddHttpClient<ProductApiClient>(client =>
 });
 
 builder.Services.AddHttpClient<RecipeApiClient>(client =>
+{
+    client.BaseAddress = new Uri(baseUrl);
+});
+
+builder.Services.AddHttpClient<IngredientApiClient>(client =>
 {
     client.BaseAddress = new Uri(baseUrl);
 });

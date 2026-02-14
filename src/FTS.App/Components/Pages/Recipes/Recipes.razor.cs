@@ -22,10 +22,10 @@ public partial class Recipes : ComponentBase
     //    NavigationManager.NavigateTo("/createproduct");
     //}
 
-    //private void NavigateCreateCategory()
-    //{
-    //    NavigationManager.NavigateTo("/createcategory");
-    //}
+    private void NavigateCreateIngredient()
+    {
+        NavigationManager.NavigateTo("/createingredient");
+    }
 
     private void NavigateToDetails(Guid id)
     {
