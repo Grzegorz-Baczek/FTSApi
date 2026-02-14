@@ -3,6 +3,8 @@ using FTS.Core.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using FTS.Application.Commands.Products.Handlers.DeleteProduct;
+using FTS.Core.Security;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FTS.Api.Controllers;
 
