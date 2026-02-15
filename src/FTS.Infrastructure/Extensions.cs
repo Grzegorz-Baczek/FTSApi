@@ -5,6 +5,7 @@ using FTS.Infrastructure.Exceptions;
 using FTS.Infrastructure.Security;
 using FTS.Infrastructure.Time;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -37,11 +38,16 @@ public static class Extensions
 
         services.AddCors(options =>
         {
-            options.AddPolicy("Open", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            options.AddPolicy("Open", builder => builder.WithOrigins("https://localhost:7237").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
         });
 
         services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(Extensions).Assembly));
 
+        services.ConfigureApplicationCookie(options =>
+        {
+            options.Cookie.SameSite = SameSiteMode.None; 
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        });
         return services;
     }
 
@@ -50,10 +56,13 @@ public static class Extensions
         app.UseMiddleware<ExceptionMiddleware>();
         app.UseSwagger();
         app.UseSwaggerUI();
+
+        app.UseRouting();
+
         app.UseCors("Open");
-        app.MapControllers();
         app.UseAuthentication();
         app.UseAuthorization();
+        app.MapControllers();
 
         return app;
     }

@@ -1,10 +1,10 @@
-﻿using FTS.Application.Queries.Products.Handlers;
+﻿using FTS.Application.Commands.Products.Handlers.DeleteProduct;
+using FTS.Application.Queries.Products.Handlers;
 using FTS.Core.Entities;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using FTS.Application.Commands.Products.Handlers.DeleteProduct;
 using FTS.Core.Security;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FTS.Api.Controllers;
 
