@@ -1,8 +1,11 @@
-﻿using FTS.Application.DTO;
+﻿using System.Security.Claims;
+using FTS.Application.DTO;
 using FTS.Application.Handlers.Users.Commands.SignIn;
 using FTS.Application.Handlers.Users.Commands.SignUp;
+using FTS.Application.Handlers.Users.Queries.GetUserById;
 using FTS.Application.Security;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -29,6 +32,20 @@ public class UsersController(IMediator mediator,
         await mediator.Send(command);
         var jwt = tokenStorage.Get();
         return jwt;
+    }
+
+    [Authorize]
+    [HttpGet("user/me")]
+    public async Task<ActionResult<UserDto>> Get()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!Guid.TryParse(userIdClaim, out var userId))
+        {
+            return Unauthorized();
+        }
+
+        var user = await mediator.Send(new GetUserQuery { Id = userId });
+        return Ok(user);
     }
 }
 

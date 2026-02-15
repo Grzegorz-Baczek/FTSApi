@@ -1,5 +1,8 @@
-﻿@inherits LayoutComponentBase
-
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@inherits LayoutComponentBase
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
 <MudThemeProvider />
 <MudPopoverProvider />
 <MudDialogProvider />
@@ -9,7 +12,31 @@
 	<MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" />
 	Twoje przepisy w jednym miejscu
 	<MudSpacer />
-	<MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" />
+	<AuthorizeView Context="auth">
+		<Authorized>
+			<MudMenu AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+				<ActivatorContent>
+					<MudAvatar Color="Color.Primary" Size="Size.Medium" Style="cursor: pointer">
+						<MudIcon Icon="@Icons.Material.Filled.Person" />
+					</MudAvatar>
+				</ActivatorContent>
+				<ChildContent>
+					<MudMenuItem OnClick="@(() => NavigationManager.NavigateTo("/account"))">My Profile</MudMenuItem>
+					<MudDivider />
+					<MudMenuItem OnClick="@(() => NavigationManager.NavigateTo("/logout"))">Logout</MudMenuItem>
+				</ChildContent>
+			</MudMenu>
+		</Authorized>
+		<NotAuthorized>
+			<div class="d-flex align-center">
+				<MudButton Variant="Variant.Text"
+						   Color="Color.Inherit"
+						   OnClick="@(() => NavigationManager.NavigateTo("/login"))">
+					Login
+				</MudButton>
+			</div>
+		</NotAuthorized>
+	</AuthorizeView>
 </MudAppBar>
 
 <div class="page">

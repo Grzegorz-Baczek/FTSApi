@@ -1,0 +1,36 @@
+﻿@page "/login"
+@rendermode InteractiveServer
+
+<div class="ma-6 d-flex justify-center">
+	@* <MudChip Color="Color.Primary">
+        <h3>User Registration Form</h3>
+    </MudChip> *@
+</div>
+
+<div class="ma-6 d-flex justify-center">
+	<MudCard Widht="500px">
+        <EditForm Model="LoginViewModel" OnValidSubmit="HandleLogin" FormName="LoginForm">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <MudCardContent>
+                <MudTextField @bind-Value="LoginViewModel.Email"
+                              For="@(() => LoginViewModel.Email)"
+                              Immediate="true"
+                              Label="Email"></MudTextField>
+                <MudTextField @bind-Value="LoginViewModel.Password"
+                              For="@(() => LoginViewModel.Password)"
+                              Immediate="true"
+                              Label="Password"
+                              InputType="InputType.Password"></MudTextField>
+            </MudCardContent>
+
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           Class="ml-auto">Login</MudButton>
+            </MudCardActions>
+        </EditForm>
+	</MudCard>
+</div>
