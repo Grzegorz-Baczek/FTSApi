@@ -17,10 +17,10 @@ public partial class Recipes : ComponentBase
         RecipesViewModel = await RecipeApiClient.GetRecipesAsync();
     }
 
-    //private void NavigateCreateProduct()
-    //{
-    //    NavigationManager.NavigateTo("/createproduct");
-    //}
+    private void NavigateCreateRecipe()
+    {
+        NavigationManager.NavigateTo("/createrecipe");
+    }
 
     private void NavigateCreateIngredient()
     {

@@ -2,6 +2,6 @@
 
 public class LoginModel
 {
-    public string Email { get; set; }
-    public string Password { get; set; }
+    public string Email { get; set; } = "Marek@gmail.com";
+    public string Password { get; set; } = "12345678Gg!";
 }

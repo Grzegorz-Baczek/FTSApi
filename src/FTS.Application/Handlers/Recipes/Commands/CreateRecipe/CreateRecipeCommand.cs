@@ -9,14 +9,13 @@ public class CreateRecipeCommand : IRequest
 {
     public string Title { get; set; } = null!;
     public string Steps { get; set; } = null!;
-    public bool IsPublic { get; set; }
     public string? ImageUrl { get; set; }
-    public Guid AuthorId { get; set; }
 }
 
 internal sealed class CreateRecipeCommandHandler(
-    IRecipeRepository recipeRepository, 
-    IValidator<CreateRecipeCommand> validator) : IRequestHandler<CreateRecipeCommand>
+    IRecipeRepository recipeRepository,
+    IValidator<CreateRecipeCommand> validator,
+    IUserRepository userRepository) : IRequestHandler<CreateRecipeCommand>
 {
     public async Task Handle(CreateRecipeCommand command, CancellationToken cancellationToken)
     {
@@ -26,7 +25,8 @@ internal sealed class CreateRecipeCommandHandler(
             throw new ValidationException(validationResult.Errors);
         }
 
-        var recipe = Recipe.Create(command.Title, command.Steps, command.IsPublic, command.ImageUrl, command.AuthorId);
+        var getCurrentUser = userRepository.GetUserId();
+        var recipe = Recipe.Create(command.Title, command.Steps, false, command.ImageUrl, getCurrentUser.Value);
         await recipeRepository.AddRecipeAsync(recipe, cancellationToken);
     }
 }
