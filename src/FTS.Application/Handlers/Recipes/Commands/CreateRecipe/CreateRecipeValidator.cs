@@ -15,9 +15,5 @@ public class CreateRecipeValidator : AbstractValidator<CreateRecipeCommand>
         RuleFor(x => x.Steps)
             .NotEmpty()
             .WithMessage("steps must not be empty");
-
-        RuleFor(x => x.AuthorId)
-            .NotEmpty()
-            .WithMessage("authorId must be provided");
     }
 }

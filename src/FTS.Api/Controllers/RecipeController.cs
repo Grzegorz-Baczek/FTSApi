@@ -14,6 +14,7 @@ namespace FTS.Api.Controllers;
 [Route("api")]
 public class RecipeController(IMediator mediator) : ControllerBase
 {
+    [Authorize(Roles = Roles.User)]
     [HttpPost("recipe")]
     public async Task<ActionResult> CreateRecipe(CreateRecipeCommand command,
         CancellationToken token)

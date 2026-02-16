@@ -7,7 +7,7 @@ public class Recipe
     public string Steps { get; set; } = null!;
     public bool IsPublic { get; set; }
     public string? ImageUrl { get; set; }
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     // relacje
     public Guid AuthorId { get; set; }

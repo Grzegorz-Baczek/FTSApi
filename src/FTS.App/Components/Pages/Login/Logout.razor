@@ -2,6 +2,7 @@
 
 @inject NavigationManager NavigationManager
 @inject UserApiClient UserApiClient
+@inject ISnackbar Snackbar
 
 <text>Logging out...</text>
 
@@ -9,6 +10,7 @@
 	protected override async Task OnInitializedAsync()
 	{
 		await UserApiClient.LogoutAsync();
-		NavigationManager.NavigateTo("login");
+        Snackbar.Add("You are logout", Severity.Info);
+		NavigationManager.NavigateTo("/login");
 	}
 }

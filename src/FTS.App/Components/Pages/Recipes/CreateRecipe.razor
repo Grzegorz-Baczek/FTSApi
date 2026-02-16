@@ -1,0 +1,29 @@
+﻿@page "/createrecipe"
+@rendermode InteractiveServer
+
+<div class="d-flex justify-content-center mt-6">
+	<h3>Add Recipe</h3>
+</div>
+
+<div class="d-flex justify-content-center mt-6">
+	<EditForm Model="@RecipeViewModel" OnSubmit="CreateRecipeAsync">
+		<DataAnnotationsValidator />
+		<MudCard Class="d-flex justify-content-center" Width="500px">
+			<MudCardContent>
+
+				<MudTextField Label="Title"
+							  @bind-Value="RecipeViewModel.Title" For="@(() => RecipeViewModel.Title)"
+							  ShrinkLabel="true" />
+				<MudTextField Label="Steps"
+							  @bind-Value="RecipeViewModel.Steps" For="@(() => RecipeViewModel.Steps)"
+							  ShrinkLabel="true" />
+				<MudTextField Label="ImageUrl"
+							  @bind-Value="RecipeViewModel.ImageUrl" For="@(() => RecipeViewModel.ImageUrl)"
+							  ShrinkLabel="true" />
+
+				<MudButton OnClick="NavigateToRecipes" Class="mt-2" Variant="Variant.Filled" ButtonType="ButtonType.Button" Color="Color.Dark">Back</MudButton>
+				<MudButton Class="mt-2" Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary">Add</MudButton>
+			</MudCardContent>
+		</MudCard>
+	</EditForm>
+</div>
