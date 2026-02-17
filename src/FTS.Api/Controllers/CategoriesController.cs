@@ -1,9 +1,7 @@
 ﻿using FTS.Application.Commands.Categories.Handlers;
 using FTS.Application.DTO;
 using FTS.Application.Handlers.Categories.Queries.GetCategories;
-using FTS.Core.Security;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FTS.Api.Controllers;

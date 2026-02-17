@@ -14,8 +14,11 @@
 				<MudTextField Label="Title"
 							  @bind-Value="RecipeViewModel.Title" For="@(() => RecipeViewModel.Title)"
 							  ShrinkLabel="true" />
-				<MudTextField Label="Steps"
-							  @bind-Value="RecipeViewModel.Steps" For="@(() => RecipeViewModel.Steps)"
+				<MudTextField style="white-space: pre-line;" Label="Steps"
+							  @bind-Value="RecipeViewModel.Steps"
+							  For="@(() => RecipeViewModel.Steps)"
+							  AutoGrow="true"
+							  Lines="1"
 							  ShrinkLabel="true" />
 				<MudTextField Label="ImageUrl"
 							  @bind-Value="RecipeViewModel.ImageUrl" For="@(() => RecipeViewModel.ImageUrl)"
