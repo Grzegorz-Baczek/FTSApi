@@ -1,4 +1,4 @@
-﻿@page "/recipe/{Id:guid}"
+﻿@* @page "/recipe/{Id:guid}"
 @rendermode InteractiveServer
 
 <PageTitle>Recipe</PageTitle>
@@ -15,8 +15,14 @@ else
 				<MudText Style="display:flex; justify-content:center;" Typo="Typo.h4">@recipe.Title</MudText>
 			</MudPaper>
 
-				<MudText Style="display:flex; justify-content:center;" Typo="Typo.body1">@recipe.Steps</MudText>
-				<MudText Style="display:flex; justify-content:center;">przepis dostepny publicznie:@recipe.IsPublic</MudText>
+			<MudPaper >
+				<MudText Typo="Typo.h6" GutterBottom="true">
+					Description recipe
+				</MudText>
+				<MudText style="white-space: pre-line; justify-content:center;" Typo="Typo.body1" Label="Email">@recipe.Steps</MudText>
+			</MudPaper>
+
+			<MudText Style="display:flex; justify-content:center;">przepis dostepny publicznie:@recipe.IsPublic</MudText>
 
 			<MudPaper Square="true">
 				<MudText Style="display:flex; justify-content:center;" Typo="Typo.h1">@recipe.ImageUrl</MudText>
@@ -27,5 +33,70 @@ else
 			</MudPaper>
 		</MudContainer>
 	</MudPaper>
+} *@
 
+@page "/recipe/{Id:guid}"
+@rendermode InteractiveServer
+
+<PageTitle>Recipe</PageTitle>
+
+@if (recipe is null)
+{
+	<MudContainer Class="d-flex justify-center mt-10">
+		<MudProgressCircular Color="Color.Primary"
+							 Indeterminate="true"
+							 Size="Size.Large" />
+	</MudContainer>
+}
+else
+{
+	<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-8">
+		<MudCard Elevation="6" Class="pa-6">
+
+			<MudText Typo="Typo.h4"
+					 Align="Align.Center"
+					 GutterBottom="true">
+				@recipe.Title
+			</MudText>
+
+			@if (!string.IsNullOrWhiteSpace(recipe.ImageUrl))
+			{
+				<MudImage Src="@recipe.ImageUrl"
+						  Alt="@recipe.Title"
+						  Height="300"
+						  Width="100"
+						  Class="rounded-lg mb-4" />
+			}
+
+			<MudStack Row="true" Justify="Justify.Center" Class="mb-4">
+
+				<MudText Typo="Typo.body2"
+						 Class="px-3 py-1 rounded"
+						 Style="">
+					@(recipe.IsPublic ? "przepis publiczny" : "przepis prywatny")
+				</MudText>
+
+			</MudStack>
+
+			<MudDivider Class="mb-4" />
+
+			<MudText Typo="Typo.h6" GutterBottom="true">
+				Opis Przepisu:
+			</MudText>
+
+			<MudText Typo="Typo.body1"
+					 Style="white-space: pre-line;"
+					 Class="mb-6">
+				@recipe.Steps
+			</MudText>
+
+			<MudDivider Class="mb-4" />
+
+			<MudText Typo="Typo.caption"
+					 Align="Align.End"
+					 Color="Color.Dark">
+				Autor: @recipe.Author
+			</MudText>
+		</MudCard>
+	</MudContainer>
 }
