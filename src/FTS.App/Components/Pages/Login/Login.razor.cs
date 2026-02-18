@@ -17,12 +17,12 @@ public partial class Login
         var result = await UserApiClient.LoginAsync(LoginViewModel);
         if (result != null)
         {
-            Snackbar.Add("You are Login!", Severity.Success);
+            Snackbar.Add("Zalogowano pomyœlnie!", Severity.Success);
             NavigationManager.NavigateTo("/recipes", forceLoad: true);
         }
         else
         {
-            Snackbar.Add("B³¹d logowania!", Severity.Error);
+            Snackbar.Add("B³¹d logowania! SprawdŸ dane i spróbuj ponownie.", Severity.Error);
         }
     }
 }
