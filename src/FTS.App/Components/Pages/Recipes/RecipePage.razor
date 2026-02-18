@@ -1,43 +1,6 @@
-﻿@* @page "/recipe/{Id:guid}"
+﻿@page "/recipe/{Id:guid}"
+
 @rendermode InteractiveServer
-
-<PageTitle>Recipe</PageTitle>
-
-@if (recipe is null)
-{
-	<MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
-}
-else
-{
-	<MudPaper Height="700px" Width="100%">
-		<MudContainer Fixed="true">
-			<MudPaper Square="true">
-				<MudText Style="display:flex; justify-content:center;" Typo="Typo.h4">@recipe.Title</MudText>
-			</MudPaper>
-
-			<MudPaper >
-				<MudText Typo="Typo.h6" GutterBottom="true">
-					Description recipe
-				</MudText>
-				<MudText style="white-space: pre-line; justify-content:center;" Typo="Typo.body1" Label="Email">@recipe.Steps</MudText>
-			</MudPaper>
-
-			<MudText Style="display:flex; justify-content:center;">przepis dostepny publicznie:@recipe.IsPublic</MudText>
-
-			<MudPaper Square="true">
-				<MudText Style="display:flex; justify-content:center;" Typo="Typo.h1">@recipe.ImageUrl</MudText>
-			</MudPaper>
-
-			<MudPaper Square="true">
-				<MudText Style="display:flex; justify-content:center;" Typo="Typo.overline">Author: @recipe.Author</MudText>
-			</MudPaper>
-		</MudContainer>
-	</MudPaper>
-} *@
-
-@page "/recipe/{Id:guid}"
-@rendermode InteractiveServer
-
 <PageTitle>Recipe</PageTitle>
 
 @if (recipe is null)

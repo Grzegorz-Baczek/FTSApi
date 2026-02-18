@@ -1,8 +1,8 @@
-ï»¿@page "/login"
+@page "/register"
 @rendermode InteractiveServer
 @layout FTS.App.Components.Layout.EmptyLayout
 
-<PageTitle>Logowanie</PageTitle>
+<PageTitle>Rejestracja</PageTitle>
 
 <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px 0; background: linear-gradient(135deg, #1a237e 0%, #0d47a1 50%, #01579b 100%);">
 	<MudCard Elevation="8" Style="width: 420px; border-radius: 16px;">
@@ -10,38 +10,59 @@
 
 			<div class="d-flex justify-center mb-2">
 				<MudAvatar Color="Color.Primary" Size="Size.Large">
-					<MudIcon Icon="@Icons.Material.Filled.LockOpen" />
+					<MudIcon Icon="@Icons.Material.Filled.PersonAdd" />
 				</MudAvatar>
 			</div>
 
 			<MudText Typo="Typo.h5" Align="Align.Center" GutterBottom="true">
-				Zaloguj siÄ™
+				Rejestracja
 			</MudText>
-			<MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Dark" Class="mb-4">
-				Witaj ponownie! Podaj swoje dane, aby kontynuowaÄ‡.
+			<MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Dark" Class="mb-3">
+				Utwórz konto, aby zacz¹æ korzystaæ z aplikacji.
 			</MudText>
 
-			<EditForm Model="LoginViewModel" OnValidSubmit="HandleLogin" FormName="LoginForm">
+			<EditForm Model="RegisterViewModel" OnValidSubmit="HandleRegister" FormName="RegisterForm">
 				<DataAnnotationsValidator />
 
-				<MudTextField @bind-Value="LoginViewModel.Email"
-							  For="@(() => LoginViewModel.Email)"
+				<MudTextField @bind-Value="RegisterViewModel.Name"
+							  For="@(() => RegisterViewModel.Name)"
+							  Immediate="true"
+							  Label="Nazwa u¿ytkownika"
+							  Variant="Variant.Outlined"
+							  Adornment="Adornment.Start"
+							  AdornmentIcon="@Icons.Material.Filled.Person"
+							  Margin="Margin.Dense"
+							  Class="mb-2" />
+
+				<MudTextField @bind-Value="RegisterViewModel.Email"
+							  For="@(() => RegisterViewModel.Email)"
 							  Immediate="true"
 							  Label="Email"
 							  Variant="Variant.Outlined"
 							  Adornment="Adornment.Start"
 							  AdornmentIcon="@Icons.Material.Filled.Email"
 							  Margin="Margin.Dense"
-							  Class="mb-3" />
+							  Class="mb-2" />
 
-				<MudTextField @bind-Value="LoginViewModel.Password"
-							  For="@(() => LoginViewModel.Password)"
+				<MudTextField @bind-Value="RegisterViewModel.Password"
+							  For="@(() => RegisterViewModel.Password)"
 							  Immediate="true"
-							  Label="HasÅ‚o"
+							  Label="Has³o"
 							  Variant="Variant.Outlined"
 							  InputType="InputType.Password"
 							  Adornment="Adornment.Start"
 							  AdornmentIcon="@Icons.Material.Filled.Lock"
+							  Margin="Margin.Dense"
+							  Class="mb-2" />
+
+				<MudTextField @bind-Value="RegisterViewModel.ConfirmPassword"
+							  For="@(() => RegisterViewModel.ConfirmPassword)"
+							  Immediate="true"
+							  Label="PotwierdŸ has³o"
+							  Variant="Variant.Outlined"
+							  InputType="InputType.Password"
+							  Adornment="Adornment.Start"
+							  AdornmentIcon="@Icons.Material.Filled.LockReset"
 							  Margin="Margin.Dense"
 							  Class="mb-4" />
 
@@ -52,16 +73,16 @@
 						   Size="Size.Large"
 						   Class="mb-3"
 						   Style="border-radius: 8px; text-transform: none; font-size: 1rem;">
-					Zaloguj siÄ™
+					Zarejestruj siê
 				</MudButton>
 			</EditForm>
 
 			<MudDivider Class="my-3" />
 
 			<MudText Typo="Typo.body2" Align="Align.Center">
-				Nie masz konta?
-				<MudLink Href="/register" Typo="Typo.body2" Color="Color.Primary">
-					Zarejestruj siÄ™
+				Masz ju¿ konto?
+				<MudLink Href="/login" Typo="Typo.body2" Color="Color.Primary">
+					Zaloguj siê
 				</MudLink>
 			</MudText>
 

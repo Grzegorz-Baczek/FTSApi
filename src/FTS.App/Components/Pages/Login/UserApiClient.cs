@@ -23,6 +23,13 @@ public class UserApiClient(HttpClient HttpClient,
         }
     }
 
+    public async Task<bool> RegisterAsync(RegisterModel registerModel)
+    {
+        var payload = new { registerModel.Name, registerModel.Email, registerModel.Password };
+        var response = await HttpClient.PostAsJsonAsync("api/user/sign-up", payload);
+        return response.IsSuccessStatusCode;
+    }
+
     public async Task LogoutAsync()
     {
         await tokenService.RemoveToken();
