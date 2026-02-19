@@ -17,16 +17,6 @@ public partial class Recipes : ComponentBase
         RecipesViewModel = await RecipeApiClient.GetRecipesAsync();
     }
 
-    private void NavigateCreateRecipe()
-    {
-        NavigationManager.NavigateTo("/createrecipe");
-    }
-
-    private void NavigateCreateIngredient()
-    {
-        NavigationManager.NavigateTo("/createingredient");
-    }
-
     private void NavigateToDetails(Guid id)
     {
         NavigationManager.NavigateTo($"/recipe/{id}");

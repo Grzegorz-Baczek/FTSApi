@@ -4,58 +4,127 @@
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 
-<MudThemeProvider />
+<MudThemeProvider @bind-IsDarkMode="_isDarkMode" Theme="_theme" />
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<MudAppBar Color="Color.Dark" Fixed="false">
-	<MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" />
-	Twoje przepisy w jednym miejscu
-	<MudSpacer />
-	<AuthorizeView Context="auth">
-		<Authorized>
-			<MudMenu AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
-				<ActivatorContent>
-					<MudAvatar Color="Color.Primary" Size="Size.Medium" Style="cursor: pointer">
-						<MudIcon Icon="@Icons.Material.Filled.Person" />
-					</MudAvatar>
-				</ActivatorContent>
-				<ChildContent>
-					<MudMenuItem OnClick="@(() => NavigationManager.NavigateTo("/account"))">My Profile</MudMenuItem>
-					<MudDivider />
-					<MudMenuItem OnClick="@(() => NavigationManager.NavigateTo("/logout"))">Logout</MudMenuItem>
-				</ChildContent>
-			</MudMenu>
-		</Authorized>
-		<NotAuthorized>
-			<div class="d-flex align-center">
+<MudLayout>
+
+	<MudAppBar Elevation="3" Fixed="true" Dense="false"
+			   Style="@($"background: {(_isDarkMode ? "#2e2e2e" : "linear-gradient(135deg, #5d4037, #4e342e)")}; ")">
+		<MudIconButton Icon="@(_drawerOpen? Icons.Material.Filled.MenuOpen : Icons.Material.Filled.Menu)"
+					   Color="Color.Inherit"
+					   Edge="Edge.Start"
+					   OnClick="ToggleDrawer" />
+		<MudText Typo="Typo.h6" Style="font-weight: 700; font-family: 'Georgia', serif; letter-spacing: 1px;">
+			SmakShare
+		</MudText>
+		<MudSpacer />
+
+		<AuthorizeView Context="auth">
+			<Authorized>
+				<MudMenu AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+					<ActivatorContent>
+						<MudButton Variant="Variant.Filled"
+								   StartIcon="@Icons.Material.Filled.Person"
+								   Color="Color.Dark"
+								   Style="text-transform: none; border-radius: 20px; cursor: pointer;"
+								   Class="ml-2"
+								   Size="Size.Small">
+							Moje konto
+						</MudButton>
+					</ActivatorContent>
+					<ChildContent>
+						<MudMenuItem Icon="@Icons.Material.Filled.AccountCircle"
+									 OnClick="@(() => NavigationManager.NavigateTo("/account"))">
+							Profil
+						</MudMenuItem>
+						<MudDivider />
+						<MudMenuItem Icon="@Icons.Material.Filled.Logout"
+									 OnClick="@(() => NavigationManager.NavigateTo("/logout"))">
+							Wyloguj się
+						</MudMenuItem>
+					</ChildContent>
+				</MudMenu>
+			</Authorized>
+			<NotAuthorized>
 				<MudButton Variant="Variant.Text"
 						   Color="Color.Inherit"
-						   OnClick="@(() => NavigationManager.NavigateTo("/login"))">
-					Login
+						   StartIcon="@Icons.Material.Filled.Login"
+						   OnClick="@(() => NavigationManager.NavigateTo("/login"))"
+						   Style="text-transform: none;"
+						   Size="Size.Small">
+					Logowanie
 				</MudButton>
-			</div>
-		</NotAuthorized>
-	</AuthorizeView>
-</MudAppBar>
+				<MudButton Variant="Variant.Outlined"
+						   Color="Color.Inherit"
+						   StartIcon="@Icons.Material.Filled.PersonAdd"
+						   OnClick="@(() => NavigationManager.NavigateTo("/register"))"
+						   Style="text-transform: none; border-radius: 20px;"
+						   Size="Size.Small"
+						   Class="ml-2">
+					Rejestracja
+				</MudButton>
+			</NotAuthorized>
+		</AuthorizeView>
+	</MudAppBar>
 
-<div class="page">
-
-	<div class="sidebar">
+	<MudDrawer @bind-Open="_drawerOpen"
+			   Elevation="4"
+			   Variant="DrawerVariant.Responsive"
+			   Breakpoint="Breakpoint.Md"
+			   ClipMode="DrawerClipMode.Always"
+			   Style="@($"background: {(_isDarkMode ? "#1e1e1e" : "#efebe9")}; border-right: 1px solid {(_isDarkMode ? "#424242" : "#d7ccc8")};")">
 		<NavMenu />
-	</div>
+	</MudDrawer>
 
-	<main>
-		<article class="content px-4">
-			@Body
-		</article>
+	<MudMainContent Style="min-height: 100vh;" Class="pt-14 pa-4">
+		@Body
+	</MudMainContent>
 
-	</main>
-</div>
+</MudLayout>
 
 <div id="blazor-error-ui">
 	An unhandled error has occurred.
 	<a href="" class="reload">Reload</a>
 	<a class="dismiss">🗙</a>
 </div>
+
+@code {
+	private bool _drawerOpen = true;
+	private bool _isDarkMode = false;
+
+	private MudTheme _theme = new MudTheme
+	{
+		PaletteLight = new PaletteLight
+		{
+			Primary = "#5d4037",
+			Secondary = "#ff8f00",
+			AppbarBackground = "#4e342e",
+			AppbarText = "#ffffff",
+			DrawerBackground = "#efebe9",
+			DrawerText = "#3e2723",
+			Background = "#fafaf6",
+			Surface = "#ffffff",
+			TextPrimary = "#3e2723",
+			TextSecondary = "#5d4037"
+		},
+		PaletteDark = new PaletteDark
+		{
+			Primary = "#a1887f",
+			Secondary = "#ffb74d",
+			AppbarBackground = "#2e2e2e",
+			AppbarText = "#ffffff",
+			DrawerBackground = "#1e1e1e",
+			DrawerText = "#e0e0e0",
+			Background = "#121212",
+			Surface = "#1e1e1e",
+			TextPrimary = "#e0e0e0",
+			TextSecondary = "#a1887f"
+		}
+	};
+
+	private void ToggleDrawer() => _drawerOpen = !_drawerOpen;
+	private void ToggleDarkMode() => _isDarkMode = !_isDarkMode;
+}

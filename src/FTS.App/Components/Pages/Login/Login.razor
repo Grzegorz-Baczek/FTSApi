@@ -4,21 +4,21 @@
 
 <PageTitle>Logowanie</PageTitle>
 
-<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px 0; background: linear-gradient(135deg, #1a237e 0%, #0d47a1 50%, #01579b 100%);">
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px 0; background: linear-gradient(135deg, #5d4037 0%, #4e342e 50%, #3e2723 100%);">
 	<MudCard Elevation="8" Style="width: 420px; border-radius: 16px;">
 		<MudCardContent Class="pa-6">
 
 			<div class="d-flex justify-center mb-2">
-				<MudAvatar Color="Color.Primary" Size="Size.Large">
-					<MudIcon Icon="@Icons.Material.Filled.LockOpen" />
+				<MudAvatar Style="background: linear-gradient(135deg, #5d4037, #4e342e); width: 48px; height: 48px;">
+					<MudIcon Icon="@Icons.Material.Filled.MenuBook" Style="color: white;" />
 				</MudAvatar>
 			</div>
 
-			<MudText Typo="Typo.h5" Align="Align.Center" GutterBottom="true">
-				Zaloguj się
+			<MudText Typo="Typo.h5" Align="Align.Center" GutterBottom="true" Style="font-family: 'Georgia', serif; font-weight: 700;">
+				Witaj ponownie
 			</MudText>
 			<MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Dark" Class="mb-4">
-				Witaj ponownie! Podaj swoje dane, aby kontynuować.
+				Zaloguj się do SmakShare
 			</MudText>
 
 			<EditForm Model="LoginViewModel" OnValidSubmit="HandleLogin" FormName="LoginForm">
@@ -47,11 +47,10 @@
 
 				<MudButton ButtonType="ButtonType.Submit"
 						   Variant="Variant.Filled"
-						   Color="Color.Primary"
 						   FullWidth="true"
 						   Size="Size.Large"
 						   Class="mb-3"
-						   Style="border-radius: 8px; text-transform: none; font-size: 1rem;">
+						   Style="border-radius: 8px; text-transform: none; font-size: 1rem; background: linear-gradient(135deg, #5d4037, #4e342e); color: white;">
 					Zaloguj się
 				</MudButton>
 			</EditForm>
@@ -60,7 +59,7 @@
 
 			<MudText Typo="Typo.body2" Align="Align.Center">
 				Nie masz konta?
-				<MudLink Href="/register" Typo="Typo.body2" Color="Color.Primary">
+				<MudLink Href="/register" Typo="Typo.body2" Style="color: #5d4037; font-weight: 600;">
 					Zarejestruj się
 				</MudLink>
 			</MudText>
