@@ -2,7 +2,7 @@
 
 namespace FTS.Application.Exceptions;
 
-internal class NotFoundIngredientException : CustomException
+public class NotFoundIngredientException : CustomException
 {
     public Guid Id { get; }
 
