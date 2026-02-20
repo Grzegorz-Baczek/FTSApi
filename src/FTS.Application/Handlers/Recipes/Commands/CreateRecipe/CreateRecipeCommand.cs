@@ -10,12 +10,14 @@ public class CreateRecipeCommand : IRequest
     public string Title { get; set; } = null!;
     public string Steps { get; set; } = null!;
     public string? ImageUrl { get; set; }
+    public ICollection<CreateRecipeIngredientDto> RecipeIngredients { get; set; } = new List<CreateRecipeIngredientDto>();
 }
 
 internal sealed class CreateRecipeCommandHandler(
     IRecipeRepository recipeRepository,
     IValidator<CreateRecipeCommand> validator,
-    IUserRepository userRepository) : IRequestHandler<CreateRecipeCommand>
+    IUserRepository userRepository,
+    IIngredientRepository ingredientRepository) : IRequestHandler<CreateRecipeCommand>
 {
     public async Task Handle(CreateRecipeCommand command, CancellationToken cancellationToken)
     {
@@ -26,7 +28,26 @@ internal sealed class CreateRecipeCommandHandler(
         }
 
         var getCurrentUser = userRepository.GetUserId();
-        var recipe = Recipe.Create(command.Title, command.Steps, false, command.ImageUrl, getCurrentUser.Value);
+        var recipe = Recipe.Create(
+            command.Title,
+            command.Steps,
+            false,
+            command.ImageUrl,
+            getCurrentUser!.Value);
+
+        foreach (var ingredientDto in command.RecipeIngredients)
+        {
+            await ingredientRepository.GetIngredient(ingredientDto.IngredientId, cancellationToken);
+
+            var recipeIngredient = RecipeIngredient.Create(
+                ingredientDto.Amount,
+                ingredientDto.Unit,
+                recipe.Id,
+                ingredientDto.IngredientId);
+
+            recipe.RecipeIngredients.Add(recipeIngredient);
+        }
+
         await recipeRepository.AddRecipeAsync(recipe, cancellationToken);
     }
 }
