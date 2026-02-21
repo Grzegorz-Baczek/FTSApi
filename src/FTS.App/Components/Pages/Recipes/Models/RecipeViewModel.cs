@@ -14,4 +14,5 @@ public class RecipeViewModel
     public bool IsPublic { get; set; }
     //relacje
     public string Author { get; set; }
+    public ICollection<RecipeIngredientViewModel> RecipeIngredients { get; set; } = new List<RecipeIngredientViewModel>();
 }

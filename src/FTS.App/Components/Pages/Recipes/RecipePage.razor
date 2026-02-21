@@ -43,6 +43,35 @@ else
 
 			<MudDivider Class="mb-4" />
 
+			@if (recipe.RecipeIngredients is not null && recipe.RecipeIngredients.Count > 0)
+			{
+				<MudText Typo="Typo.h6" GutterBottom="true">
+					Składniki:
+				</MudText>
+
+				<MudSimpleTable Hover="true" Bordered="true" Striped="true" Class="mb-6">
+					<thead>
+						<tr>
+							<th>Składnik</th>
+							<th>Ilość</th>
+							<th>Jednostka</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var ingredient in recipe.RecipeIngredients)
+						{
+							<tr>
+								<td>@ingredient.IngredientName</td>
+								<td>@ingredient.Amount</td>
+								<td>@ingredient.Unit</td>
+							</tr>
+						}
+					</tbody>
+				</MudSimpleTable>
+
+				<MudDivider Class="mb-4" />
+			}
+
 			<MudText Typo="Typo.h6" GutterBottom="true">
 				Opis Przepisu:
 			</MudText>
