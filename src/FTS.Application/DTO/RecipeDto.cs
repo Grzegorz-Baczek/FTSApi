@@ -9,6 +9,19 @@ public class RecipeDto
     public string? ImageUrl { get; set; }
     //relacje
     public string Author { get; set; }
+    public ICollection<RecipeIngredientDto> RecipeIngredients { get; set; }
+
+    public RecipeDto(Guid id, string title, string steps, bool isPublic, 
+        string? imageUrl, string author, ICollection<RecipeIngredientDto> recipeIngredients)
+    {
+        Id = id;
+        Title = title;
+        Steps = steps;
+        IsPublic = isPublic;
+        ImageUrl = imageUrl;
+        Author = author;
+        RecipeIngredients = recipeIngredients;
+    }
 
     public RecipeDto(Guid id, string title, string steps, bool isPublic, string? imageUrl, string author)
     {
