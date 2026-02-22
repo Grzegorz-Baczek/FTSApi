@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FTS.Infrastructure\FTS.Infrastructure.csproj" />
+    <ProjectReference Include="..\FTS.ServiceDefaults\FTS.ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>

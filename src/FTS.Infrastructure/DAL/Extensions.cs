@@ -14,9 +14,18 @@ internal static class Extensions
 
     public static IServiceCollection AddMSql(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<MSqlOptions>(configuration.GetRequiredSection(OptionsSectionName));
-        var mSqlOptions = configuration.GetOptions<MSqlOptions>(OptionsSectionName);
-        services.AddDbContext<FTSDbContext>(x => x.UseNpgsql(mSqlOptions.ConnectionString));
+        // Aspire wstrzykuje connection string jako ConnectionStrings:ftsdb
+        // Fallback na MSql:ConnectionString (user secrets / appsettings)
+        var connectionString = configuration.GetConnectionString("ftsdb");
+
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            services.Configure<MSqlOptions>(configuration.GetRequiredSection(OptionsSectionName));
+            var mSqlOptions = configuration.GetOptions<MSqlOptions>(OptionsSectionName);
+            connectionString = mSqlOptions.ConnectionString;
+        }
+
+        services.AddDbContext<FTSDbContext>(x => x.UseSqlServer(connectionString));
         services.AddHostedService<DatabaseInitializer>();
 
         services.AddScoped<IProductRepository, ProductRepository>();

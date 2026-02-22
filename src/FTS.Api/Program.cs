@@ -5,6 +5,8 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
@@ -16,6 +18,7 @@ builder.Host.UseSerilog((context, LoggerConfiguration) =>
 });
 
 var app = builder.Build();
+app.MapDefaultEndpoints();
 app.UseInfrastructure();
 app.MapGet("api", (IOptions<AppOptions> options) => Results.Ok(options.Value.Name));
 app.Run();

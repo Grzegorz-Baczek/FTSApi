@@ -3,6 +3,7 @@ using FTS.Infrastructure.Auth;
 using FTS.Infrastructure.DAL;
 using FTS.Infrastructure.Exceptions;
 using FTS.Infrastructure.Security;
+using FTS.Infrastructure.Storage;
 using FTS.Infrastructure.Time;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -21,6 +22,7 @@ public static class Extensions
         services.AddSingleton<ExceptionMiddleware>();
         services.AddHttpContextAccessor();
         services.AddMSql(configuration);
+        services.AddBlobStorage(configuration);
         services.AddSingleton<IClock, Clock>();
         services.AddAuth(configuration);
 
