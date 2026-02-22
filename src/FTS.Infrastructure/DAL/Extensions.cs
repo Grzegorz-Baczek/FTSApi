@@ -16,7 +16,7 @@ internal static class Extensions
     {
         services.Configure<MSqlOptions>(configuration.GetRequiredSection(OptionsSectionName));
         var mSqlOptions = configuration.GetOptions<MSqlOptions>(OptionsSectionName);
-        services.AddDbContext<FTSDbContext>(x => x.UseSqlServer(mSqlOptions.ConnectionString));
+        services.AddDbContext<FTSDbContext>(x => x.UseNpgsql(mSqlOptions.ConnectionString));
         services.AddHostedService<DatabaseInitializer>();
 
         services.AddScoped<IProductRepository, ProductRepository>();
