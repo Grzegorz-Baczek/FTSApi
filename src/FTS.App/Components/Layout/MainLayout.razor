@@ -41,6 +41,11 @@
 							Profil
 						</MudMenuItem>
 						<MudDivider />
+						<MudMenuItem Icon="@Icons.Material.Filled.PostAdd"
+									 OnClick="@(() => NavigationManager.NavigateTo("/createrecipe"))">
+							Dodaj przepis
+						</MudMenuItem>
+						<MudDivider />
 						<MudMenuItem Icon="@Icons.Material.Filled.Logout"
 									 OnClick="@(() => NavigationManager.NavigateTo("/logout"))">
 							Wyloguj się
