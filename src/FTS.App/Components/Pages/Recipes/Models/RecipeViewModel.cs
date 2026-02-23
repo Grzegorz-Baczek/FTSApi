@@ -5,10 +5,10 @@ namespace FTS.App.Components.Pages.Recipes.Models;
 public class RecipeViewModel
 {
     public Guid Id { get; set; }
-    [Required(ErrorMessage = "Title is required")]
+    [Required(ErrorMessage = "Tytół jest wymagany")]
     public string Title { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Steps is required")]
+    [Required(ErrorMessage = "Opis jest wymagany")]
     public string Steps { get; set; } = string.Empty;
     public string? ImageUrl { get; set; }
     public bool IsPublic { get; set; }

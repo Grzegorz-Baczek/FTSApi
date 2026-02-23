@@ -10,7 +10,7 @@ internal sealed class GetIngredientsQueryHandler(FTSDbContext dbContext) : IRequ
     public async Task<IReadOnlyCollection<IngredientDto>> Handle(GetIngredientsQuery query, CancellationToken cancellationToken)
     {
         var ingredients = await dbContext.Ingredients
-            .Select(i => new IngredientDto(i.Name))
+            .Select(i => new IngredientDto(i.Id, i.Name))
             .ToListAsync(cancellationToken);
 
         return ingredients;

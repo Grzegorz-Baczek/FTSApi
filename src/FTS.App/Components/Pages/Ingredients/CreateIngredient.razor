@@ -3,7 +3,7 @@
 
 
 <div class="d-flex justify-content-center mt-6">
-	<h3>Add ingredient</h3>
+	<h3>Dodaj składnik</h3>
 </div>
 
 <div class="d-flex justify-content-center mt-6">
@@ -11,37 +11,37 @@
 		<DataAnnotationsValidator />
 		<MudCard Class="d-flex justify-content-center" Width="500px">
 			<MudCardContent>
-				<MudTextField Label="Name"
+				<MudTextField Label="Nazwa"
 							  @bind-Value="IngredientViewModel.Name" For="@(() => IngredientViewModel.Name)"
 							  ShrinkLabel="true" />
-				<MudTextField Label="Calories"
+				<MudTextField Label="Kalorie"
 							  @bind-Value="IngredientViewModel.Calories" For="@(() => IngredientViewModel.Calories)"
 							  ShrinkLabel="true" />
-				<MudTextField Label="Carbohydrates"
+				<MudTextField Label="Węglowodany"
 							  @bind-Value="IngredientViewModel.Carbohydrates" For="@(() => IngredientViewModel.Carbohydrates)"
 							  ShrinkLabel="true" />
-				<MudTextField Label="Proteins"
+				<MudTextField Label="Białko"
 							  @bind-Value="IngredientViewModel.Proteins" For="@(() => IngredientViewModel.Proteins)"
 							  ShrinkLabel="true" />
-				<MudTextField Label="Fat"
+				<MudTextField Label="Tłuszcz"
 							  @bind-Value="IngredientViewModel.Fat" For="@(() => IngredientViewModel.Fat)"
 							  ShrinkLabel="true" />
 
-				<MudTextField Label="SaturatedFat"
+				<MudTextField Label="Tłuszcz nasycony"
 							  @bind-Value="IngredientViewModel.SaturatedFat" For="@(() => IngredientViewModel.SaturatedFat)"
 							  ShrinkLabel="true" />
-				<MudTextField Label="Sugars"
+				<MudTextField Label="Cukier"
 							  @bind-Value="IngredientViewModel.Sugars" For="@(() => IngredientViewModel.Sugars)"
 							  ShrinkLabel="true" />
-				<MudTextField Label="Fiber"
+				<MudTextField Label="Błonnik"
 							  @bind-Value="IngredientViewModel.Fiber" For="@(() => IngredientViewModel.Fiber)"
 							  ShrinkLabel="true" />
-				<MudTextField Label="Salt"
+				<MudTextField Label="Sól"
 							  @bind-Value="IngredientViewModel.Salt" For="@(() => IngredientViewModel.Salt)"
 							  ShrinkLabel="true" />
 
-				<MudButton OnClick="NavigateToRecipes" Class="mt-2" Variant="Variant.Filled" ButtonType="ButtonType.Button" Color="Color.Dark">Back</MudButton>
-				<MudButton Class="mt-2" Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary">Add</MudButton>
+				<MudButton OnClick="NavigateToRecipes" Class="mt-2" Variant="Variant.Filled" ButtonType="ButtonType.Button" Color="Color.Dark">Cofnij</MudButton>
+				<MudButton Class="mt-2" Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary">Dodaj</MudButton>
 			</MudCardContent>
 		</MudCard>
 	</EditForm>

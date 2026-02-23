@@ -1,31 +1,83 @@
 ﻿@page "/createrecipe"
 @rendermode InteractiveServer
 
-<div class="d-flex justify-content-center mt-6">
-	<h3>Add Recipe</h3>
+<div class="d-flex justify-end mt-4 mr-4">
+	<MudButton Variant="Variant.Outlined"
+			   Color="Color.Primary"
+			   StartIcon="@Icons.Material.Filled.Egg"
+			   Size="Size.Small"
+			   OnClick="@(() => NavigationManager.NavigateTo("/createingredient"))">
+		Dodaj składnik
+	</MudButton>
+</div>
+
+<div class="d-flex justify-content-center mt-2">
+	<h3>Dodaj przepis</h3>
 </div>
 
 <div class="d-flex justify-content-center mt-6">
+
 	<EditForm Model="@RecipeViewModel" OnSubmit="CreateRecipeAsync">
 		<DataAnnotationsValidator />
 		<MudCard Class="d-flex justify-content-center" Width="500px">
 			<MudCardContent>
 
-				<MudTextField Label="Title"
+				<MudTextField Label="Tytół"
 							  @bind-Value="RecipeViewModel.Title" For="@(() => RecipeViewModel.Title)"
 							  ShrinkLabel="true" />
-				<MudTextField style="white-space: pre-line;" Label="Steps"
+				<MudTextField style="white-space: pre-line;" Label="Opis"
 							  @bind-Value="RecipeViewModel.Steps"
 							  For="@(() => RecipeViewModel.Steps)"
 							  AutoGrow="true"
 							  Lines="1"
 							  ShrinkLabel="true" />
-				<MudTextField Label="ImageUrl"
+				<MudTextField Label="Zdjęcie"
 							  @bind-Value="RecipeViewModel.ImageUrl" For="@(() => RecipeViewModel.ImageUrl)"
 							  ShrinkLabel="true" />
 
-				<MudButton OnClick="NavigateToRecipes" Class="mt-2" Variant="Variant.Filled" ButtonType="ButtonType.Button" Color="Color.Dark">Back</MudButton>
-				<MudButton Class="mt-2" Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary">Add</MudButton>
+				<div class="d-flex align-center gap-2 mt-2">
+					<MudAutocomplete T="FTS.App.Components.Pages.Ingredients.Models.IngredientListItem"
+									 Label="Skladnik"
+									 @bind-Value="_selectedIngredient"
+									 SearchFunc="SearchIngredients"
+									 ToStringFunc="@(i => i?.Name ?? string.Empty)"
+									 Dense="true"
+									 Style="flex: 2;" />
+					<MudNumericField T="decimal" Label="Ilość"
+									 @bind-Value="_ingredientAmount"
+									 Style="flex: 1;" />
+					<MudSelect T="string" Label="Jednostka"
+							   @bind-Value="_ingredientUnit"
+							   Dense="true"
+							   Style="flex: 1;">
+						<MudSelectItem Value="@("ml")">ml</MudSelectItem>
+						<MudSelectItem Value="@("g")">g</MudSelectItem>
+						<MudSelectItem Value="@("szt")">szt</MudSelectItem>
+					</MudSelect>
+					<MudIconButton Icon="@Icons.Material.Filled.Add"
+								   Color="Color.Primary"
+								   OnClick="AddIngredient" />
+				</div>
+
+				@if (RecipeViewModel.RecipeIngredients.Any())
+				{
+					<MudTable Items="@RecipeViewModel.RecipeIngredients" Dense="true" Class="mt-2">
+						<RowTemplate Context="ingredient">
+							<MudTd>@ingredient.IngredientName</MudTd>
+							<MudTd>@ingredient.Amount</MudTd>
+							<MudTd>@ingredient.Unit</MudTd>
+							<MudTd>
+								<MudIconButton Icon="@Icons.Material.Filled.Delete"
+											   Color="Color.Error"
+											   Size="Size.Small"
+											   OnClick="@(() => RemoveIngredient(ingredient))" />
+							</MudTd>
+						</RowTemplate>
+					</MudTable>
+				}
+
+				<MudButton OnClick="NavigateToRecipes" Class="mt-2" Variant="Variant.Filled" ButtonType="ButtonType.Button" Color="Color.Dark">Cofnij</MudButton>
+				<MudButton Class="mt-2" Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary">Dodaj</MudButton>
 			</MudCardContent>
 		</MudCard>
 	</EditForm>
