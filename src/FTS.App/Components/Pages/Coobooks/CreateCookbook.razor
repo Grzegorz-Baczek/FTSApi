@@ -1,0 +1,24 @@
+﻿@page "/createcookbook"
+@rendermode InteractiveServer
+
+<div class="d-flex justify-content-center mt-6">
+
+	<EditForm Model="@CookbookViewModel" OnSubmit="CreateCookbookAsync">
+		<DataAnnotationsValidator />
+		<div class="d-flex justify-content-center mt-2">
+			<h3>Dodaj książke kucharska</h3>
+		</div>
+
+		<MudCard Class="d-flex justify-content-center" Width="350px">
+			<MudCardContent>
+
+				<MudTextField Label="Nazwa"
+							  @bind-Value="CookbookViewModel.Name" For="@(() => CookbookViewModel.Name)"
+							  ShrinkLabel="true" />
+
+				<MudButton OnClick="NavigateToAccount" Class="mt-2" Variant="Variant.Filled" ButtonType="ButtonType.Button" Color="Color.Dark">Cofnij</MudButton>
+				<MudButton Class="mt-2" Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary">Dodaj</MudButton>
+			</MudCardContent>
+		</MudCard>
+	</EditForm>
+</div>

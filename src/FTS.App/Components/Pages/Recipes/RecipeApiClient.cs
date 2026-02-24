@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using FTS.App.Components.Pages.Recipes.Models;
+﻿using FTS.App.Components.Pages.Recipes.Models;
 using FTS.App.Components.TokenService;
 
 namespace FTS.App.Components.Pages.Recipes;
@@ -38,6 +37,13 @@ public class RecipeApiClient(HttpClient HttpClient, ITokenService token)
         }
 
         var response = await HttpClient.PostAsJsonAsync("api/recipe", createRecipe);
-        response.EnsureSuccessStatusCode();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var error = await response.Content.ReadFromJsonAsync<ApiError>();
+            throw new Exception(error?.Reason ?? "Wystąpił nieznany błąd.");
+        }
     }
+
+    private record ApiError(string Code, string Reason);
 }

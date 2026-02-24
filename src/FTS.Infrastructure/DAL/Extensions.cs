@@ -24,6 +24,7 @@ internal static class Extensions
         services.AddScoped<IIngredientRepository, IngredientRepository>();
         services.AddScoped<IRecipeRepository, RecipeRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ICookbookRepository, CookbookRepository>();
 
         services.AddIdentity<User, IdentityRole<Guid>>()
             .AddEntityFrameworkStores<FTSDbContext>()
