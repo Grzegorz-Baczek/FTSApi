@@ -6,7 +6,13 @@ public class IngredientApiClient(HttpClient HttpClient)
 {
     public async Task CreateIngredientAsync(CreateIngredientModel createIngredientModel)
     {
-        await HttpClient.PostAsJsonAsync("api/ingredient", createIngredientModel);
+        var response = await HttpClient.PostAsJsonAsync("api/ingredient", createIngredientModel);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var error = await response.Content.ReadFromJsonAsync<ApiError>();
+            throw new Exception(error?.Reason ?? "Wystąpił nieznany błąd, sprawdź czy pola zostały uzupełnione poprawnie");
+        }
     }
 
     public async Task<IReadOnlyCollection<IngredientListItem>?> GetIngredientsAsync()
@@ -19,4 +25,6 @@ public class IngredientApiClient(HttpClient HttpClient)
 
         throw new Exception($"Something went wrong. Result code from server: {result.StatusCode}");
     }
+
+    private record ApiError(string Code, string Reason);
 }

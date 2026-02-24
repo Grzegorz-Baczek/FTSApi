@@ -1,7 +1,8 @@
-using Blazored.LocalStorage;
+﻿using Blazored.LocalStorage;
 using FTS.App.Components;
 using FTS.App.Components.Authentication;
 using FTS.App.Components.Pages.Categories;
+using FTS.App.Components.Pages.Coobooks.ApiClient;
 using FTS.App.Components.Pages.Ingredients;
 using FTS.App.Components.Pages.Login;
 using FTS.App.Components.Pages.Products;
@@ -48,6 +49,11 @@ builder.Services.AddHttpClient<IngredientApiClient>(client =>
 });
 
 builder.Services.AddHttpClient<UserApiClient>(client =>
+{
+    client.BaseAddress = new Uri(baseUrl);
+});
+
+builder.Services.AddHttpClient<CookbookApiClient>(client =>
 {
     client.BaseAddress = new Uri(baseUrl);
 });

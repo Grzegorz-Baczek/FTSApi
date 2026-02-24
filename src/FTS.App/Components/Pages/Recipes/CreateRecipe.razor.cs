@@ -102,7 +102,7 @@ public partial class CreateRecipe
         }
         catch (Exception ex)
         {
-            Snackbar.Add("Błąd, sprawdź czy wszystkie pola zostały dodane poprawnie", Severity.Error);
+            Snackbar.Add(ex.Message, Severity.Error);
         }
     }
 

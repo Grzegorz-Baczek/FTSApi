@@ -11,7 +11,8 @@ internal class CookbookConfiguration : IEntityTypeConfiguration<Cookbook>
         builder.HasKey(c => c.Id);
 
         builder.Property(c => c.Name)
-            .IsRequired();
+            .IsRequired()
+            .HasMaxLength(40);
 
         builder.HasOne(c => c.User)
             .WithMany(u => u.Cookbooks)
