@@ -1,3 +1,5 @@
+ï»¿using FTS.App.Components.Pages.Coobooks.ApiClient;
+using FTS.App.Components.Pages.Coobooks.Models;
 using FTS.App.Components.Pages.Login.Models;
 using Microsoft.AspNetCore.Components;
 
@@ -6,9 +8,11 @@ namespace FTS.App.Components.Pages.Login;
 public partial class Account
 {
     private UserViewModel? user;
+    private IReadOnlyCollection<CookbookViewModel>? cookbooks;
     private bool isLoading;
     private string? error;
     [Inject] UserApiClient UserApiClient { get; set; }
+    [Inject] CookbookApiClient CookbookApiClient { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -19,11 +23,16 @@ public partial class Account
             user = await UserApiClient.GetMeAsync();
 
             if (user is null)
-                error = "Nie uda³o siê pobraæ danych u¿ytkownika.";
+            {
+                error = "Nie udaÅ‚o siÄ™ pobraÄ‡ danych uÅ¼ytkownika.";
+                return;
+            }
+
+            cookbooks = await CookbookApiClient.GetCookbookAsync();
         }
         catch (Exception ex)
         {
-            error = $"B³¹d: {ex.Message}";
+            error = $"BÅ‚Ä…d: {ex.Message}";
         }
         finally
         {

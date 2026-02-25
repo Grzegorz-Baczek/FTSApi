@@ -1,70 +1,105 @@
 ﻿@page "/account"
 @rendermode InteractiveServer
+@using FTS.App.Components.Pages.Coobooks.Models
 
 <PageTitle>Profil</PageTitle>
 
-<div class="d-flex justify-center">
-	<MudCard Elevation="4" Style="width: 450px; border-radius: 16px;">
-		<MudCardContent Class="pa-6">
+@if (isLoading)
+{
+	<div class="d-flex justify-center pa-4">
+		<MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+	</div>
+}
+else if (error is not null)
+{
+	<MudAlert Severity="Severity.Error" Class="mb-4">@error</MudAlert>
+}
+else if (user is not null)
+{
+	<MudGrid Justify="Justify.Center" Class="mt-6">
+		<MudItem xs="12" md="4" lg="3">
+			<MudCard Elevation="4" Style="border-radius: 16px;">
+				<MudCardContent Class="pa-4">
 
-			@if (isLoading)
-			{
-				<div class="d-flex justify-center pa-4">
-					<MudProgressCircular Indeterminate="true" Color="Color.Primary" />
-				</div>
-			}
-			else if (error is not null)
-			{
-				<MudAlert Severity="Severity.Error" Class="mb-4">@error</MudAlert>
-			}
-			else if (user is not null)
-			{
-				<MudStack Direction="Row" Spacing="3" AlignItems="AlignItems.Center" Class="mb-4">
-					<MudAvatar Color="Color.Primary" Size="Size.Large" Style="font-size: 1.5rem; font-weight: 700;">
-						@GetInitial(user.Name)
-					</MudAvatar>
-					<MudStack Spacing="0">
-						<MudText Typo="Typo.h6" Style="font-weight: 600;">@user.Name</MudText>
-						<MudText Typo="Typo.caption" Color="Color.Dark">
-							Dołączył: @user.CreatedAt.ToString("dd MMMM yyyy")
-						</MudText>
+					<MudStack Direction="Row" Spacing="2" AlignItems="AlignItems.Center" Class="mb-3">
+						<MudAvatar Color="Color.Primary" Size="Size.Medium" Style="font-size: 1.2rem; font-weight: 700;">
+							@GetInitial(user.Name)
+						</MudAvatar>
+						<MudStack Spacing="0">
+							<MudText Typo="Typo.subtitle1" Style="font-weight: 600;">@user.Name</MudText>
+							<MudText Typo="Typo.caption" Color="Color.Dark">
+								Dołączył: @user.CreatedAt.ToString("dd MMMM yyyy")
+							</MudText>
+						</MudStack>
 					</MudStack>
-				</MudStack>
 
-				<MudDivider Class="my-3" />
+					<MudDivider Class="my-2" />
 
-				<MudStack Direction="Row" Spacing="3" Class="my-4" Justify="Justify.Center">
-					<MudPaper Elevation="0" Class="pa-4 d-flex flex-column align-center" Style="border-radius: 12px; background: #efebe9; min-width: 140px;">
-						<MudIcon Icon="@Icons.Material.Filled.EmojiEvents" Color="Color.Secondary" Size="Size.Large" />
-						<MudText Typo="Typo.overline" Class="mt-1">Level</MudText>
-						<MudText Typo="Typo.subtitle1" Style="font-weight: 700;">@user.Level</MudText>
-					</MudPaper>
-					<MudPaper Elevation="0" Class="pa-4 d-flex flex-column align-center" Style="border-radius: 12px; background: #efebe9; min-width: 140px;">
-						<MudIcon Icon="@Icons.Material.Filled.Stars" Color="Color.Secondary" Size="Size.Large" />
-						<MudText Typo="Typo.overline" Class="mt-1">Punkty</MudText>
-						<MudText Typo="Typo.subtitle1" Style="font-weight: 700;">@user.RankPoints</MudText>
-					</MudPaper>
-				</MudStack>
+					<MudStack Direction="Row" Spacing="2" Class="my-3" Justify="Justify.Center">
+						<MudPaper Elevation="0" Class="pa-3 d-flex flex-column align-center" Style="border-radius: 12px; background: #efebe9; flex: 1;">
+							<MudIcon Icon="@Icons.Material.Filled.EmojiEvents" Color="Color.Secondary" />
+							<MudText Typo="Typo.overline" Class="mt-1">Level</MudText>
+							<MudText Typo="Typo.body2" Style="font-weight: 700;">@user.Level</MudText>
+						</MudPaper>
+						<MudPaper Elevation="0" Class="pa-3 d-flex flex-column align-center" Style="border-radius: 12px; background: #efebe9; flex: 1;">
+							<MudIcon Icon="@Icons.Material.Filled.Stars" Color="Color.Secondary" />
+							<MudText Typo="Typo.overline" Class="mt-1">Punkty</MudText>
+							<MudText Typo="Typo.body2" Style="font-weight: 700;">@user.RankPoints</MudText>
+						</MudPaper>
+					</MudStack>
 
-				<MudDivider Class="my-3" />
+					<MudDivider Class="my-2" />
 
-				<MudStack Direction="Row" Spacing="2" Justify="Justify.Center">
-					<MudButton Variant="Variant.Filled"
-							   StartIcon="@Icons.Material.Filled.MenuBook"
-							   Style="border-radius: 8px; text-transform: none; background: linear-gradient(135deg, #5d4037, #4e342e); color: white;"
-							   Href="/createcookbook">
-						Dodaj książkę kucharską
-					</MudButton>
-					<MudButton Variant="Variant.Outlined"
-							   Color="Color.Primary"
-							   StartIcon="@Icons.Material.Filled.PostAdd"
-							   Style="border-radius: 8px; text-transform: none;"
-							   Href="/createrecipe">
-						Dodaj przepis
-					</MudButton>
-				</MudStack>
+					<MudStack Spacing="2" Class="mt-2">
+						<MudButton Variant="Variant.Filled"
+								   StartIcon="@Icons.Material.Filled.MenuBook"
+								   FullWidth="true"
+								   Style="border-radius: 8px; text-transform: none; background: linear-gradient(135deg, #5d4037, #4e342e); color: white;"
+								   Href="/createcookbook">
+							Dodaj książkę kucharską
+						</MudButton>
+						<MudButton Variant="Variant.Outlined"
+								   Color="Color.Primary"
+								   FullWidth="true"
+								   StartIcon="@Icons.Material.Filled.PostAdd"
+								   Style="border-radius: 8px; text-transform: none;"
+								   Href="/createrecipe">
+							Dodaj przepis
+						</MudButton>
+					</MudStack>
+
+				</MudCardContent>
+			</MudCard>
+		</MudItem>
+
+		<MudItem xs="12" md="8" lg="9">
+			<MudText Typo="Typo.h6" Class="mb-3" Style="font-weight: 600;">
+				<MudIcon Icon="@Icons.Material.Filled.MenuBook" Class="mr-1" /> Moje książki kucharskie:
+			</MudText>
+
+			@if (cookbooks is null || cookbooks.Count == 0)
+			{
+				<MudAlert Severity="Severity.Info" Variant="Variant.Outlined">
+					Nie masz jeszcze żadnych książek kucharskich.
+				</MudAlert>
 			}
-
-		</MudCardContent>
-	</MudCard>
-</div>
+			else
+			{
+				<MudGrid>
+					@foreach (var cookbook in cookbooks)
+					{
+						<MudItem xs="6" sm="4" md="3" lg="2">
+							<MudPaper Elevation="3" Class="pa-3 d-flex flex-column align-center justify-center"
+									  Style="border-radius: 12px; background: #efebe9; min-height: 100px; cursor: pointer;">
+								<MudIcon Icon="@Icons.Material.Filled.Book" Color="Color.Dark" />
+								<MudText Typo="Typo.caption" Align="Align.Center" Class="mt-1" Style="font-weight: 600; word-break: break-word;">
+									@cookbook.Name
+								</MudText>
+							</MudPaper>
+						</MudItem>
+					}
+				</MudGrid>
+			}
+		</MudItem>
+	</MudGrid>
+}

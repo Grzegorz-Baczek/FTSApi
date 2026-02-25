@@ -1,0 +1,20 @@
+﻿@page "/cookbooks"
+@rendermode InteractiveServer
+
+<PageTitle>Cookbooks</PageTitle>
+
+@if (CookbookViewModel is null)
+{
+	<MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+}
+else
+{
+	<MudTable Items="CookbookViewModel" Hover="true" Bordered="true" Striped="true">
+		<HeaderContent>
+			<MudTh>Nazwa</MudTh>
+		</HeaderContent>
+		<RowTemplate>
+			<MudTd DataLabel="Nazwa">@context.Name</MudTd>
+		</RowTemplate>
+	</MudTable>
+}
