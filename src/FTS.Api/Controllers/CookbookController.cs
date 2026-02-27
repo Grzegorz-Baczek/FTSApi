@@ -1,7 +1,7 @@
 ﻿using FTS.Application.DTO;
 using FTS.Application.Handlers.Cookbooks.Commands.CreateCookbook;
+using FTS.Application.Handlers.Cookbooks.Queries.GetCookbookById;
 using FTS.Application.Handlers.Cookbooks.Queries.GetCookbooks;
-using FTS.Application.Handlers.Ingredients.Queries.GetIngredients;
 using FTS.Core.Security;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -29,5 +29,13 @@ public class CookbookController(IMediator mediator) : ControllerBase
     {
         var cookbooks = await mediator.Send(query, ct);
         return cookbooks;
+    }
+
+    [Authorize(Roles = Roles.User)]
+    [HttpGet("cookbook/{id:guid}")]
+    public async Task<CookbookDto> GetCookbook(Guid id, CancellationToken ct)
+    {
+        var cookbook = await mediator.Send(new GetCookbookByIdQuery(id), ct);
+        return cookbook;
     }
 }
