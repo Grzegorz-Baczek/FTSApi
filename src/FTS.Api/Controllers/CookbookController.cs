@@ -11,9 +11,9 @@ namespace FTS.Api.Controllers;
 
 [ApiController]
 [Route("api")]
+[Authorize(Roles = Roles.User)]
 public class CookbookController(IMediator mediator) : ControllerBase
 {
-    [Authorize(Roles = Roles.User)]
     [HttpPost("cookbook")]
     public async Task<ActionResult> CreateCookBook(CreateCookbookCommand command,
         CancellationToken token)
@@ -22,7 +22,6 @@ public class CookbookController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
-    [Authorize(Roles = Roles.User)]
     [HttpGet("cookbooks")]
     public async Task<IReadOnlyCollection<CookbookDto>> GetCookbooks([FromQuery] GetCookbooksQuery query,
         CancellationToken ct)
@@ -31,7 +30,6 @@ public class CookbookController(IMediator mediator) : ControllerBase
         return cookbooks;
     }
 
-    [Authorize(Roles = Roles.User)]
     [HttpGet("cookbook/{id:guid}")]
     public async Task<CookbookDto> GetCookbook(Guid id, CancellationToken ct)
     {
