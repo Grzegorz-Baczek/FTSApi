@@ -1,6 +1,4 @@
-﻿using FTS.App.Components.Pages.Products.Models;
-
-namespace FTS.App.Components.Pages.Categories.Models;
+﻿namespace FTS.App.Components.Pages.Categories.Models;
 
 public class CategoryViewModel
 {
