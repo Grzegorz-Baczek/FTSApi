@@ -10,9 +10,13 @@ var storage = builder.AddAzureStorage("storage")
     .RunAsEmulator();
 var blobs = storage.AddBlobs("blobs");
 
+// Azure AI Document Intelligence (OCR) — endpoint przekazywany przez connection string
+var docIntelligence = builder.AddConnectionString("document-intelligence");
+
 var api = builder.AddProject<Projects.FTS_Api>("fts-api")
     .WithReference(sql)
     .WithReference(blobs)
+    .WithReference(docIntelligence)
     .WaitFor(sql)
     .WaitFor(storage)
     .WithExternalHttpEndpoints();

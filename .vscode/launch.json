@@ -5,13 +5,29 @@
       "name": "FTS.Api",
       "type": "coreclr",
       "request": "launch",
-      "preLaunchTask": "build",
+      "preLaunchTask": "build-api",
       "program": "${workspaceFolder}/src/FTS.Api/bin/Debug/net10.0/FTS.Api.dll",
       "args": [],
       "cwd": "${workspaceFolder}/src/FTS.Api",
       "stopAtEntry": false,
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    {
+      "name": "FTS.AppHost (Aspire)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-apphost",
+      "program": "${workspaceFolder}/src/FTS.AppHost/bin/Debug/net10.0/FTS.AppHost.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/FTS.AppHost",
+      "stopAtEntry": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_ENVIRONMENT": "Development",
+        "DOTNET_DASHBOARD_OTLP_ENDPOINT_URL": "http://localhost:19271",
+        "DOTNET_RESOURCE_SERVICE_ENDPOINT_URL": "http://localhost:20271"
       }
     }
   ]

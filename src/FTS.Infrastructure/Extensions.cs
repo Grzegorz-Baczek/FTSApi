@@ -2,6 +2,7 @@
 using FTS.Infrastructure.Auth;
 using FTS.Infrastructure.DAL;
 using FTS.Infrastructure.Exceptions;
+using FTS.Infrastructure.OCR;
 using FTS.Infrastructure.Security;
 using FTS.Infrastructure.Storage;
 using FTS.Infrastructure.Time;
@@ -23,6 +24,7 @@ public static class Extensions
         services.AddHttpContextAccessor();
         services.AddMSql(configuration);
         services.AddBlobStorage(configuration);
+        services.AddOcr(configuration);
         services.AddSingleton<IClock, Clock>();
         services.AddAuth(configuration);
 
