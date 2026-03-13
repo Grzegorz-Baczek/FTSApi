@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Sdk Name="Aspire.AppHost.Sdk" Version="13.1.1" />
 
@@ -8,10 +8,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsAspireHost>true</IsAspireHost>
+    <UserSecretsId>1cded5f2-30ea-4e25-aebf-9aca8ca406d5</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" Version="13.1.1" />
+    <PackageReference Include="Aspire.Hosting.Azure.AIFoundry" Version="13.1.2-preview.1.26125.13" />
     <PackageReference Include="Aspire.Hosting.Azure.CognitiveServices" Version="13.1.1" />
     <PackageReference Include="Aspire.Hosting.Azure.Sql" Version="13.1.1" />
     <PackageReference Include="Aspire.Hosting.Azure.Storage" Version="13.1.1" />

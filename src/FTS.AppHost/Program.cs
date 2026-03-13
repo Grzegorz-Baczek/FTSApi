@@ -10,13 +10,17 @@ var storage = builder.AddAzureStorage("storage")
     .RunAsEmulator();
 var blobs = storage.AddBlobs("blobs");
 
-// Azure AI Document Intelligence (OCR) — endpoint przekazywany przez connection string
-var docIntelligence = builder.AddConnectionString("document-intelligence");
+// TODO: Azure AI Document Intelligence (OCR) — do przywrócenia później
+// var docIntelligence = builder.AddConnectionString("document-intelligence");
+
+// Azure AI Foundry — GPT-4.1 (multimodalny, vision, szybki, wyższy rate limit)
+var foundry = builder.AddAzureAIFoundry("ai-foundry");
+var vision = foundry.AddDeployment("vision", "gpt-4.1", "2025-04-14", "OpenAI");
 
 var api = builder.AddProject<Projects.FTS_Api>("fts-api")
     .WithReference(sql)
     .WithReference(blobs)
-    .WithReference(docIntelligence)
+    .WithReference(vision)
     .WaitFor(sql)
     .WaitFor(storage)
     .WithExternalHttpEndpoints();

@@ -32,6 +32,23 @@ module resources 'resources.bicep' = {
   }
 }
 
+module ai_foundry 'ai-foundry/ai-foundry.module.bicep' = {
+  name: 'ai-foundry'
+  scope: rg
+  params: {
+    location: location
+  }
+}
+module ai_foundry_roles 'ai-foundry-roles/ai-foundry-roles.module.bicep' = {
+  name: 'ai-foundry-roles'
+  scope: rg
+  params: {
+    ai_foundry_outputs_name: ai_foundry.outputs.name
+    location: location
+    principalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
+    principalType: 'ServicePrincipal'
+  }
+}
 module sql 'sql/sql.module.bicep' = {
   name: 'sql'
   scope: rg
@@ -78,5 +95,7 @@ output AZURE_CONTAINER_REGISTRY_NAME string = resources.outputs.AZURE_CONTAINER_
 output AZURE_CONTAINER_APPS_ENVIRONMENT_NAME string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_NAME
 output AZURE_CONTAINER_APPS_ENVIRONMENT_ID string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
 output AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN
+output AI_FOUNDRY_AIFOUNDRYAPIENDPOINT string = ai_foundry.outputs.aiFoundryApiEndpoint
+output AI_FOUNDRY_ENDPOINT string = ai_foundry.outputs.endpoint
 output SQL_SQLSERVERFQDN string = sql.outputs.sqlServerFqdn
 output STORAGE_BLOBENDPOINT string = storage.outputs.blobEndpoint

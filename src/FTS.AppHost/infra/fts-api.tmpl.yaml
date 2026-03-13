@@ -25,6 +25,8 @@ properties:
         value: '{{ .Env.STORAGE_BLOBENDPOINT }}'
       - name: connectionstrings--ftsdb
         value: Server=tcp:{{ .Env.SQL_SQLSERVERFQDN }},1433;Encrypt=True;Authentication="Active Directory Default";Database=ftsdb
+      - name: connectionstrings--vision
+        value: Endpoint={{ .Env.AI_FOUNDRY_ENDPOINT }};EndpointAIInference={{ .Env.AI_FOUNDRY_AIFOUNDRYAPIENDPOINT }}models;Deployment=vision
   template:
     containers:
       - image: {{ .Image }}
@@ -54,10 +56,20 @@ properties:
             value: "true"
           - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY
             value: in_memory
+          - name: VISION_FORMAT
+            value: OpenAI
+          - name: VISION_MODELNAME
+            value: vision
+          - name: VISION_URI
+            value: '{{ .Env.AI_FOUNDRY_AIFOUNDRYAPIENDPOINT }}'
+          - name: VISION_VERSION
+            value: "2025-04-14"
           - name: ConnectionStrings__blobs
             secretRef: connectionstrings--blobs
           - name: ConnectionStrings__ftsdb
             secretRef: connectionstrings--ftsdb
+          - name: ConnectionStrings__vision
+            secretRef: connectionstrings--vision
     scale:
       minReplicas: 1
 tags:
