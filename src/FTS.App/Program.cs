@@ -6,6 +6,7 @@ using FTS.App.Components.Pages.Ingredients;
 using FTS.App.Components.Pages.Login;
 using FTS.App.Components.Pages.Products;
 using FTS.App.Components.Pages.Recipes;
+using FTS.App.Components.Pages.ShoppingLists;
 using FTS.App.Components.TokenService;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor.Services;
@@ -27,7 +28,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<CustomAuthenticationStateProvider>());
 
-var baseUrl = builder.Configuration["BaseUrl"];
+var baseUrl = builder.Configuration["BaseUrl"]!;
 
 builder.Services.AddHttpClient<CategoryApiClient>(client =>
 {
@@ -50,6 +51,11 @@ builder.Services.AddHttpClient<IngredientApiClient>(client =>
 });
 
 builder.Services.AddHttpClient<UserApiClient>(client =>
+{
+    client.BaseAddress = new Uri(baseUrl);
+});
+
+builder.Services.AddHttpClient<ShoppingListApiClient>(client =>
 {
     client.BaseAddress = new Uri(baseUrl);
 });

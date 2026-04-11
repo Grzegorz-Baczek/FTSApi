@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using FTS.Application.DTO;
 using FTS.Application.Handlers.Users.Commands.SignIn;
 using FTS.Application.Handlers.Users.Commands.SignUp;
@@ -38,7 +39,8 @@ public class UsersController(IMediator mediator,
     [HttpGet("user/me")]
     public async Task<ActionResult<UserDto>> Get()
     {
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
+                         ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (!Guid.TryParse(userIdClaim, out var userId))
         {
             return Unauthorized();

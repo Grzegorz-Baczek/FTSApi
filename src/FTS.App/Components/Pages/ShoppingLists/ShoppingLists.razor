@@ -1,0 +1,89 @@
+@page "/shopping-lists"
+@rendermode InteractiveServer
+
+<PageTitle>Listy zakupów</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-4">
+
+    <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Class="mb-4">
+        <MudText Typo="Typo.h4" Style="font-family: 'Georgia', serif; font-weight: 700;">
+            Listy zakupów
+        </MudText>
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   StartIcon="@Icons.Material.Filled.Add"
+                   OnClick="OpenCreateDialog">
+            Nowa lista
+        </MudButton>
+    </MudStack>
+
+    @if (_loading)
+    {
+        <MudStack AlignItems="AlignItems.Center" Class="mt-8">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+        </MudStack>
+    }
+    else if (_lists is null || _lists.Count == 0)
+    {
+        <MudAlert Severity="Severity.Info" Class="mt-4">
+            Nie masz jeszcze żadnych list zakupów. Utwórz pierwszą!
+        </MudAlert>
+    }
+    else
+    {
+        <MudGrid Spacing="3">
+            @foreach (var list in _lists)
+            {
+                <MudItem xs="12" sm="6">
+                    <MudCard Elevation="3" Style="border-radius: 12px; cursor: pointer;"
+                             @onclick="() => NavigateToList(list.Id)">
+                        <MudCardContent>
+                            <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+                                <div>
+                                    <MudText Typo="Typo.h6">@list.Name</MudText>
+                                    <MudText Typo="Typo.caption" Color="Color.Dark">
+                                        @list.Items.Count produktów · @list.Items.Count(i => i.IsChecked) kupione
+                                    </MudText>
+                                </div>
+                                <div @onclick="() => DeleteList(list.Id)" @onclick:stopPropagation="true">
+                                    <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                                   Color="Color.Error"
+                                                   Size="Size.Small" />
+                                </div>
+                            </MudStack>
+                        </MudCardContent>
+                        <MudCardContent Class="pt-0">
+                            <MudProgressLinear Value="@GetProgress(list)"
+                                              Color="Color.Success"
+                                              Rounded="true"
+                                              Size="Size.Small" />
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            }
+        </MudGrid>
+    }
+
+</MudContainer>
+
+<MudDialog @bind-Visible="_showCreateDialog">
+    <TitleContent>
+        <MudText Typo="Typo.h6">Nowa lista zakupów</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTextField @bind-Value="_newListName"
+                      Label="Nazwa listy"
+                      Variant="Variant.Outlined"
+                      Required="true"
+                      Class="mt-2" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="() => _showCreateDialog = false">Anuluj</MudButton>
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   OnClick="CreateList"
+                   Disabled="string.IsNullOrWhiteSpace(_newListName)">
+            Utwórz
+        </MudButton>
+    </DialogActions>
+</MudDialog>

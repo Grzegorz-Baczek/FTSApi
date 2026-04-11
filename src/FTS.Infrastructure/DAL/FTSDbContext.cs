@@ -16,6 +16,8 @@ public sealed class FTSDbContext : IdentityDbContext<User, IdentityRole<Guid>, G
     public DbSet<User> Users { get; set; }
     public DbSet<Recipe> Recipes { get; set; }
     public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
+    public DbSet<ShoppingList> ShoppingLists { get; set; }
+    public DbSet<ShoppingListItem> ShoppingListItems { get; set; }
 
     public FTSDbContext(DbContextOptions<FTSDbContext> options) : base(options)
     {

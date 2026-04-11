@@ -28,11 +28,13 @@ internal static class Extensions
             {
                 o.Audience = options.Audience;
                 o.IncludeErrorDetails = true;
+                o.MapInboundClaims = false;
                 o.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidIssuer = options.Issuer,
                     ClockSkew = TimeSpan.Zero,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.SigningKey))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.SigningKey)),
+                    NameClaimType = "sub"
                 };
             });
 
