@@ -104,7 +104,13 @@ Handlers/
   Queries/
    GetRecipeById/GetRecipeQuery.cs
    GetRecipes/GetRecipesQuery.cs
+ ShoppingLists/Commands/
+  AddItemsFromImage/AddItemsFromImageCommand.cs
+  AddShoppingListItem/
+   AddShoppingListItemCommand.cs
+   AddShoppingListItemValidator.cs
  Users/Commands/
+  GoogleSignIn/GoogleSignInCommand.cs
   SignIn/SignInCommand.cs
   SignUp/
    SignUpCommand.cs
@@ -117,6 +123,7 @@ obj/Debug/net10.0/
 Queries/Products/Handlers/GetProductQueryHandler.cs
 Security/
  IAuthenticator.cs
+ IGoogleTokenValidator.cs
  ITokenStorage.cs
 
 [metadataReferences]

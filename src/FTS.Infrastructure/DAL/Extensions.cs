@@ -20,9 +20,19 @@ internal static class Extensions
 
         if (string.IsNullOrEmpty(connectionString))
         {
-            services.Configure<MSqlOptions>(configuration.GetRequiredSection(OptionsSectionName));
-            var mSqlOptions = configuration.GetOptions<MSqlOptions>(OptionsSectionName);
-            connectionString = mSqlOptions.ConnectionString;
+            var section = configuration.GetSection(OptionsSectionName);
+            if (section.Exists())
+            {
+                services.Configure<MSqlOptions>(section);
+                var mSqlOptions = configuration.GetOptions<MSqlOptions>(OptionsSectionName);
+                connectionString = mSqlOptions.ConnectionString;
+            }
+        }
+
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            throw new InvalidOperationException(
+                "Nie znaleziono connection stringa. Ustaw 'ConnectionStrings:ftsdb' (Aspire) lub sekcję 'MSql' w konfiguracji.");
         }
 
         services.AddDbContext<FTSDbContext>(x => x.UseSqlServer(connectionString));

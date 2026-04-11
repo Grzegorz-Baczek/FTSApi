@@ -26,13 +26,13 @@ resource vision 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01' = 
   properties: {
     model: {
       format: 'OpenAI'
-      name: 'gpt-4.1'
+      name: 'gpt-4.1-mini'
       version: '2025-04-14'
     }
   }
   sku: {
     name: 'GlobalStandard'
-    capacity: 150
+    capacity: 450
   }
   parent: ai_foundry
 }

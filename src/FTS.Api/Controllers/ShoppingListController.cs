@@ -2,9 +2,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using FTS.Application.Abstractions;
 using FTS.Application.DTO;
+using FTS.Application.Handlers.ShoppingLists.Commands.AddShoppingListItem;
+using FTS.Application.Handlers.ShoppingLists.Commands.AddItemsFromImage;
 using FTS.Core.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -17,11 +21,13 @@ public class ShoppingListController : ControllerBase
 {
     private readonly IShoppingListRepository _repository;
     private readonly IOcrService _ocrService;
+    private readonly IMediator _mediator;
 
-    public ShoppingListController(IShoppingListRepository repository, IOcrService ocrService)
+    public ShoppingListController(IShoppingListRepository repository, IOcrService ocrService, IMediator mediator)
     {
         _repository = repository;
         _ocrService = ocrService;
+        _mediator = mediator;
     }
 
     private Guid? TryGetUserId()
@@ -102,14 +108,18 @@ public class ShoppingListController : ControllerBase
         var userId = TryGetUserId();
         if (userId is null) return Unauthorized();
 
-        var list = await _repository.GetAsync(id, ct);
-        if (list is null || list.UserId != userId.Value)
-            return NotFound();
+        var command = new AddShoppingListItemCommand
+        {
+            ShoppingListId = id,
+            UserId = userId.Value,
+            ProductName = dto.ProductName,
+            Quantity = dto.Quantity,
+            Unit = dto.Unit,
+            Category = dto.Category
+        };
 
-        var item = list.AddItem(dto.ProductName, dto.Quantity, dto.Unit, dto.Category);
-        await _repository.UpdateAsync(list, ct);
-
-        return Ok(new ShoppingListItemDto(item.Id, item.ProductName, item.Quantity, item.Unit, item.Category, item.IsChecked));
+        var result = await _mediator.Send(command, ct);
+        return Ok(result);
     }
 
     [HttpDelete("{id:guid}/items/{itemId:guid}")]
@@ -153,6 +163,7 @@ public class ShoppingListController : ControllerBase
     [ProducesResponseType(typeof(IReadOnlyList<ShoppingListItemDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [RequestTimeout(milliseconds: 300_000)]
     public async Task<ActionResult<IReadOnlyList<ShoppingListItemDto>>> AddItemsFromImage(
         Guid id, IFormFile file, CancellationToken ct)
     {
@@ -162,26 +173,19 @@ public class ShoppingListController : ControllerBase
         var userId = TryGetUserId();
         if (userId is null) return Unauthorized();
 
-        var list = await _repository.GetAsync(id, ct);
-        if (list is null || list.UserId != userId.Value)
-            return NotFound();
-
         await using var stream = file.OpenReadStream();
-        var products = await _ocrService.ExtractProductsAsync(stream, file.FileName, ct);
 
-        var addedItems = new List<ShoppingListItemDto>();
-        foreach (var p in products)
+        var command = new AddItemsFromImageCommand
         {
-            var item = list.AddItem(p.Name, p.Quantity, p.Unit, p.Category);
-            addedItems.Add(new ShoppingListItemDto(item.Id, item.ProductName, item.Quantity, item.Unit, item.Category, item.IsChecked));
-        }
+            ShoppingListId = id,
+            UserId = userId.Value,
+            FileStream = stream,
+            FileName = file.FileName
+        };
 
-        await _repository.UpdateAsync(list, ct);
-
-        return Ok(addedItems);
-    }
-
-    private static ShoppingListDto MapToDto(ShoppingList list) => new(
+        var result = await _mediator.Send(command, ct);
+        return Ok(result);
+    }    private static ShoppingListDto MapToDto(ShoppingList list) => new(
         list.Id,
         list.Name,
         list.UserId,

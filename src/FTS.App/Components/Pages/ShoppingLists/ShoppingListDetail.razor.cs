@@ -51,7 +51,7 @@ public partial class ShoppingListDetail : ComponentBase
     {
         if (_list is null || string.IsNullOrWhiteSpace(_newItemName)) return;
 
-        var item = await ApiClient.AddItemAsync(_list.Id, new AddShoppingListItemModel
+        await ApiClient.AddItemAsync(_list.Id, new AddShoppingListItemModel
         {
             ProductName = _newItemName,
             Quantity = _newItemQuantity,
@@ -59,15 +59,12 @@ public partial class ShoppingListDetail : ComponentBase
             Category = _newItemCategory
         });
 
-        if (item is not null)
-        {
-            _list.Items.Add(item);
-        }
-
         _newItemName = string.Empty;
         _newItemQuantity = null;
         _newItemUnit = null;
         _newItemCategory = null;
+
+        await LoadList();
     }
 
     private async Task ToggleItem(Guid itemId)
@@ -110,14 +107,10 @@ public partial class ShoppingListDetail : ComponentBase
         try
         {
             await using var stream = _selectedFile.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024); // 10 MB
-            var items = await ApiClient.AddItemsFromImageAsync(_list.Id, stream, _selectedFile.Name);
-
-            if (items is not null)
-            {
-                _list.Items.AddRange(items);
-            }
+            await ApiClient.AddItemsFromImageAsync(_list.Id, stream, _selectedFile.Name);
 
             _selectedFile = null;
+            await LoadList();
         }
         catch (Exception ex)
         {

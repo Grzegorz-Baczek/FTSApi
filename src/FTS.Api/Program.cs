@@ -11,6 +11,14 @@ builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
 
+builder.Services.AddRequestTimeouts(options =>
+{
+    options.DefaultPolicy = new Microsoft.AspNetCore.Http.Timeouts.RequestTimeoutPolicy
+    {
+        Timeout = TimeSpan.FromMinutes(5)
+    };
+});
+
 builder.Host.UseSerilog((context, LoggerConfiguration) =>
 {
     LoggerConfiguration.WriteTo
@@ -19,6 +27,7 @@ builder.Host.UseSerilog((context, LoggerConfiguration) =>
 
 var app = builder.Build();
 app.MapDefaultEndpoints();
+app.UseRequestTimeouts();
 app.UseInfrastructure();
 app.MapGet("api", (IOptions<AppOptions> options) => Results.Ok(options.Value.Name));
 app.Run();

@@ -23,6 +23,19 @@ public class UserApiClient(HttpClient HttpClient,
         }
     }
 
+    public async Task<JwtDto?> GoogleLoginAsync(string idToken)
+    {
+        var response = await HttpClient.PostAsJsonAsync("api/user/google-sign-in", new { idToken });
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<JwtDto>();
+            await tokenService.SetToken(result);
+            myAuthenticationStateProvider.StateChanged();
+            return result;
+        }
+        return null;
+    }
+
     public async Task<bool> RegisterAsync(RegisterModel registerModel)
     {
         var payload = new { registerModel.Name, registerModel.Email, registerModel.Password };

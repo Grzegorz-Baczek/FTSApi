@@ -19,6 +19,20 @@
 	<Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" />
 	<script src="_framework/blazor.web.js"></script>
 	<script src="_content/MudBlazor/MudBlazor.min.js?v=@(MudBlazor.Metadata.Version)"></script>
+	<script src="https://accounts.google.com/gsi/client" async defer></script>
+	<script>
+		let dotNetRef = null;
+
+		function initGoogleSignIn(ref) {
+			dotNetRef = ref;
+		}
+
+		function handleGoogleCredentialResponse(response) {
+			if (dotNetRef) {
+				dotNetRef.invokeMethodAsync('OnGoogleSignIn', response.credential);
+			}
+		}
+	</script>
 </body>
 
 </html>

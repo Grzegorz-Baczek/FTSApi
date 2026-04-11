@@ -1,6 +1,7 @@
 using System.Text.Json;
 using FTS.Application.Abstractions;
 using FTS.Application.DTO;
+using Microsoft.Extensions.Logging;
 using OpenAI.Chat;
 
 namespace FTS.Infrastructure.OCR;
@@ -8,10 +9,12 @@ namespace FTS.Infrastructure.OCR;
 internal sealed class AiFoundryOcrService : IOcrService
 {
     private readonly ChatClient _chatClient;
+    private readonly ILogger<AiFoundryOcrService> _logger;
 
-    public AiFoundryOcrService(ChatClient chatClient)
+    public AiFoundryOcrService(ChatClient chatClient, ILogger<AiFoundryOcrService> logger)
     {
         _chatClient = chatClient;
+        _logger = logger;
     }
 
     public async Task<string> ExtractTextAsync(Stream fileStream, string fileName, CancellationToken cancellationToken = default)
@@ -35,7 +38,8 @@ internal sealed class AiFoundryOcrService : IOcrService
 
         var options = new ChatCompletionOptions
         {
-            Temperature = 0f
+            Temperature = 0f,
+            MaxOutputTokenCount = 2048
         };
 
         var response = await _chatClient.CompleteChatAsync(messages, options, cancellationToken);
@@ -45,10 +49,14 @@ internal sealed class AiFoundryOcrService : IOcrService
 
     public async Task<IReadOnlyList<ExtractedProductDto>> ExtractProductsAsync(Stream fileStream, string fileName, CancellationToken cancellationToken = default)
     {
+        _logger.LogInformation("ExtractProductsAsync started for file: {FileName}", fileName);
+
         using var ms = new MemoryStream();
         await fileStream.CopyToAsync(ms, cancellationToken);
         var fileBytes = ms.ToArray();
         var mimeType = GetMimeType(fileName);
+
+        _logger.LogDebug("File size: {Size} bytes, MIME type: {MimeType}", fileBytes.Length, mimeType);
 
         var messages = new List<ChatMessage>
         {
@@ -74,12 +82,16 @@ internal sealed class AiFoundryOcrService : IOcrService
 
         var options = new ChatCompletionOptions
         {
-            Temperature = 0f
+            Temperature = 0f,
+            MaxOutputTokenCount = 4096
         };
 
         var response = await _chatClient.CompleteChatAsync(messages, options, cancellationToken);
 
         var json = response.Value.Content[0].Text ?? "[]";
+
+        _logger.LogInformation("AI response received, raw JSON length: {Length}", json.Length);
+        _logger.LogInformation("Raw AI response: {Json}", json);
 
         // Strip potential markdown code fences
         json = json.Trim();
@@ -98,9 +110,19 @@ internal sealed class AiFoundryOcrService : IOcrService
             PropertyNameCaseInsensitive = true
         }) ?? [];
 
-        return products
+        var result = products
             .Select(p => new ExtractedProductDto(p.Name ?? "Nieznany produkt", p.Quantity, p.Unit, p.Category))
             .ToList();
+
+        _logger.LogInformation("ExtractProductsAsync completed for {FileName} — extracted {Count} products", fileName, result.Count);
+
+        foreach (var product in result)
+        {
+            _logger.LogDebug("Product: {Name}, Quantity: {Quantity}, Unit: {Unit}, Category: {Category}",
+                product.Name, product.Quantity, product.Unit, product.Category);
+        }
+
+        return result;
     }
 
     private static string GetMimeType(string fileName)

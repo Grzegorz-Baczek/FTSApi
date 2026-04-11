@@ -3,6 +3,7 @@ using System.Security.Claims;
 using FTS.Application.DTO;
 using FTS.Application.Handlers.Users.Commands.SignIn;
 using FTS.Application.Handlers.Users.Commands.SignUp;
+using FTS.Application.Handlers.Users.Commands.GoogleSignIn;
 using FTS.Application.Handlers.Users.Queries.GetUserById;
 using FTS.Application.Security;
 using MediatR;
@@ -14,7 +15,6 @@ namespace FTS.Api.Controllers;
 
 [ApiController]
 [Route("api")]
-
 public class UsersController(IMediator mediator,
     ITokenStorage tokenStorage) : ControllerBase
 {
@@ -29,6 +29,15 @@ public class UsersController(IMediator mediator,
     [HttpPost("user/sign-in")]
     [SwaggerOperation("Sign in the user and return the JSON Web Token")]
     public async Task<ActionResult<JwtDto>> Post(SignInCommand command)
+    {
+        await mediator.Send(command);
+        var jwt = tokenStorage.Get();
+        return jwt;
+    }
+
+    [HttpPost("user/google-sign-in")]
+    [SwaggerOperation("Sign in with Google and return the JSON Web Token")]
+    public async Task<ActionResult<JwtDto>> GoogleSignIn(GoogleSignInCommand command)
     {
         await mediator.Send(command);
         var jwt = tokenStorage.Get();

@@ -22,9 +22,39 @@ internal sealed class ShoppingListRepository(FTSDbContext dbContext) : IShopping
             .ToListAsync(ct);
     }
 
+    public async Task<bool> ExistsForUserAsync(Guid id, Guid userId, CancellationToken ct)
+    {
+        return await dbContext.ShoppingLists
+            .AnyAsync(s => s.Id == id && s.UserId == userId, ct);
+    }
+
     public async Task AddAsync(ShoppingList shoppingList, CancellationToken ct)
     {
         await dbContext.ShoppingLists.AddAsync(shoppingList, ct);
+        await dbContext.SaveChangesAsync(ct);
+    }
+
+    public async Task AddItemAsync(ShoppingListItem item, CancellationToken ct)
+    {
+        await dbContext.Set<ShoppingListItem>().AddAsync(item, ct);
+        await dbContext.SaveChangesAsync(ct);
+    }
+
+    public async Task<IReadOnlyList<ShoppingListItem>> GetItemsByShoppingListIdAsync(Guid shoppingListId, CancellationToken ct)
+    {
+        return await dbContext.Set<ShoppingListItem>()
+            .Where(i => i.ShoppingListId == shoppingListId)
+            .ToListAsync(ct);
+    }
+
+    public async Task UpdateItemAsync(ShoppingListItem item, CancellationToken ct)
+    {
+        var entry = dbContext.Entry(item);
+        if (entry.State == EntityState.Detached)
+        {
+            dbContext.Set<ShoppingListItem>().Update(item);
+        }
+        // Jeśli entity jest trackowane, EF automatycznie wykryje zmiany
         await dbContext.SaveChangesAsync(ct);
     }
 

@@ -13,9 +13,9 @@ var blobs = storage.AddBlobs("blobs");
 // TODO: Azure AI Document Intelligence (OCR) — do przywrócenia później
 // var docIntelligence = builder.AddConnectionString("document-intelligence");
 
-// Azure AI Foundry — GPT-4.1 (multimodalny, vision, szybki, wyższy rate limit)
+// Azure AI Foundry — GPT-4.1-mini (multimodalny, vision, szybki, wyższy rate limit)
 var foundry = builder.AddAzureAIFoundry("ai-foundry");
-var vision = foundry.AddDeployment("vision", "gpt-4.1", "2025-04-14", "OpenAI");
+var vision = foundry.AddDeployment("vision", "gpt-4.1-mini", "2025-04-14", "OpenAI");
 
 var api = builder.AddProject<Projects.FTS_Api>("fts-api")
     .WithReference(sql)

@@ -1,6 +1,7 @@
 using FTS.Application.Abstractions;
 using FTS.Application.DTO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -21,6 +22,7 @@ public class OcrController : ControllerBase
     [SwaggerOperation(Summary = "Extract text from a file using OCR")]
     [ProducesResponseType(typeof(OcrResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [RequestTimeout(milliseconds: 300_000)]
     public async Task<ActionResult<OcrResultDto>> ExtractText(
         IFormFile file, CancellationToken cancellationToken)
     {

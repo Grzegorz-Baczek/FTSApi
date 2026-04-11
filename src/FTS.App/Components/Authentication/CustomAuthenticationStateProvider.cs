@@ -15,9 +15,28 @@ public class CustomAuthenticationStateProvider(ITokenService tokenService) : Aut
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         var token = await tokenService.GetToken();
-        var identity = string.IsNullOrEmpty(token?.AccessToken)
-            ? new ClaimsIdentity()
-            : new ClaimsIdentity(ParseClaimsFromJwt(token.AccessToken), "jwt");
+
+        if (string.IsNullOrEmpty(token?.AccessToken))
+        {
+            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+        }
+
+        var claims = ParseClaimsFromJwt(token.AccessToken).ToList();
+
+        // Sprawdź czy token nie wygasł
+        var expClaim = claims.FirstOrDefault(c => c.Type == "exp");
+        if (expClaim is not null && long.TryParse(expClaim.Value, out var expUnix))
+        {
+            var expDate = DateTimeOffset.FromUnixTimeSeconds(expUnix);
+            if (expDate <= DateTimeOffset.UtcNow)
+            {
+                // Token wygasł — wyczyść i zwróć niezalogowanego
+                await tokenService.RemoveToken();
+                return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+            }
+        }
+
+        var identity = new ClaimsIdentity(claims, "jwt");
         return new AuthenticationState(new ClaimsPrincipal(identity));
     }
 

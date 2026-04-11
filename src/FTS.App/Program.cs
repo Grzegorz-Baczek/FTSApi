@@ -58,6 +58,7 @@ builder.Services.AddHttpClient<UserApiClient>(client =>
 builder.Services.AddHttpClient<ShoppingListApiClient>(client =>
 {
     client.BaseAddress = new Uri(baseUrl);
+    client.Timeout = TimeSpan.FromMinutes(5);
 });
 
 var app = builder.Build();
