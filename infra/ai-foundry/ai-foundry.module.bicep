@@ -32,7 +32,7 @@ resource vision 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01' = 
   }
   sku: {
     name: 'GlobalStandard'
-    capacity: 450
+    capacity: 1000
   }
   parent: ai_foundry
 }

@@ -34,6 +34,19 @@ internal sealed class AddShoppingListItemCommandHandler(
             throw new KeyNotFoundException($"Shopping list with id '{command.ShoppingListId}' not found.");
         }
 
+        // Sprawdź czy istnieje item z taką samą nazwą i jednostką — jeśli tak, zwiększ quantity
+        var existingItems = await repository.GetItemsByShoppingListIdAsync(command.ShoppingListId, cancellationToken);
+        var duplicate = existingItems.FirstOrDefault(i =>
+            string.Equals(i.ProductName, command.ProductName, StringComparison.OrdinalIgnoreCase) &&
+            string.Equals(i.Unit, command.Unit, StringComparison.OrdinalIgnoreCase));
+
+        if (duplicate is not null)
+        {
+            duplicate.Quantity = (duplicate.Quantity ?? 0) + (command.Quantity ?? 0);
+            await repository.UpdateItemAsync(duplicate, cancellationToken);
+            return new ShoppingListItemDto(duplicate.Id, duplicate.ProductName, duplicate.Quantity, duplicate.Unit, duplicate.Category, duplicate.IsChecked);
+        }
+
         var item = new ShoppingListItem
         {
             Id = Guid.NewGuid(),
