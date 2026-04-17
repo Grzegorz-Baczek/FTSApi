@@ -33,9 +33,13 @@ internal sealed class AddItemsFromImageCommandHandler(
         var addedItems = new List<ShoppingListItemDto>();
         foreach (var p in products)
         {
+            var normalizedUnit = string.IsNullOrWhiteSpace(p.Unit) ? null : p.Unit.Trim();
             var existing = trackingItems.FirstOrDefault(i =>
                 string.Equals(i.ProductName, p.Name, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(i.Unit, p.Unit, StringComparison.OrdinalIgnoreCase));
+                string.Equals(
+                    string.IsNullOrWhiteSpace(i.Unit) ? null : i.Unit,
+                    normalizedUnit,
+                    StringComparison.OrdinalIgnoreCase));
 
             if (existing is not null)
             {
@@ -51,7 +55,7 @@ internal sealed class AddItemsFromImageCommandHandler(
                     ShoppingListId = command.ShoppingListId,
                     ProductName = p.Name,
                     Quantity = p.Quantity,
-                    Unit = p.Unit,
+                    Unit = normalizedUnit,
                     Category = p.Category,
                     IsChecked = false
                 };
