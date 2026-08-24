@@ -2,9 +2,7 @@
 
 namespace FTS.Application.Abstractions;
 
-public interface IRecipeRepository
+public interface IRecipeRepository : IRepository<Recipe>
 {
-    Task AddRecipeAsync(Recipe recipe, CancellationToken cancellationToken);
-    Task DeleteRecipeAsync(Recipe recipe, CancellationToken ct);
-    Task<Recipe?> GetRecipeAsync(Guid id, CancellationToken ct);
+    Task<Recipe?> GetAsync(Guid id, CancellationToken ct);
 }

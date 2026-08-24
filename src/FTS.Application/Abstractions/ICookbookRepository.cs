@@ -2,7 +2,5 @@
 
 namespace FTS.Application.Abstractions;
 
-public interface ICookbookRepository
-{
-    Task AddCookbookAsync(Cookbook cookbook, CancellationToken ct);
-}
+public interface ICookbookRepository : IRepository<Cookbook>
+{}
