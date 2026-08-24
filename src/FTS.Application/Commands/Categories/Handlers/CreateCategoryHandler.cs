@@ -12,6 +12,6 @@ internal sealed class CreateCategoryHandler(ICategoryRepository categoryReposito
     public async Task Handle(CreateCategoryCommand command, CancellationToken ct)
     {
         var category = Category.Create(command.Name);
-        await categoryRepository.AddCategoryAsync(category, ct);
+        await categoryRepository.AddAsync(category, ct);
     }
 }

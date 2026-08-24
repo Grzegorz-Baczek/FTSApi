@@ -10,12 +10,12 @@ internal sealed class DeleteProductCommandHandler(IProductRepository productRepo
 {
     public async Task Handle(DeleteProductCommand command, CancellationToken cancellationToken)
     {
-        var product = await productRepository.GetProductAsync(command.Id, cancellationToken);
+        var product = await productRepository.GetAsync(command.Id, cancellationToken);
         if (product == null)
         {
             throw new NotFoundProductException(command.Id);
         }
 
-        await productRepository.DeleteProductAsync(product, cancellationToken);
+        await productRepository.DeleteAsync(product, cancellationToken);
     }
 }

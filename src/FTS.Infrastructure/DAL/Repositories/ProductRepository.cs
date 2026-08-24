@@ -4,14 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FTS.Infrastructure.DAL.Repositories;
 
-internal sealed class ProductRepository(FTSDbContext dbContext) : IProductRepository
+internal sealed class ProductRepository(FTSDbContext dbContext) :
+    BaseRepository<Product>(dbContext), IProductRepository
 {
-    public async Task DeleteProductAsync(Product product, CancellationToken ct)
-    {
-        dbContext.Products.Remove(product);
-        await dbContext.SaveChangesAsync(ct);
-    }
-    public async Task<Product?> GetProductAsync(Guid id, CancellationToken ct)
+    public async Task<Product?> GetAsync(Guid id, CancellationToken ct)
     {
         var product = await dbContext.Products.FirstOrDefaultAsync(p => p.Id == id, ct);
         return product;

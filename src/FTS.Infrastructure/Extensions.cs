@@ -39,7 +39,8 @@ public static class Extensions
         services.AddCors(options =>
         {
             var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
-            options.AddPolicy("Open", builder => builder.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod().AllowCredentials());
+            var originsWithLocalhost = allowedOrigins.Concat(new[] { "http://localhost:3000" }).ToArray();
+            options.AddPolicy("Open", builder => builder.WithOrigins(originsWithLocalhost).AllowAnyHeader().AllowAnyMethod().AllowCredentials());
         });
 
         services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(Extensions).Assembly));

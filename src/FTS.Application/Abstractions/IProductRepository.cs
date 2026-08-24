@@ -2,8 +2,7 @@
 
 namespace FTS.Application.Abstractions;
 
-public interface IProductRepository
+public interface IProductRepository : IRepository<Product>
 {
-    Task DeleteProductAsync(Product product, CancellationToken ct);
-    Task<Product?> GetProductAsync(Guid id, CancellationToken ct);
+    Task<Product?> GetAsync(Guid id, CancellationToken ct);
 }

@@ -34,6 +34,6 @@ internal sealed class CreateIngredientCommandHandler(
         var ingredient = Ingredient.Create(command.Name, command.Calories, command.Carbohydrates, command.Proteins,
             command.Fat, command.Barcode, command.SaturatedFat, command.Sugars, command.Fiber, command.Salt);
 
-        await ingredientRepository.AddIngredientAsync(ingredient, cancellationToken);
+        await ingredientRepository.AddAsync(ingredient, cancellationToken);
     }
 }

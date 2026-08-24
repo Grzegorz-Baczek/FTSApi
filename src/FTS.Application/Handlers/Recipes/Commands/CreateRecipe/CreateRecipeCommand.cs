@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FTS.Application.Abstractions;
+using FTS.Application.Exceptions;
 using FTS.Core.Entities;
 using MediatR;
 
@@ -37,7 +38,7 @@ internal sealed class CreateRecipeCommandHandler(
 
         foreach (var ingredientDto in command.RecipeIngredients)
         {
-            await ingredientRepository.GetIngredient(ingredientDto.IngredientId, cancellationToken);
+            var ingredientExists = await ingredientRepository.GetAsync(ingredientDto.IngredientId, cancellationToken);
 
             var recipeIngredient = RecipeIngredient.Create(
                 ingredientDto.Amount,
@@ -48,6 +49,6 @@ internal sealed class CreateRecipeCommandHandler(
             recipe.RecipeIngredients.Add(recipeIngredient);
         }
 
-        await recipeRepository.AddRecipeAsync(recipe, cancellationToken);
+        await recipeRepository.AddAsync(recipe, cancellationToken);
     }
 }

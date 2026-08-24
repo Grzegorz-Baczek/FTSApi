@@ -22,6 +22,6 @@ internal sealed class CreateCookbookCommandHandler(
 
         var getCurrentUser = userRepository.GetUserId();
         var cookbook = Cookbook.Create(command.Name, getCurrentUser!.Value);
-        await cookbookRepository.AddCookbookAsync(cookbook, cancellationToken);
+        await cookbookRepository.AddAsync(cookbook, cancellationToken);
     }
 }

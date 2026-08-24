@@ -2,7 +2,5 @@
 
 namespace FTS.Application.Abstractions;
 
-public interface ICategoryRepository
-{
-    Task AddCategoryAsync(Category category, CancellationToken ct);
-}
+public interface ICategoryRepository : IRepository<Category>
+{ }
