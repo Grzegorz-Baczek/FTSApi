@@ -4,5 +4,5 @@ namespace FTS.Application.Abstractions;
 
 public interface IIngredientRepository : IRepository<Ingredient>
 {
-    Task<Ingredient> GetAsync(Guid id, CancellationToken ct);
+    Task<Ingredient?> GetAsync(Guid id, CancellationToken ct);
 }

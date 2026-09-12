@@ -14,7 +14,7 @@ public sealed class GetRecipesQueryHandler(FTSDbContext dbContext,
         var userId = userRepository.GetUserId();
 
         var recipesDto = await dbContext.Recipes
-            .Where(r => r.IsPublic || r.Author.Id == userId)
+            .Where(r => r.IsPublic || r.AuthorId == userId)
             .Select(r => new RecipeDto(
                 r.Id,
                 r.Title,

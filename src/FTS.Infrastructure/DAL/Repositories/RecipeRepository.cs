@@ -7,9 +7,6 @@ namespace FTS.Infrastructure.DAL.Repositories;
 internal sealed class RecipeRepository(FTSDbContext dbContext) :
     BaseRepository<Recipe>(dbContext), IRecipeRepository
 {
-    public async Task<Recipe?> GetAsync(Guid id, CancellationToken ct)
-    {
-        var recipe = await dbContext.Recipes.FirstOrDefaultAsync(r => r.Id == id, ct);
-        return recipe;
-    }
+    public Task<Recipe?> GetOwnedAsync(Guid id, Guid authorId, CancellationToken ct)
+        => DbContext.Recipes.FirstOrDefaultAsync(r => r.Id == id && r.AuthorId == authorId, ct);
 }

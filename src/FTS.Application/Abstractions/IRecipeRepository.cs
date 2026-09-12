@@ -4,5 +4,5 @@ namespace FTS.Application.Abstractions;
 
 public interface IRecipeRepository : IRepository<Recipe>
 {
-    Task<Recipe?> GetAsync(Guid id, CancellationToken ct);
+    Task<Recipe?> GetOwnedAsync(Guid id, Guid authorId, CancellationToken ct);
 }
