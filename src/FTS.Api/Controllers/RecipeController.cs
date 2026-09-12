@@ -4,6 +4,7 @@ using FTS.Application.Handlers.Recipes.Commands.DeleteRecipe;
 using FTS.Application.Handlers.Recipes.Queries.GetRecipeById;
 using FTS.Application.Handlers.Recipes.Queries.GetRecipes;
 using FTS.Core.Security;
+using FTS.Infrastructure.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,7 @@ public class RecipeController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
+    [Authorize(Roles = Roles.User)]
     [HttpGet("recipes")]
     public async Task<IReadOnlyCollection<RecipeDto>> GetRecipes([FromQuery] GetRecipesQuery query,
       CancellationToken ct)
@@ -31,7 +33,10 @@ public class RecipeController(IMediator mediator) : ControllerBase
          return recipesDto;
     }
 
+    [Authorize(Roles = Roles.User)]
     [HttpGet("recipe/{id:guid}")]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
     public async Task<RecipeDto> GetRecipe(Guid id, CancellationToken ct)
     {
         var recipeDto = await mediator.Send(new GetRecipeQuery(id), ct);

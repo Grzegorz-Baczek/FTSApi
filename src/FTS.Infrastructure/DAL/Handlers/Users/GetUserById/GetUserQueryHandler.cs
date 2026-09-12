@@ -1,6 +1,7 @@
 ﻿using FTS.Application.DTO;
 using FTS.Application.Handlers.Users.Queries.GetUserById;
-using FTS.Infrastructure.Exceptions.NotFoundExceptions;
+using FTS.Core.Entities;
+using FTS.Core.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +17,7 @@ internal sealed class GetUserQueryHandler(FTSDbContext dbContext) : IRequestHand
             .SingleOrDefaultAsync(cancellationToken);
         if (userDto == null)
         {
-            throw new NotFoundUserException(query.Id);
+            throw new NotFoundException<User>(query.Id);
         }
 
         return userDto;

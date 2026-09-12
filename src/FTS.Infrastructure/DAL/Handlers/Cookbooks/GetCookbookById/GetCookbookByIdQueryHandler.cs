@@ -1,7 +1,8 @@
 ﻿using FTS.Application.Abstractions;
 using FTS.Application.DTO;
 using FTS.Application.Handlers.Cookbooks.Queries.GetCookbookById;
-using FTS.Infrastructure.Exceptions.NotFoundExceptions;
+using FTS.Core.Entities;
+using FTS.Core.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,7 +23,7 @@ internal sealed class GetCookbookByIdQueryHandler(
 
         if (cookbook is null)
         {
-            throw new NotFoundCookbookException(query.Id);
+            throw new NotFoundException<Cookbook>(query.Id);
         }
 
         return cookbook;

@@ -4,7 +4,7 @@ using FTS.Core.Enum;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using FTS.Core.Security;
-using FTS.Application.Exceptions;
+using FTS.Core.Exceptions;
 
 namespace FTS.Application.Handlers.Users.Commands.SignUp;
 
@@ -34,12 +34,12 @@ public class SignUpCommandHandler(
         {
             if (identityResult.Errors.Any(e => e.Code == "DuplicateEmail" || e.Code == "DuplicateUserName"))
             {
-                throw new EmailAlreadyInUseException(command.Email);
+                throw new ConflictException("Email or username is already in use.");
             }
             else
             {
                 var errorDescription = identityResult.Errors.First().Description;
-                throw new IdentityValidationException(errorDescription);
+                throw new DomainException(errorDescription);
             }
         }
 
@@ -47,7 +47,7 @@ public class SignUpCommandHandler(
         if (!addToRoleResult.Succeeded)
         {
             var error = addToRoleResult.Errors.FirstOrDefault()?.Description;
-            throw new RoleAssignmentException(Roles.User, error);
+            throw new DomainException($"Failed to assign role '{Roles.User}'. Details: {error}");
         }
     }
 }

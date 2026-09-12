@@ -8,7 +8,6 @@ namespace FTS.Api.Controllers;
 
 [ApiController]
 [Route("api")]
-
 public class CategoriesController(IMediator mediator) : ControllerBase
 {
     [HttpPost("category")]

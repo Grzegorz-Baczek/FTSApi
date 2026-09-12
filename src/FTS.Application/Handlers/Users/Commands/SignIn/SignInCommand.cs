@@ -1,4 +1,4 @@
-﻿using FTS.Application.Exceptions;
+﻿using FTS.Core.Exceptions;
 using FTS.Application.Security;
 using FTS.Core.Entities;
 using MediatR;
@@ -18,13 +18,13 @@ internal sealed class SignInCommandHandler(
         var user = await userManager.FindByEmailAsync(command.Email);
         if (user is null)
         {
-            throw new InvalidCredentialsException();
+            throw new UnauthorizedException("Invalid credentials.");
         }
 
         var isPasswordValid = await userManager.CheckPasswordAsync(user, command.Password);
         if (!isPasswordValid)
         {
-            throw new InvalidCredentialsException();
+            throw new UnauthorizedException("Invalid credentials.");
         }
 
         var roles = await userManager.GetRolesAsync(user);
