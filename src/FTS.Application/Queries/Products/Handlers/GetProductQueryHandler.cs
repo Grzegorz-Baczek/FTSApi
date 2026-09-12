@@ -1,6 +1,6 @@
 ﻿using FTS.Application.Abstractions;
-using FTS.Application.Exceptions;
 using FTS.Core.Entities;
+using FTS.Core.Exceptions;
 using MediatR;
 
 namespace FTS.Application.Queries.Products.Handlers;
@@ -15,7 +15,7 @@ internal sealed class GetProductQueryHandler(IProductRepository productRepositor
         var product = await productRepository.GetAsync(query.Id, cancellationToken);
         if (product == null)
         {
-            throw new NotFoundProductException(query.Id);
+            throw new NotFoundException<Product>(query.Id);
         }
 
         return product;

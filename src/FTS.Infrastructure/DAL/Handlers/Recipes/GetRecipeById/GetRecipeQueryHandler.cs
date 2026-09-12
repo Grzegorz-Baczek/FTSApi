@@ -1,17 +1,22 @@
-﻿using FTS.Application.DTO;
+﻿using FTS.Application.Abstractions;
+using FTS.Application.DTO;
 using FTS.Application.Handlers.Recipes.Queries.GetRecipeById;
-using FTS.Infrastructure.Exceptions.NotFoundExceptions;
+using FTS.Core.Entities;
+using FTS.Core.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace FTS.Infrastructure.DAL.Handlers.Recipes.GetRecipeById;
 
-internal sealed class GetRecipeQueryHandler(FTSDbContext dbContext) : IRequestHandler<GetRecipeQuery, RecipeDto>
+internal sealed class GetRecipeQueryHandler(FTSDbContext dbContext, 
+    IUserRepository userRepository) : IRequestHandler<GetRecipeQuery, RecipeDto>
 {
     public async Task<RecipeDto> Handle(GetRecipeQuery query, CancellationToken cancellationToken)
     {
+        var userId = userRepository.GetUserId();
+
         var recipeDto = await dbContext.Recipes
-            .Where(r => r.Id == query.Id)
+            .Where(r => r.Id == query.Id && (r.IsPublic || r.Author.Id == userId))
             .Include(r => r.RecipeIngredients)
                 .ThenInclude(ri => ri.Ingredient)
             .Select(r => new RecipeDto(
@@ -29,7 +34,7 @@ internal sealed class GetRecipeQueryHandler(FTSDbContext dbContext) : IRequestHa
             .FirstOrDefaultAsync(cancellationToken);
         if (recipeDto == null)
         {
-            throw new NotFoundRecipeException(query.Id);
+            throw new NotFoundException<Recipe>(query.Id);
         }
 
         return recipeDto;

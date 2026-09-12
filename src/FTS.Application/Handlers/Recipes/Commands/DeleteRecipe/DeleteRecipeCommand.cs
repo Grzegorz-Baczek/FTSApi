@@ -1,6 +1,6 @@
 ﻿using FTS.Application.Abstractions;
-using FTS.Application.Exceptions;
 using FTS.Core.Entities;
+using FTS.Core.Exceptions;
 using MediatR;
 
 namespace FTS.Application.Handlers.Recipes.Commands.DeleteRecipe;
@@ -14,7 +14,7 @@ public class DeleteRecipeCommandHandler(IRecipeRepository recipeRepository) : IR
         var recipe = await recipeRepository.GetAsync(command.Id, cancellationToken);
         if(recipe == null)
         {
-            throw new NotFoundRecipeException(command.Id);
+            throw new NotFoundException<Recipe>(command.Id);
         }
 
         await recipeRepository.DeleteAsync(recipe, cancellationToken);

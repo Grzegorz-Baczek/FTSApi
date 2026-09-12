@@ -1,5 +1,6 @@
 ﻿using FTS.Application.Abstractions;
-using FTS.Application.Exceptions;
+using FTS.Core.Entities;
+using FTS.Core.Exceptions;
 using MediatR;
 
 namespace FTS.Application.Commands.Products.Handlers.DeleteProduct;
@@ -13,7 +14,7 @@ internal sealed class DeleteProductCommandHandler(IProductRepository productRepo
         var product = await productRepository.GetAsync(command.Id, cancellationToken);
         if (product == null)
         {
-            throw new NotFoundProductException(command.Id);
+            throw new NotFoundException<Product>(command.Id);
         }
 
         await productRepository.DeleteAsync(product, cancellationToken);

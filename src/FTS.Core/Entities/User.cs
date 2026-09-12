@@ -29,12 +29,12 @@ public class User : IdentityUser<Guid>
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new InvalidNameException("Name cannot be empty");
+            throw new DomainException("Name cannot be empty.");
         }
 
         if (rankPoints < 0)
         {
-            throw new InvalidRankPointsException(rankPoints);
+            throw new DomainException("Rank points must be greater than or equal to zero.");
         }
 
         return new User

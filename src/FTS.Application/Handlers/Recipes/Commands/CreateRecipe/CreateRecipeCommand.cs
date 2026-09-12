@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using FTS.Application.Abstractions;
-using FTS.Application.Exceptions;
 using FTS.Core.Entities;
 using MediatR;
 

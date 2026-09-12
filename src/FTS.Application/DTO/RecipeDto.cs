@@ -22,15 +22,4 @@ public class RecipeDto
         Author = author;
         RecipeIngredients = recipeIngredients;
     }
-
-    public RecipeDto(Guid id, string title, string steps, bool isPublic, string? imageUrl, string author)
-    {
-        Id = id;
-        Title = title;
-        Steps = steps;
-        IsPublic = isPublic;
-        ImageUrl = imageUrl;
-        Author = author;
-        RecipeIngredients = new List<RecipeIngredientDto>();
-    }
 }

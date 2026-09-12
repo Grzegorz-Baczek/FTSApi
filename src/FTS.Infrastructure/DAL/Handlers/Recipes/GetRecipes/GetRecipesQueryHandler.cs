@@ -1,16 +1,20 @@
-﻿using FTS.Application.DTO;
+﻿using FTS.Application.Abstractions;
+using FTS.Application.DTO;
 using FTS.Application.Handlers.Recipes.Queries.GetRecipes;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace FTS.Infrastructure.DAL.Handlers.Recipes.GetRecipes;
 
-public sealed class GetRecipesQueryHandler(
-    FTSDbContext dbContext) : IRequestHandler<GetRecipesQuery, IReadOnlyCollection<RecipeDto>>
+public sealed class GetRecipesQueryHandler(FTSDbContext dbContext, 
+    IUserRepository userRepository) : IRequestHandler<GetRecipesQuery, IReadOnlyCollection<RecipeDto>>
 {
     public async Task<IReadOnlyCollection<RecipeDto>> Handle(GetRecipesQuery query, CancellationToken cancellationToken)
     {
+        var userId = userRepository.GetUserId();
+
         var recipesDto = await dbContext.Recipes
+            .Where(r => r.IsPublic || r.Author.Id == userId)
             .Select(r => new RecipeDto(
                 r.Id,
                 r.Title,

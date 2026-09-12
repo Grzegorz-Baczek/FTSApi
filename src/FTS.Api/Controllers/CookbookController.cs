@@ -3,6 +3,7 @@ using FTS.Application.Handlers.Cookbooks.Commands.CreateCookbook;
 using FTS.Application.Handlers.Cookbooks.Queries.GetCookbookById;
 using FTS.Application.Handlers.Cookbooks.Queries.GetCookbooks;
 using FTS.Core.Security;
+using FTS.Infrastructure.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,8 @@ public class CookbookController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("cookbook/{id:guid}")]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
     public async Task<CookbookDto> GetCookbook(Guid id, CancellationToken ct)
     {
         var cookbook = await mediator.Send(new GetCookbookByIdQuery(id), ct);

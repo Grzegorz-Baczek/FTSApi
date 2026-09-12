@@ -48,7 +48,7 @@ public class Ingredient
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new InvalidIngredientNameException(name);
+            throw new DomainException("Ingredient name cannot be empty.");
         }
 
         return new Ingredient(Guid.NewGuid(), name, calories,
