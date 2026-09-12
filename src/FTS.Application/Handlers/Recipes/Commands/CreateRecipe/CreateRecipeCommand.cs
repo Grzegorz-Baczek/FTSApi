@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FTS.Application.Abstractions;
 using FTS.Core.Entities;
+using FTS.Core.Exceptions;
 using MediatR;
 
 namespace FTS.Application.Handlers.Recipes.Commands.CreateRecipe;
@@ -27,17 +28,26 @@ internal sealed class CreateRecipeCommandHandler(
             throw new ValidationException(validationResult.Errors);
         }
 
-        var getCurrentUser = userRepository.GetUserId();
+        var userId = userRepository.GetUserId();
+        if (userId is null)
+        {
+            throw new UnauthorizedException("User is not authenticated.");
+        }
+
         var recipe = Recipe.Create(
             command.Title,
             command.Steps,
             false,
             command.ImageUrl,
-            getCurrentUser!.Value);
+            userId.Value);
 
         foreach (var ingredientDto in command.RecipeIngredients)
         {
-            var ingredientExists = await ingredientRepository.GetAsync(ingredientDto.IngredientId, cancellationToken);
+            var ingredient = await ingredientRepository.GetAsync(ingredientDto.IngredientId, cancellationToken);
+            if (ingredient is null)
+            {
+                throw new NotFoundException<Ingredient>(ingredientDto.IngredientId);
+            }
 
             var recipeIngredient = RecipeIngredient.Create(
                 ingredientDto.Amount,

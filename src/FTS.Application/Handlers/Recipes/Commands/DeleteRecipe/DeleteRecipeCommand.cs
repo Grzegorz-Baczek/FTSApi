@@ -7,12 +7,20 @@ namespace FTS.Application.Handlers.Recipes.Commands.DeleteRecipe;
 
 public record DeleteRecipeCommand(Guid Id) : IRequest;
 
-public class DeleteRecipeCommandHandler(IRecipeRepository recipeRepository) : IRequestHandler<DeleteRecipeCommand>
+internal sealed class DeleteRecipeCommandHandler(
+    IRecipeRepository recipeRepository,
+    IUserRepository userRepository) : IRequestHandler<DeleteRecipeCommand>
 {
     public async Task Handle(DeleteRecipeCommand command, CancellationToken cancellationToken)
     {
-        var recipe = await recipeRepository.GetAsync(command.Id, cancellationToken);
-        if(recipe == null)
+        var userId = userRepository.GetUserId();
+        if (userId is null)
+        {
+            throw new UnauthorizedException("User is not authenticated.");
+        }
+
+        var recipe = await recipeRepository.GetOwnedAsync(command.Id, userId.Value, cancellationToken);
+        if (recipe is null)
         {
             throw new NotFoundException<Recipe>(command.Id);
         }

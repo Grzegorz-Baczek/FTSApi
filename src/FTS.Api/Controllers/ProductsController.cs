@@ -24,7 +24,7 @@ public class ProductsController(IMediator mediator) : ControllerBase
         return product;
     }
 
-    [HttpDelete("product/{id}")]
+    [HttpDelete("product/{id:guid}")]
     public async Task<ActionResult> DeleteProduct(Guid id,
         CancellationToken ct)
     {
