@@ -7,7 +7,6 @@ namespace FTS.Infrastructure.DAL;
 
 public sealed class FTSDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 {
-    public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Cookbook> Cookbooks { get; set; }
     public DbSet<CookbookRecipe> CookbookRecipes { get; set; }
