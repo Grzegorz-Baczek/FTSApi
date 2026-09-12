@@ -1,5 +1,5 @@
-﻿using FTS.Application.Commands.Categories.Handlers;
-using FTS.Application.DTO;
+﻿using FTS.Application.DTO;
+using FTS.Application.Handlers.Categories.Commands.CreateCategory;
 using FTS.Application.Handlers.Categories.Queries.GetCategories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

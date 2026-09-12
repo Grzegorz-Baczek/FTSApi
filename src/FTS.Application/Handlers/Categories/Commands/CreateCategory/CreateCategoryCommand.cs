@@ -1,8 +1,8 @@
-﻿using MediatR;
+﻿using FTS.Application.Abstractions;
 using FTS.Core.Entities;
-using FTS.Application.Abstractions;
+using MediatR;
 
-namespace FTS.Application.Commands.Categories.Handlers;
+namespace FTS.Application.Handlers.Categories.Commands.CreateCategory;
 
 public record CreateCategoryCommand(string Name) : IRequest;
 
