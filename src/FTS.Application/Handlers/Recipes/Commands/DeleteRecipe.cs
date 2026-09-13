@@ -11,11 +11,11 @@ public static class DeleteRecipe
 
     internal sealed class Handler(
         IRecipeRepository recipeRepository,
-        IUserRepository userRepository) : IRequestHandler<Command>
+        ICurrentUser currentUser) : IRequestHandler<Command>
     {
         public async Task Handle(Command command, CancellationToken cancellationToken)
         {
-            var userId = userRepository.GetUserId();
+            var userId = currentUser.Id;
             if (userId is null)
             {
                 throw new UnauthorizedException("User is not authenticated.");

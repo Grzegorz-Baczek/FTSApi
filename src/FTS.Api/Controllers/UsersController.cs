@@ -3,7 +3,6 @@ using FTS.Application.DTO;
 using FTS.Application.Handlers.Users.Commands;
 using FTS.Application.Handlers.Users.Models;
 using FTS.Application.Handlers.Users.Queries;
-using FTS.Application.Security;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,8 +13,7 @@ namespace FTS.Api.Controllers;
 [ApiController]
 [Route("api")]
 
-public class UsersController(IMediator mediator,
-    ITokenStorage tokenStorage) : ControllerBase
+public class UsersController(IMediator mediator) : ControllerBase
 {
     [HttpPost("user/sign-up")]
     [SwaggerOperation("Create the user account")]
@@ -29,9 +27,8 @@ public class UsersController(IMediator mediator,
     [SwaggerOperation("Sign in the user and return the JSON Web Token")]
     public async Task<ActionResult<JwtDto>> Post(SignIn.Command command)
     {
-        await mediator.Send(command);
-        var jwt = tokenStorage.Get();
-        return jwt;
+        var jwt = await mediator.Send(command);
+        return Ok(jwt);
     }
 
     [Authorize]

@@ -10,11 +10,11 @@ namespace FTS.Infrastructure.DAL.Handlers.Recipes;
 
 internal sealed class GetRecipeHandler(
     FTSDbContext dbContext, 
-    IUserRepository userRepository) : IRequestHandler<GetRecipe.Query, RecipeDto>
+    ICurrentUser currentUser) : IRequestHandler<GetRecipe.Query, RecipeDto>
 {
     public async Task<RecipeDto> Handle(GetRecipe.Query query, CancellationToken cancellationToken)
     {
-        var userId = userRepository.GetUserId();
+        var userId = currentUser.Id;
 
         var recipeDto = await dbContext.Recipes
             .Where(r => r.Id == query.Id && (r.IsPublic || r.Author.Id == userId))

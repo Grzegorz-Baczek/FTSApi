@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore;
 namespace FTS.Infrastructure.DAL.Handlers.Recipes;
 
 public sealed class GetRecipesHandler(FTSDbContext dbContext, 
-    IUserRepository userRepository) : IRequestHandler<GetRecipes.Query, IReadOnlyCollection<RecipeDto>>
+    ICurrentUser currentUser) : IRequestHandler<GetRecipes.Query, IReadOnlyCollection<RecipeDto>>
 {
     public async Task<IReadOnlyCollection<RecipeDto>> Handle(GetRecipes.Query query, CancellationToken cancellationToken)
     {
-        var userId = userRepository.GetUserId();
+        var userId = currentUser.Id;
 
         var recipesDto = await dbContext.Recipes
             .Where(r => r.IsPublic || r.AuthorId == userId)

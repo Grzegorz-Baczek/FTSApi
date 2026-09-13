@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FTS.Infrastructure.DAL.Handlers.CookbookRecipes;
 
-internal sealed class GetCookbookRecipesHandler(FTSDbContext dbContext, IUserRepository userRepository)
+internal sealed class GetCookbookRecipesHandler(FTSDbContext dbContext, ICurrentUser currentUser)
     : IRequestHandler<GetCookbookRecipes.Query, IReadOnlyCollection<CookbookRecipeDto>>
 {
     public async Task<IReadOnlyCollection<CookbookRecipeDto>> Handle(GetCookbookRecipes.Query query, CancellationToken cancellationToken)
     {
-        var userId = userRepository.GetUserId();
+        var userId = currentUser.Id;
 
         var cookbookRecipes = await dbContext.CookbookRecipes
             .Where(cbr => cbr.CookbookId == query.CookbookId && cbr.Cookbook.UserId == userId)

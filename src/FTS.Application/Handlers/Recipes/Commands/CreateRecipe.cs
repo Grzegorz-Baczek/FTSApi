@@ -55,12 +55,12 @@ public static class CreateRecipe
 
     internal sealed class Handler(
         IRecipeRepository recipeRepository,
-        IUserRepository userRepository,
+        ICurrentUser currentUser,
         IIngredientRepository ingredientRepository) : IRequestHandler<Command>
     {
         public async Task Handle(Command command, CancellationToken cancellationToken)
         {
-            var userId = userRepository.GetUserId();
+            var userId = currentUser.Id;
             if (userId is null)
             {
                 throw new UnauthorizedException("User is not authenticated.");

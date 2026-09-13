@@ -8,11 +8,11 @@ namespace FTS.Infrastructure.DAL.Handlers.Cookbooks;
 
 internal sealed class GetCookbooksHandler(
     FTSDbContext dbContext,
-    IUserRepository userRepository) : IRequestHandler<GetCookbooks.Query, IReadOnlyCollection<CookbookDto>>
+    ICurrentUser currentUser) : IRequestHandler<GetCookbooks.Query, IReadOnlyCollection<CookbookDto>>
 {
     public async Task<IReadOnlyCollection<CookbookDto>> Handle(GetCookbooks.Query query, CancellationToken cancellationToken)
     {
-        var userId = userRepository.GetUserId();
+        var userId = currentUser.Id;
 
         var cookbooks = await dbContext.Cookbooks
             .Where(cb => cb.UserId == userId)

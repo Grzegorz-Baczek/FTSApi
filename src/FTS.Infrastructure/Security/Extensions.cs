@@ -1,4 +1,4 @@
-﻿using FTS.Application.Security;
+﻿using FTS.Application.Abstractions;
 using FTS.Core.Entities;
 using FTS.Infrastructure.Auth;
 using Microsoft.AspNetCore.Identity;
@@ -12,8 +12,8 @@ internal static class Extensions
     {
         services
             .AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>()
-            .AddSingleton<ITokenStorage, HttpContextTokenStorage>()
-            .AddSingleton<IAuthenticator, Authenticator>();
+            .AddScoped<IIdentityService, IdentityService>()
+            .AddScoped<ICurrentUser, HttpContextCurrentUser>();
 
         return services;
     }

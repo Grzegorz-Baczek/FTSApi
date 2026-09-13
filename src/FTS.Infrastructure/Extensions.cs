@@ -29,6 +29,7 @@ public static class Extensions
         services.AddSwaggerGen(swagger =>
         {
             swagger.EnableAnnotations();
+            swagger.CustomSchemaIds(type => type.FullName!.Replace("+", "."));
             swagger.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "FST Api",
