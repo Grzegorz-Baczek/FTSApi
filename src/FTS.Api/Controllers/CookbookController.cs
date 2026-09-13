@@ -1,7 +1,6 @@
-﻿using FTS.Application.DTO;
-using FTS.Application.Handlers.Cookbooks.Commands.CreateCookbook;
-using FTS.Application.Handlers.Cookbooks.Queries.GetCookbookById;
-using FTS.Application.Handlers.Cookbooks.Queries.GetCookbooks;
+﻿using FTS.Application.Handlers.Cookbooks.Commands;
+using FTS.Application.Handlers.Cookbooks.Models;
+using FTS.Application.Handlers.Cookbooks.Queries;
 using FTS.Core.Security;
 using FTS.Infrastructure.Exceptions;
 using MediatR;
@@ -16,7 +15,7 @@ namespace FTS.Api.Controllers;
 public class CookbookController(IMediator mediator) : ControllerBase
 {
     [HttpPost("cookbook")]
-    public async Task<ActionResult> CreateCookBook(CreateCookbookCommand command,
+    public async Task<ActionResult> CreateCookBook(CreateCookbook.Command command,
         CancellationToken token)
     {
         await mediator.Send(command, token);
@@ -24,7 +23,7 @@ public class CookbookController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("cookbooks")]
-    public async Task<IReadOnlyCollection<CookbookDto>> GetCookbooks([FromQuery] GetCookbooksQuery query,
+    public async Task<IReadOnlyCollection<CookbookDto>> GetCookbooks([FromQuery] GetCookbooks.Query query,
         CancellationToken ct)
     {
         var cookbooks = await mediator.Send(query, ct);
@@ -36,7 +35,7 @@ public class CookbookController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
     public async Task<CookbookDto> GetCookbook(Guid id, CancellationToken ct)
     {
-        var cookbook = await mediator.Send(new GetCookbookByIdQuery(id), ct);
+        var cookbook = await mediator.Send(new GetCookbook.Query(id), ct);
         return cookbook;
     }
 }

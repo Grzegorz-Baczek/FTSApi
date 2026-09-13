@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
 using FTS.Application.DTO;
-using FTS.Application.Handlers.Users.Commands.SignIn;
-using FTS.Application.Handlers.Users.Commands.SignUp;
-using FTS.Application.Handlers.Users.Queries.GetUserById;
+using FTS.Application.Handlers.Users.Commands;
+using FTS.Application.Handlers.Users.Models;
+using FTS.Application.Handlers.Users.Queries;
 using FTS.Application.Security;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -19,7 +19,7 @@ public class UsersController(IMediator mediator,
 {
     [HttpPost("user/sign-up")]
     [SwaggerOperation("Create the user account")]
-    public async Task<ActionResult> Post(SignUpCommand command)
+    public async Task<ActionResult> Post(SignUp.Command command)
     {
         await mediator.Send(command);
         return NoContent();
@@ -27,7 +27,7 @@ public class UsersController(IMediator mediator,
 
     [HttpPost("user/sign-in")]
     [SwaggerOperation("Sign in the user and return the JSON Web Token")]
-    public async Task<ActionResult<JwtDto>> Post(SignInCommand command)
+    public async Task<ActionResult<JwtDto>> Post(SignIn.Command command)
     {
         await mediator.Send(command);
         var jwt = tokenStorage.Get();
@@ -44,7 +44,7 @@ public class UsersController(IMediator mediator,
             return Unauthorized();
         }
 
-        var user = await mediator.Send(new GetUserQuery { Id = userId });
+        var user = await mediator.Send(new GetUser.Query(Id: userId));
         return Ok(user);
     }
 }

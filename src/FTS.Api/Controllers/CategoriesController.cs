@@ -1,6 +1,6 @@
-﻿using FTS.Application.DTO;
-using FTS.Application.Handlers.Categories.Commands.CreateCategory;
-using FTS.Application.Handlers.Categories.Queries.GetCategories;
+﻿using FTS.Application.Handlers.Categories.Commands;
+using FTS.Application.Handlers.Categories.Models;
+using FTS.Application.Handlers.Categories.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,16 +11,16 @@ namespace FTS.Api.Controllers;
 public class CategoriesController(IMediator mediator) : ControllerBase
 {
     [HttpPost("category")]
-    public async Task<ActionResult> CreateCategory(CreateCategoryCommand command,
-        CancellationToken token)
+    public async Task<ActionResult> CreateCategory(CreateCategory.Command command,
+        CancellationToken ct)
     {
-        await mediator.Send(command, token);
+        await mediator.Send(command, ct);
         return NoContent();
     }
 
     [HttpGet("categories")]
-    public async Task<IReadOnlyCollection<CategoryDto>> GetCategories([FromQuery] GetCategoriesQuery query,
-    CancellationToken ct)
+    public async Task<IReadOnlyCollection<CategoryDto>> GetCategories([FromQuery] GetCategories.Query query,
+        CancellationToken ct)
     {
         var categories = await mediator.Send(query, ct);
         return categories;

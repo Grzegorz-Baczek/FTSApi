@@ -1,5 +1,5 @@
-﻿using FTS.Application.DTO;
-using FTS.Application.Handlers.CookbookRecipes.Queries.GetCookbookRecipes;
+﻿using FTS.Application.Handlers.CookbookRecipes.Models;
+using FTS.Application.Handlers.CookbookRecipes.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,7 +13,7 @@ public class CookbookRecipeController(IMediator mediator) : ControllerBase
     public async Task<IReadOnlyCollection<CookbookRecipeDto>> GetCookbookRecipes(Guid cookbookId,
         CancellationToken ct)
     {
-        var cookbookRecipes = await mediator.Send(new GetCookbookRecipesQuery(cookbookId), ct);
+        var cookbookRecipes = await mediator.Send(new GetCookbookRecipes.Query(cookbookId), ct);
         return cookbookRecipes;
     }
 }
