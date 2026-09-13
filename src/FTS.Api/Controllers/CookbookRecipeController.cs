@@ -1,12 +1,15 @@
 ﻿using FTS.Application.Handlers.CookbookRecipes.Models;
 using FTS.Application.Handlers.CookbookRecipes.Queries;
+using FTS.Core.Security;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FTS.Api.Controllers;
 
 [ApiController]
 [Route("api")]
+[Authorize(Roles = Roles.User)]
 public class CookbookRecipeController(IMediator mediator) : ControllerBase
 {
     [HttpGet("cookbook/{cookbookId:guid}/recipes")]

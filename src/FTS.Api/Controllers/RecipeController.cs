@@ -22,7 +22,7 @@ public class RecipeController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
-    [Authorize(Roles = Roles.User)]
+    [AllowAnonymous]
     [HttpGet("recipes")]
     public async Task<IReadOnlyCollection<RecipeDto>> GetRecipes([FromQuery] GetRecipes.Query query,
       CancellationToken ct)
@@ -31,7 +31,7 @@ public class RecipeController(IMediator mediator) : ControllerBase
          return recipesDto;
     }
 
-    [Authorize(Roles = Roles.User)]
+    [AllowAnonymous]
     [HttpGet("recipe/{id:guid}")]
     [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]

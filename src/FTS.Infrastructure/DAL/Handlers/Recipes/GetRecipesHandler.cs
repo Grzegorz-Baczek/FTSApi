@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FTS.Infrastructure.DAL.Handlers.Recipes;
 
-public sealed class GetRecipesHandler(FTSDbContext dbContext, 
+internal sealed class GetRecipesHandler(FTSDbContext dbContext, 
     ICurrentUser currentUser) : IRequestHandler<GetRecipes.Query, IReadOnlyCollection<RecipeDto>>
 {
     public async Task<IReadOnlyCollection<RecipeDto>> Handle(GetRecipes.Query query, CancellationToken cancellationToken)

@@ -15,6 +15,7 @@ namespace FTS.Api.Controllers;
 
 public class UsersController(IMediator mediator) : ControllerBase
 {
+    [AllowAnonymous]
     [HttpPost("user/sign-up")]
     [SwaggerOperation("Create the user account")]
     public async Task<ActionResult> Post(SignUp.Command command)
@@ -23,6 +24,7 @@ public class UsersController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
+    [AllowAnonymous]
     [HttpPost("user/sign-in")]
     [SwaggerOperation("Sign in the user and return the JSON Web Token")]
     public async Task<ActionResult<JwtDto>> Post(SignIn.Command command)
