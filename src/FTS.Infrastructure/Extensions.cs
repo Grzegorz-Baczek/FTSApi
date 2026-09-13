@@ -5,6 +5,7 @@ using FTS.Infrastructure.Exceptions;
 using FTS.Infrastructure.Security;
 using FTS.Infrastructure.Time;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,10 @@ public static class Extensions
         services.AddMSql(configuration);
         services.AddSingleton<IClock, Clock>();
         services.AddAuth(configuration);
+        services.AddAuthorizationBuilder()
+            .SetFallbackPolicy(new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build());
 
         services.AddSecurity();
         services.AddEndpointsApiExplorer();

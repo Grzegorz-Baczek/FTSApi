@@ -17,5 +17,6 @@ builder.Host.UseSerilog((context, LoggerConfiguration) =>
 
 var app = builder.Build();
 app.UseInfrastructure();
-app.MapGet("api", (IOptions<AppOptions> options) => Results.Ok(options.Value.Name));
+app.MapGet("api", (IOptions<AppOptions> options) => Results.Ok(options.Value.Name))
+    .AllowAnonymous();
 app.Run();

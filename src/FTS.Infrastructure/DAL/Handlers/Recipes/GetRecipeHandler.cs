@@ -17,9 +17,9 @@ internal sealed class GetRecipeHandler(
         var userId = currentUser.Id;
 
         var recipeDto = await dbContext.Recipes
-            .Where(r => r.Id == query.Id && (r.IsPublic || r.Author.Id == userId))
             .Include(r => r.RecipeIngredients)
                 .ThenInclude(ri => ri.Ingredient)
+            .Where(r => r.Id == query.Id && (r.IsPublic || r.AuthorId == userId))
             .Select(r => new RecipeDto(
                 r.Id,
                 r.Title,
