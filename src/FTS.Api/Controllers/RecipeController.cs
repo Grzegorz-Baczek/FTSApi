@@ -1,8 +1,6 @@
-﻿using FTS.Application.DTO;
-using FTS.Application.Handlers.Recipes.Commands.CreateRecipe;
-using FTS.Application.Handlers.Recipes.Commands.DeleteRecipe;
-using FTS.Application.Handlers.Recipes.Queries.GetRecipeById;
-using FTS.Application.Handlers.Recipes.Queries.GetRecipes;
+﻿using FTS.Application.Handlers.Recipes.Commands;
+using FTS.Application.Handlers.Recipes.Models;
+using FTS.Application.Handlers.Recipes.Queries;
 using FTS.Core.Security;
 using FTS.Infrastructure.Exceptions;
 using MediatR;
@@ -17,7 +15,7 @@ public class RecipeController(IMediator mediator) : ControllerBase
 {
     [Authorize(Roles = Roles.User)]
     [HttpPost("recipe")]
-    public async Task<ActionResult> CreateRecipe(CreateRecipeCommand command,
+    public async Task<ActionResult> CreateRecipe(CreateRecipe.Command command,
         CancellationToken token)
     {
         await mediator.Send(command, token);
@@ -26,7 +24,7 @@ public class RecipeController(IMediator mediator) : ControllerBase
 
     [Authorize(Roles = Roles.User)]
     [HttpGet("recipes")]
-    public async Task<IReadOnlyCollection<RecipeDto>> GetRecipes([FromQuery] GetRecipesQuery query,
+    public async Task<IReadOnlyCollection<RecipeDto>> GetRecipes([FromQuery] GetRecipes.Query query,
       CancellationToken ct)
     {
         var recipesDto = await mediator.Send(query, ct);
@@ -39,7 +37,7 @@ public class RecipeController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
     public async Task<RecipeDto> GetRecipe(Guid id, CancellationToken ct)
     {
-        var recipeDto = await mediator.Send(new GetRecipeQuery(id), ct);
+        var recipeDto = await mediator.Send(new GetRecipe.Query(id), ct);
         return recipeDto;
     }
 
@@ -47,7 +45,7 @@ public class RecipeController(IMediator mediator) : ControllerBase
     [HttpDelete("recipe/{id:guid}")]
     public async Task<ActionResult> DeleteRecipe(Guid id, CancellationToken ct)
     {
-        await mediator.Send(new DeleteRecipeCommand(id), ct);
+        await mediator.Send(new DeleteRecipe.Command(id), ct);
         return NoContent();
     }
 }
