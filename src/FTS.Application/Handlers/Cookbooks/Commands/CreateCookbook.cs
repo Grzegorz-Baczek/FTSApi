@@ -20,11 +20,11 @@ public static class CreateCookbook
 
     public record Command(string Name) : IRequest;
 
-    internal sealed class Handler(ICookbookRepository cookbookRepository, IUserRepository userRepository) : IRequestHandler<Command>
+    internal sealed class Handler(ICookbookRepository cookbookRepository, ICurrentUser currentUser) : IRequestHandler<Command>
     {
         public async Task Handle(Command command, CancellationToken cancellationToken)
         {
-            var userId = userRepository.GetUserId();
+            var userId = currentUser.Id;
             if (userId is null)
             {
                 throw new UnauthorizedException("User is not authenticated.");

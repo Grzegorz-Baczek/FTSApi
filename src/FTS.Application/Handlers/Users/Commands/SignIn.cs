@@ -1,38 +1,36 @@
 ﻿using FTS.Core.Exceptions;
+using FTS.Application.Abstractions;
+using FTS.Application.DTO;
 using FTS.Application.Security;
-using FTS.Core.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 
 namespace FTS.Application.Handlers.Users.Commands;
 
 public static class SignIn
 {
-    public record Command(string Email, string Password) : IRequest;
+    public record Command(string Email, string Password) : IRequest<JwtDto>;
 
     internal sealed class Handler(
-        UserManager<User> userManager,
-        IAuthenticator authenticator,
-        ITokenStorage tokenStorage) : IRequestHandler<Command>
+        IIdentityService identityService,
+        IAuthenticator authenticator) : IRequestHandler<Command, JwtDto>
     {
-        public async Task Handle(Command command, CancellationToken cancellationToken)
+        public async Task<JwtDto> Handle(Command command, CancellationToken cancellationToken)
         {
-            var user = await userManager.FindByEmailAsync(command.Email);
+            var user = await identityService.FindByEmailAsync(command.Email, cancellationToken);
             if (user is null)
             {
                 throw new UnauthorizedException("Invalid credentials.");
             }
 
-            var isPasswordValid = await userManager.CheckPasswordAsync(user, command.Password);
+            var isPasswordValid = await identityService.CheckPasswordAsync(user, command.Password);
             if (!isPasswordValid)
             {
                 throw new UnauthorizedException("Invalid credentials.");
             }
 
-            var roles = await userManager.GetRolesAsync(user);
+            var roles = await identityService.GetRolesAsync(user);
 
-            var jwt = authenticator.CreateToken(user.Id, roles);
-            tokenStorage.Set(jwt);
+            return authenticator.CreateToken(user.Id, roles);
         }
     }
 }
