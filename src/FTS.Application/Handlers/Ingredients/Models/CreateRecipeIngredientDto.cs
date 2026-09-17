@@ -1,3 +1,5 @@
-﻿namespace FTS.Application.Handlers.Ingredients.Models;
+﻿using FTS.Core.Enum;
 
-public record CreateRecipeIngredientDto(Guid IngredientId, decimal Amount, string Unit);
+namespace FTS.Application.Handlers.Ingredients.Models;
+
+public record CreateRecipeIngredientDto(Guid IngredientId, decimal Amount, Unit Unit);

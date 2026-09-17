@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FTS.Application.Abstractions;
 using FTS.Core.Entities;
+using FTS.Core.Enum;
 using MediatR;
 
 namespace FTS.Application.Handlers.Ingredients.Commands;
@@ -11,6 +12,18 @@ public static class CreateIngredient
     {
         public Validator()
         {
+            RuleFor(i => i.Basis)
+                .IsInEnum()
+                .WithMessage("Podstawa wartości odżywczych jest nieprawidłowa.");
+
+            RuleFor(i => i.DensityGPerMl)
+                .GreaterThan(0)
+                .When(i => i.DensityGPerMl.HasValue);
+
+            RuleFor(i => i.GramsPerPiece)
+                .GreaterThan(0)
+                .When(i => i.GramsPerPiece.HasValue);
+
             RuleFor(i => i.Name)
                 .NotEmpty()
                 .WithMessage("Nazwa składnika jest wymagana.")
@@ -64,6 +77,9 @@ public static class CreateIngredient
     {
         public string Name { get; set; } = null!;
         public string? Barcode { get; set; }
+        public NutritionBasis Basis { get; set; }
+        public decimal? DensityGPerMl { get; set; }
+        public decimal? GramsPerPiece { get; set; }
         public decimal Calories { get; set; }
         public decimal Carbohydrates { get; set; }
         public decimal Proteins { get; set; }
@@ -80,7 +96,8 @@ public static class CreateIngredient
         public async Task Handle(Command command, CancellationToken cancellationToken)
         {
             var ingredient = Ingredient.Create(command.Name, command.Calories, command.Carbohydrates, command.Proteins,
-                command.Fat, command.Barcode, command.SaturatedFat, command.Sugars, command.Fiber, command.Salt);
+                command.Fat, command.Barcode, command.Basis, command.DensityGPerMl, command.GramsPerPiece,
+                command.SaturatedFat, command.Sugars, command.Fiber, command.Salt);
 
             await ingredientRepository.AddAsync(ingredient, cancellationToken);
         }

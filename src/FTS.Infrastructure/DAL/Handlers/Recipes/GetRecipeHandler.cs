@@ -27,9 +27,15 @@ internal sealed class GetRecipeHandler(
                 r.IsPublic,
                 r.ImageUrl,
                 r.Author.Name,
+                r.Servings,
+                r.KcalTotal,
+                r.KcalPerServing,
+                r.CarbohydratesTotal,
+                r.ProteinsTotal,
+                r.FatTotal,
                 r.RecipeIngredients.Select(ri => new RecipeIngredientDto(
                     ri.Ingredient.Name,
-                    ri.Amount,
+                    ri.AmountInGrams,
                     ri.Unit
                 )).ToList()))
             .FirstOrDefaultAsync(cancellationToken);

@@ -5,5 +5,5 @@ namespace FTS.Application.Handlers.Recipes.Queries;
 
 public static class GetRecipes
 {
-    public record Query : IRequest<IReadOnlyCollection<RecipeDto>>;
+    public record Query(decimal? MaxKcalPerServing) : IRequest<IReadOnlyCollection<RecipeDto>>;
 }

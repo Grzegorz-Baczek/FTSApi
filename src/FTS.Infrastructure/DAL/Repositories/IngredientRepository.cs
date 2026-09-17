@@ -9,4 +9,9 @@ internal sealed class IngredientRepository(FTSDbContext dbContext) :
 {
     public Task<Ingredient?> GetAsync(Guid id, CancellationToken ct)
         => DbContext.Ingredients.FirstOrDefaultAsync(i => i.Id == id, ct);
+
+    public async Task<IReadOnlyDictionary<Guid, Ingredient>> GetManyAsync(IEnumerable<Guid> ids, CancellationToken ct)
+        => await DbContext.Ingredients
+            .Where(i => ids.Contains(i.Id))
+            .ToDictionaryAsync(i => i.Id, ct);
 }

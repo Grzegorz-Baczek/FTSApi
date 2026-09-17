@@ -10,9 +10,12 @@ internal class RecipeIngredientConfiguration : IEntityTypeConfiguration<RecipeIn
     {
         builder.HasKey(ri => ri.Id);
 
-        builder.Property(ri => ri.Amount)
+        builder.Property(ri => ri.AmountInGrams)
+            .HasPrecision(10, 3)
             .IsRequired();
         builder.Property(ri => ri.Unit)
+            .HasConversion<string>()
+            .HasMaxLength(20)
             .IsRequired();
 
         builder.HasOne(ri => ri.Recipe)

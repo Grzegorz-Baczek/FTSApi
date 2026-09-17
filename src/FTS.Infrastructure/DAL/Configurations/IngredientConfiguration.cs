@@ -19,6 +19,17 @@ internal class IngredientConfiguration : IEntityTypeConfiguration<Ingredient>
         builder.Property(i => i.Barcode)
             .HasMaxLength(20);
 
+        builder.Property(i => i.Basis)
+            .HasConversion<string>()
+            .HasMaxLength(20)
+            .IsRequired();
+
+        builder.Property(i => i.DensityGPerMl)
+            .HasPrecision(6, 4);
+
+        builder.Property(i => i.GramsPerPiece)
+            .HasPrecision(8, 3);
+
         builder.Property(i => i.Calories)
             .HasPrecision(8, 2)
             .IsRequired();
