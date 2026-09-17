@@ -1,4 +1,5 @@
 ﻿using FTS.Core.Exceptions;
+using FTS.Core.Enum;
 
 namespace FTS.Core.Entities;
 
@@ -9,6 +10,10 @@ public class Ingredient
 
     //kod kreskowy
     public string? Barcode { get; set; }
+
+    public NutritionBasis Basis { get; set; }
+    public decimal? DensityGPerMl { get; set; }
+    public decimal? GramsPerPiece { get; set; }
 
     public decimal Calories { get; set; }
     public decimal Carbohydrates { get; set; }
@@ -28,7 +33,8 @@ public class Ingredient
 
     private Ingredient(Guid id,
         string name, decimal calories, decimal carbohydrates, decimal proteins, decimal fat,
-        string? barcode, decimal? saturatedFat, decimal? sugars, decimal? fiber, decimal? salt)
+        string? barcode, NutritionBasis basis, decimal? densityGPerMl, decimal? gramsPerPiece,
+        decimal? saturatedFat, decimal? sugars, decimal? fiber, decimal? salt)
     {
         Id = id;
         Name = name;
@@ -37,6 +43,9 @@ public class Ingredient
         Proteins = proteins;
         Fat = fat;
         Barcode = barcode;
+        Basis = basis;
+        DensityGPerMl = densityGPerMl;
+        GramsPerPiece = gramsPerPiece;
         SaturatedFat = saturatedFat;
         Sugars = sugars;
         Fiber = fiber;
@@ -44,7 +53,8 @@ public class Ingredient
     }
 
     public static Ingredient Create(string name, decimal calories, decimal carbohydrates, decimal proteins,
-        decimal fat, string? barcode, decimal? saturatedFat, decimal? sugars, decimal? fiber, decimal? salt)
+        decimal fat, string? barcode, NutritionBasis basis, decimal? densityGPerMl, decimal? gramsPerPiece,
+        decimal? saturatedFat, decimal? sugars, decimal? fiber, decimal? salt)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -52,6 +62,7 @@ public class Ingredient
         }
 
         return new Ingredient(Guid.NewGuid(), name, calories,
-            carbohydrates, proteins, fat, barcode, saturatedFat, sugars, fiber, salt);
+            carbohydrates, proteins, fat, barcode, basis, densityGPerMl, gramsPerPiece,
+            saturatedFat, sugars, fiber, salt);
     }
 }

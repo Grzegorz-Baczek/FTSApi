@@ -3,6 +3,7 @@ using FTS.Application.Abstractions;
 using FTS.Application.Handlers.Ingredients.Models;
 using FTS.Core.Entities;
 using FTS.Core.Exceptions;
+using FTS.Core.Enum;
 using MediatR;
 
 namespace FTS.Application.Handlers.Recipes.Commands;
@@ -13,6 +14,10 @@ public static class CreateRecipe
     {
         public Validator()
         {
+            RuleFor(x => x.Servings)
+                .GreaterThan(0)
+                .WithMessage("Liczba porcji musi być większa niż 0.");
+
             RuleFor(x => x.Title)
                 .NotEmpty()
                 .MinimumLength(3)
@@ -38,9 +43,8 @@ public static class CreateRecipe
                     .WithMessage("kwota musi być większa niż 0.");
 
                 ingredient.RuleFor(x => x.Unit)
-                    .NotEmpty()
-                    .MaximumLength(20)
-                    .WithMessage("jednostka nie może być pusta i musi mieć maksymalnie 20 znaków.");
+                    .IsInEnum()
+                    .WithMessage("jednostka jest nieprawidłowa.");
             });
         }
     }
@@ -50,6 +54,7 @@ public static class CreateRecipe
         public string Title { get; set; } = null!;
         public string Steps { get; set; } = null!;
         public string? ImageUrl { get; set; }
+        public int Servings { get; set; }
         public ICollection<CreateRecipeIngredientDto> RecipeIngredients { get; set; } = new List<CreateRecipeIngredientDto>();
     }
 
@@ -71,12 +76,15 @@ public static class CreateRecipe
                 command.Steps,
                 false,
                 command.ImageUrl,
-                userId.Value);
+                userId.Value,
+                command.Servings);
+
+            var ingredientIds = command.RecipeIngredients.Select(i => i.IngredientId).Distinct();
+            var ingredients = await ingredientRepository.GetManyAsync(ingredientIds, cancellationToken);
 
             foreach (var ingredientDto in command.RecipeIngredients)
             {
-                var ingredient = await ingredientRepository.GetAsync(ingredientDto.IngredientId, cancellationToken);
-                if (ingredient is null)
+                if (!ingredients.TryGetValue(ingredientDto.IngredientId, out var ingredient))
                 {
                     throw new NotFoundException<Ingredient>(ingredientDto.IngredientId);
                 }
@@ -85,10 +93,12 @@ public static class CreateRecipe
                     ingredientDto.Amount,
                     ingredientDto.Unit,
                     recipe.Id,
-                    ingredientDto.IngredientId);
+                    ingredient);
 
                 recipe.RecipeIngredients.Add(recipeIngredient);
             }
+
+            recipe.RecalculateNutrition(ingredients);
 
             await recipeRepository.AddAsync(recipe, cancellationToken);
         }

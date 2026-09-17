@@ -16,6 +16,25 @@ internal class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
         builder.Property(r => r.Steps)
             .IsRequired();
 
+        builder.Property(r => r.Servings)
+            .IsRequired();
+
+        builder.Property(r => r.KcalTotal)
+            .HasPrecision(10, 2)
+            .IsRequired();
+        builder.Property(r => r.KcalPerServing)
+            .HasPrecision(10, 2)
+            .IsRequired();
+        builder.Property(r => r.CarbohydratesTotal)
+            .HasPrecision(10, 3)
+            .IsRequired();
+        builder.Property(r => r.ProteinsTotal)
+            .HasPrecision(10, 3)
+            .IsRequired();
+        builder.Property(r => r.FatTotal)
+            .HasPrecision(10, 3)
+            .IsRequired();
+
         builder.HasOne(r => r.Author)
           .WithMany(u => u.Recipes)
           .HasForeignKey(r => r.AuthorId)

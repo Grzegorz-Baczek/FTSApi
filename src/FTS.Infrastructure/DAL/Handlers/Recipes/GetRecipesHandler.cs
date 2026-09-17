@@ -13,8 +13,11 @@ internal sealed class GetRecipesHandler(FTSDbContext dbContext,
     {
         var userId = currentUser.Id;
 
-        var recipesDto = await dbContext.Recipes
+        var recipes = dbContext.Recipes
             .Where(r => r.IsPublic || r.AuthorId == userId)
+            .Where(r => !query.MaxKcalPerServing.HasValue || r.KcalPerServing <= query.MaxKcalPerServing.Value);
+
+        var recipesDto = await recipes
             .Select(r => new RecipeDto(
                 r.Id,
                 r.Title,
@@ -22,9 +25,15 @@ internal sealed class GetRecipesHandler(FTSDbContext dbContext,
                 r.IsPublic,
                 r.ImageUrl,
                 r.Author.Name,
+                r.Servings,
+                r.KcalTotal,
+                r.KcalPerServing,
+                r.CarbohydratesTotal,
+                r.ProteinsTotal,
+                r.FatTotal,
                 r.RecipeIngredients.Select(ri => new RecipeIngredientDto(
                     ri.Ingredient.Name,
-                    ri.Amount,
+                    ri.AmountInGrams,
                     ri.Unit
                 )).ToList()))
             .ToListAsync(cancellationToken);

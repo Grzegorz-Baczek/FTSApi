@@ -13,7 +13,8 @@ internal sealed class GetIngredientsHandler(FTSDbContext dbContext)
         CancellationToken cancellationToken)
     {
         var ingredients = await dbContext.Ingredients
-            .Select(i => new IngredientDto(i.Id, i.Name))
+            .Select(i => new IngredientDto(i.Id, i.Name, i.Basis, i.DensityGPerMl,
+                i.GramsPerPiece, i.Calories, i.Carbohydrates, i.Proteins, i.Fat))
             .ToListAsync(cancellationToken);
 
         return ingredients;
