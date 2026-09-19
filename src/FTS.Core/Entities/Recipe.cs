@@ -11,7 +11,7 @@ public class Recipe
     public bool IsPublic { get; set; }
     public string? ImageUrl { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public int Servings { get; set; }
+    public int Servings { get; private set; }
     public decimal KcalTotal { get; private set; }
     public decimal KcalPerServing { get; private set; }
     public decimal CarbohydratesTotal { get; private set; }
@@ -26,9 +26,10 @@ public class Recipe
     public ICollection<PointsLog> PointsLogs { get; set; } = new List<PointsLog>();
     public ICollection<RecipeIngredient> RecipeIngredients { get; set; } = new List<RecipeIngredient>();
 
-    public Recipe() { }
+    private Recipe() 
+    { }
 
-    public Recipe(Guid id, string title, string steps, bool isPublic, string? imageUrl, Guid authorId, int servings)
+    private Recipe(Guid id, string title, string steps, bool isPublic, string? imageUrl, Guid authorId, int servings)
     {
         Id = id;
         Title = title;
@@ -47,6 +48,17 @@ public class Recipe
         }
 
         return new Recipe(Guid.NewGuid(), title, steps, isPublic, imageUrl, authorId, servings);
+    }
+
+    public void ChangeServings(int servings, IReadOnlyDictionary<Guid, Ingredient> ingredients)
+    {
+        if (servings <= 0)
+        {
+            throw new DomainException("Recipe servings must be greater than zero.");
+        }
+
+        Servings = servings;
+        RecalculateNutrition(ingredients);
     }
 
     public void RecalculateNutrition(IReadOnlyDictionary<Guid, Ingredient> ingredients)

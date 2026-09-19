@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FTS.Infrastructure.DAL.Migrations
 {
     [DbContext(typeof(FTSDbContext))]
-    [Migration("20260915060825_NutritionModel")]
+    [Migration("20260919112344_NutritionModel")]
     partial class NutritionModel
     {
         /// <inheritdoc />
@@ -244,6 +244,10 @@ namespace FTS.Infrastructure.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(10, 3)
+                        .HasColumnType("decimal(10,3)");
 
                     b.Property<decimal>("AmountInGrams")
                         .HasPrecision(10, 3)

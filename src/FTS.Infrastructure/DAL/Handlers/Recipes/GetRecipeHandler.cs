@@ -35,6 +35,7 @@ internal sealed class GetRecipeHandler(
                 r.FatTotal,
                 r.RecipeIngredients.Select(ri => new RecipeIngredientDto(
                     ri.Ingredient.Name,
+                    ri.Amount,
                     ri.AmountInGrams,
                     ri.Unit
                 )).ToList()))
