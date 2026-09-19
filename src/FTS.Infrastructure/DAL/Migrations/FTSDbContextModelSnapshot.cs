@@ -242,6 +242,10 @@ namespace FTS.Infrastructure.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(10, 3)
+                        .HasColumnType("decimal(10,3)");
+
                     b.Property<decimal>("AmountInGrams")
                         .HasPrecision(10, 3)
                         .HasColumnType("decimal(10,3)");

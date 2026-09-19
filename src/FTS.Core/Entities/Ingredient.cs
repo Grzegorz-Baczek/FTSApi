@@ -61,6 +61,22 @@ public class Ingredient
             throw new DomainException("Ingredient name cannot be empty.");
         }
 
+        if (basis == NutritionBasis.Per100ml && densityGPerMl is null or <= 0)
+        {
+            throw new DomainException(
+                $"Składnik '{name}' ma wartości odżywcze na 100 ml, więc wymaga podanej gęstości.");
+        }
+
+        if (densityGPerMl is <= 0)
+        {
+            throw new DomainException($"Gęstość składnika '{name}' musi być większa od zera.");
+        }
+
+        if (gramsPerPiece is <= 0)
+        {
+            throw new DomainException($"Waga sztuki składnika '{name}' musi być większa od zera.");
+        }
+
         return new Ingredient(Guid.NewGuid(), name, calories,
             carbohydrates, proteins, fat, barcode, basis, densityGPerMl, gramsPerPiece,
             saturatedFat, sugars, fiber, salt);

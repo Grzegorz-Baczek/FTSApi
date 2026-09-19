@@ -10,10 +10,6 @@ namespace FTS.Infrastructure.DAL.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Amount",
-                table: "RecipeIngredients");
-
             migrationBuilder.AddColumn<decimal>(
                 name: "CarbohydratesTotal",
                 table: "Recipes",
@@ -64,7 +60,7 @@ namespace FTS.Infrastructure.DAL.Migrations
                 table: "Recipes",
                 type: "int",
                 nullable: false,
-                defaultValue: 1);
+                defaultValue: 0);
 
             migrationBuilder.AlterColumn<string>(
                 name: "Unit",
@@ -74,6 +70,16 @@ namespace FTS.Infrastructure.DAL.Migrations
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)");
+
+            migrationBuilder.AlterColumn<decimal>(
+                name: "Amount",
+                table: "RecipeIngredients",
+                type: "decimal(10,3)",
+                precision: 10,
+                scale: 3,
+                nullable: false,
+                oldClrType: typeof(decimal),
+                oldType: "decimal(18,2)");
 
             migrationBuilder.AddColumn<decimal>(
                 name: "AmountInGrams",
@@ -90,7 +96,7 @@ namespace FTS.Infrastructure.DAL.Migrations
                 type: "nvarchar(20)",
                 maxLength: 20,
                 nullable: false,
-                defaultValue: "Per100g");
+                defaultValue: "");
 
             migrationBuilder.AddColumn<decimal>(
                 name: "DensityGPerMl",
@@ -161,12 +167,15 @@ namespace FTS.Infrastructure.DAL.Migrations
                 oldType: "nvarchar(20)",
                 oldMaxLength: 20);
 
-            migrationBuilder.AddColumn<decimal>(
+            migrationBuilder.AlterColumn<decimal>(
                 name: "Amount",
                 table: "RecipeIngredients",
                 type: "decimal(18,2)",
                 nullable: false,
-                defaultValue: 0m);
+                oldClrType: typeof(decimal),
+                oldType: "decimal(10,3)",
+                oldPrecision: 10,
+                oldScale: 3);
         }
     }
 }
