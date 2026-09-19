@@ -15,7 +15,7 @@ internal sealed class GetCookbookRecipesHandler(FTSDbContext dbContext, ICurrent
 
         var cookbookRecipes = await dbContext.CookbookRecipes
             .Where(cbr => cbr.CookbookId == query.CookbookId && cbr.Cookbook.UserId == userId)
-            .Select(cbr => new CookbookRecipeDto(cbr.Id, cbr.RecipeId, cbr.Recipe.Title, cbr.PinnedAt))
+            .Select(CookbookRecipeDto.AsDto)
             .ToListAsync(cancellationToken);
 
         return cookbookRecipes;

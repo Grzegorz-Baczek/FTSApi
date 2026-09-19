@@ -1,4 +1,6 @@
-﻿using FTS.Core.Enum;
+﻿using System.Linq.Expressions;
+using FTS.Core.Entities;
+using FTS.Core.Enum;
 
 namespace FTS.Application.Handlers.Ingredients.Models;
 
@@ -14,17 +16,17 @@ public class IngredientDto
     public decimal Proteins { get; set; }
     public decimal Fat { get; set; }
 
-    public IngredientDto(Guid id, string name, NutritionBasis basis, decimal? densityGPerMl,
-        decimal? gramsPerPiece, decimal calories, decimal carbohydrates, decimal proteins, decimal fat)
-    {
-        Id = id;
-        Name = name;
-        Basis = basis;
-        DensityGPerMl = densityGPerMl;
-        GramsPerPiece = gramsPerPiece;
-        Calories = calories;
-        Carbohydrates = carbohydrates;
-        Proteins = proteins;
-        Fat = fat;
-    }
+    public static Expression<Func<Ingredient, IngredientDto>> AsDto =>
+        i => new IngredientDto
+        {
+            Id = i.Id,
+            Name = i.Name,
+            Basis = i.Basis,
+            DensityGPerMl = i.DensityGPerMl,
+            GramsPerPiece = i.GramsPerPiece,
+            Calories = i.Calories,
+            Carbohydrates = i.Carbohydrates,
+            Proteins = i.Proteins,
+            Fat = i.Fat
+        };
 }

@@ -9,14 +9,13 @@ internal sealed class GetIngredientsHandler(FTSDbContext dbContext)
     : IRequestHandler<GetIngredients.Query, IReadOnlyCollection<IngredientDto>>
 {
     public async Task<IReadOnlyCollection<IngredientDto>> Handle(
-        GetIngredients.Query query, 
+        GetIngredients.Query query,
         CancellationToken cancellationToken)
     {
-        var ingredients = await dbContext.Ingredients
-            .Select(i => new IngredientDto(i.Id, i.Name, i.Basis, i.DensityGPerMl,
-                i.GramsPerPiece, i.Calories, i.Carbohydrates, i.Proteins, i.Fat))
+        var ingredientsDto = await dbContext.Ingredients
+            .Select(IngredientDto.AsDto)
             .ToListAsync(cancellationToken);
 
-        return ingredients;
+        return ingredientsDto;
     }
 }

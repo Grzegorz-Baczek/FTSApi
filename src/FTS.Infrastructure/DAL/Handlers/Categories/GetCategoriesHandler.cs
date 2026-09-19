@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FTS.Infrastructure.DAL.Handlers.Categories;
 
-internal sealed class GetCategoriesHandler(FTSDbContext dbContext) 
+internal sealed class GetCategoriesHandler(FTSDbContext dbContext)
     : IRequestHandler<GetCategories.Query, IReadOnlyCollection<CategoryDto>>
 {
     public async Task<IReadOnlyCollection<CategoryDto>> Handle(GetCategories.Query query, CancellationToken cancellationToken)
     {
         var categoriesDto = await dbContext.Categories
-            .Select(c => new CategoryDto(c.Name))
+            .Select(CategoryDto.AsDto)
             .ToListAsync(cancellationToken);
 
         return categoriesDto;
