@@ -1,10 +1,9 @@
 ﻿using FluentValidation;
 using FTS.Application.Abstractions;
-using FTS.Application.Handlers.Ingredients.Models;
 using FTS.Core.Entities;
 using FTS.Core.Exceptions;
-using FTS.Core.Enum;
 using MediatR;
+using FTS.Application.Handlers.Recipes.Models;
 
 namespace FTS.Application.Handlers.Recipes.Commands;
 

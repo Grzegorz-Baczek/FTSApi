@@ -6,7 +6,7 @@ namespace FTS.Application.Handlers.Cookbooks.Models;
 public class CookbookDto
 {
     public Guid Id { get; set; }
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 
     public static Expression<Func<Cookbook, CookbookDto>> AsDto =>
         cb => new CookbookDto

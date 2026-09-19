@@ -1,7 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using FTS.Application.DTO;
+using FTS.Application.Handlers.Users.Models;
 using FTS.Application.Security;
 using FTS.Core.Abstractions;
 using Microsoft.Extensions.Options;

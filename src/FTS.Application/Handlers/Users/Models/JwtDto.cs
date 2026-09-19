@@ -1,4 +1,4 @@
-﻿namespace FTS.Application.DTO;
+﻿namespace FTS.Application.Handlers.Users.Models;
 
 public class JwtDto
 {

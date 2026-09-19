@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using FTS.Application.DTO;
 using FTS.Application.Handlers.Users.Commands;
 using FTS.Application.Handlers.Users.Models;
 using FTS.Application.Handlers.Users.Queries;
