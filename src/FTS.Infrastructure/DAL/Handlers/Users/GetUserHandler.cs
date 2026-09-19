@@ -13,8 +13,9 @@ internal sealed class GetUserHandler(FTSDbContext dbContext) : IRequestHandler<G
     {
         var userDto = await dbContext.Users
             .Where(u => u.Id == query.Id)
-            .Select(u => new UserDto(u.Id, u.Name, u.RankPoints, u.Level, u.CreatedAt))
+            .Select(UserDto.AsDto)
             .SingleOrDefaultAsync(cancellationToken);
+
         if (userDto == null)
         {
             throw new NotFoundException<User>(query.Id);

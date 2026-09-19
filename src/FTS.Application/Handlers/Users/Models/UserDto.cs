@@ -1,4 +1,7 @@
-﻿using FTS.Core.Enum;
+﻿using System.Linq.Expressions;
+using FTS.Application.Handlers.Ingredients.Models;
+using FTS.Core.Entities;
+using FTS.Core.Enum;
 
 namespace FTS.Application.Handlers.Users.Models;
 
@@ -10,12 +13,13 @@ public class UserDto
     public UserLevel Level { get; set; }
     public DateTime CreatedAt { get; set; }
 
-    public UserDto(Guid id, string name, int rankPoints, UserLevel level, DateTime createdAt)
-    {
-        Id = id;
-        Name = name;
-        RankPoints = rankPoints;
-        Level = level;
-        CreatedAt = createdAt;
-    }
+    public static Expression<Func<User, UserDto>> AsDto =>
+        u => new UserDto
+        {
+            Id = u.Id,
+            Name = u.Name,
+            RankPoints = u.RankPoints,
+            Level = u.Level,
+            CreatedAt = u.CreatedAt
+        };
 }

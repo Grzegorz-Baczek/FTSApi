@@ -1,4 +1,7 @@
-﻿namespace FTS.Application.Handlers.CookbookRecipes.Models;
+﻿using System.Linq.Expressions;
+using FTS.Core.Entities;
+
+namespace FTS.Application.Handlers.CookbookRecipes.Models;
 
 public class CookbookRecipeDto
 {
@@ -7,11 +10,12 @@ public class CookbookRecipeDto
     public string RecipeTitle { get; set; }
     public DateTime PinnedAt { get; set; }
 
-    public CookbookRecipeDto(Guid id, Guid recipeId, string recipeTitle, DateTime pinnedAt)
-    {
-        Id = id;
-        RecipeId = recipeId;
-        RecipeTitle = recipeTitle;
-        PinnedAt = pinnedAt;
-    }
+    public static Expression<Func<CookbookRecipe, CookbookRecipeDto>> AsDto =>
+         cbr => new CookbookRecipeDto
+         {
+             Id = cbr.Id,
+             RecipeId = cbr.RecipeId,
+             RecipeTitle = cbr.Recipe.Title,
+             PinnedAt = cbr.PinnedAt
+         };
 }

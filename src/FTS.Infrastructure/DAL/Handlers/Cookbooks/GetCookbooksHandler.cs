@@ -16,7 +16,7 @@ internal sealed class GetCookbooksHandler(
 
         var cookbooks = await dbContext.Cookbooks
             .Where(cb => cb.UserId == userId)
-            .Select(cb => new CookbookDto(cb.Id, cb.Name))
+            .Select(CookbookDto.AsDto)
             .ToListAsync(cancellationToken);
 
         return cookbooks;

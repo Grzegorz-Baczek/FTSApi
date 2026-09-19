@@ -1,4 +1,7 @@
-﻿namespace FTS.Application.Handlers.Recipes.Models;
+﻿using System.Linq.Expressions;
+using FTS.Core.Entities;
+
+namespace FTS.Application.Handlers.Recipes.Models;
 
 public class RecipeDto
 {
@@ -7,6 +10,7 @@ public class RecipeDto
     public string Steps { get; set; } = null!;
     public bool IsPublic { get; set; }
     public string? ImageUrl { get; set; }
+
     //relacje
     public string Author { get; set; } = null!;
     public int Servings { get; set; }
@@ -17,23 +21,21 @@ public class RecipeDto
     public decimal FatTotal { get; set; }
     public ICollection<RecipeIngredientDto> RecipeIngredients { get; set; } = new List<RecipeIngredientDto>();
 
-    public RecipeDto(Guid id, string title, string steps, bool isPublic, 
-        string? imageUrl, string author, int servings, decimal kcalTotal, decimal kcalPerServing,
-        decimal carbohydratesTotal, decimal proteinsTotal, decimal fatTotal,
-        ICollection<RecipeIngredientDto> recipeIngredients)
-    {
-        Id = id;
-        Title = title;
-        Steps = steps;
-        IsPublic = isPublic;
-        ImageUrl = imageUrl;
-        Author = author;
-        Servings = servings;
-        KcalTotal = kcalTotal;
-        KcalPerServing = kcalPerServing;
-        CarbohydratesTotal = carbohydratesTotal;
-        ProteinsTotal = proteinsTotal;
-        FatTotal = fatTotal;
-        RecipeIngredients = recipeIngredients;
-    }
+    public static Expression<Func<Recipe, RecipeDto>> AsDto =>
+        r => new RecipeDto
+        {
+            Id = r.Id,
+            Title = r.Title,
+            Steps = r.Steps,
+            IsPublic = r.IsPublic,
+            ImageUrl = r.ImageUrl,
+            Author = r.Author.Name,
+            Servings = r.Servings,
+            KcalTotal = r.KcalTotal,
+            KcalPerServing = r.KcalPerServing,
+            CarbohydratesTotal = r.CarbohydratesTotal,
+            ProteinsTotal = r.ProteinsTotal,
+            FatTotal = r.FatTotal,
+            RecipeIngredients = r.RecipeIngredients.Select(ri => RecipeIngredientDto.Create(ri)).ToList()
+        };
 }

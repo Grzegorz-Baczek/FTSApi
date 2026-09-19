@@ -1,7 +1,7 @@
-﻿namespace FTS.Core.Entities;
-
-using FTS.Core.Enum;
+﻿using FTS.Core.Enum;
 using FTS.Core.Exceptions;
+
+namespace FTS.Core.Entities;
 
 public class Recipe
 {
@@ -26,7 +26,7 @@ public class Recipe
     public ICollection<PointsLog> PointsLogs { get; set; } = new List<PointsLog>();
     public ICollection<RecipeIngredient> RecipeIngredients { get; set; } = new List<RecipeIngredient>();
 
-    private Recipe() 
+    private Recipe()
     { }
 
     private Recipe(Guid id, string title, string steps, bool isPublic, string? imageUrl, Guid authorId, int servings)
@@ -75,13 +75,11 @@ public class Recipe
                 throw new DomainException($"Ingredient '{recipeIngredient.IngredientId}' was not found.");
             }
 
-            var nutritionAmount = recipeIngredient.AmountInGrams == 0
-                ? 0
-                : ingredient.Basis == NutritionBasis.Per100g
-                    ? recipeIngredient.AmountInGrams
-                    : recipeIngredient.AmountInGrams / ingredient.DensityGPerMl!.Value;
-            var factor = nutritionAmount / 100m;
+            var nutritionAmount = recipeIngredient.AmountInGrams == 0 
+                ? 0 
+                : ingredient.Basis == NutritionBasis.Per100g ? recipeIngredient.AmountInGrams : recipeIngredient.AmountInGrams / ingredient.DensityGPerMl!.Value;
 
+            var factor = nutritionAmount / 100m;
             KcalTotal += ingredient.Calories * factor;
             CarbohydratesTotal += ingredient.Carbohydrates * factor;
             ProteinsTotal += ingredient.Proteins * factor;

@@ -1,4 +1,5 @@
 ﻿using FTS.Core.Abstractions;
+using FTS.Application.Handlers.Recipes.Commands;
 using FTS.Infrastructure.Auth;
 using FTS.Infrastructure.DAL;
 using FTS.Infrastructure.Exceptions;
@@ -35,10 +36,31 @@ public static class Extensions
         {
             swagger.EnableAnnotations();
             swagger.CustomSchemaIds(type => type.FullName!.Replace("+", "."));
-            swagger.SwaggerDoc("v1", new OpenApiInfo
+            swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "FST Api", Version = "v1" });
+
+            swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
-                Title = "FST Api",
-                Version = "v1"
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "Wklej sam token, bez przedrostka Bearer."
+            });
+
+            swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
             });
         });
 

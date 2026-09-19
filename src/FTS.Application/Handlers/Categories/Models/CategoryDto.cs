@@ -1,11 +1,17 @@
-﻿namespace FTS.Application.Handlers.Categories.Models;
+﻿using System.Linq.Expressions;
+using FTS.Core.Entities;
+
+namespace FTS.Application.Handlers.Categories.Models;
 
 public class CategoryDto
 {
-    public string Name { get; set; }
+    public Guid Id { get; set; }
+    public string? Name { get; set; }
 
-    public CategoryDto(string name)
-    {
-        Name = name;
-    }
+    public static Expression<Func<Category, CategoryDto>> AsDto =>
+        c => new CategoryDto
+        {
+            Id = c.Id,
+            Name = c.Name
+        };
 }
