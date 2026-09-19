@@ -1,4 +1,4 @@
-﻿using FTS.Application.DTO;
+﻿using FTS.Application.Handlers.Users.Models;
 
 namespace FTS.Application.Security;
 

@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using FTS.Application.Handlers.Ingredients.Models;
 using FTS.Core.Entities;
 using FTS.Core.Enum;
 

@@ -36,6 +36,13 @@ public class RecipeDto
             CarbohydratesTotal = r.CarbohydratesTotal,
             ProteinsTotal = r.ProteinsTotal,
             FatTotal = r.FatTotal,
-            RecipeIngredients = r.RecipeIngredients.Select(ri => RecipeIngredientDto.Create(ri)).ToList()
+            RecipeIngredients = r.RecipeIngredients.Select(ri => new RecipeIngredientDto
+            {
+                IngredientId = ri.IngredientId,
+                IngredientName = ri.Ingredient.Name,
+                Amount = ri.Amount,
+                AmountInGrams = ri.AmountInGrams,
+                Unit = ri.Unit
+            }).ToList()
         };
 }

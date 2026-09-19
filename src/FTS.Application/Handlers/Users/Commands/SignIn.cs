@@ -1,8 +1,8 @@
 ﻿using FTS.Core.Exceptions;
 using FTS.Application.Abstractions;
-using FTS.Application.DTO;
 using FTS.Application.Security;
 using MediatR;
+using FTS.Application.Handlers.Users.Models;
 
 namespace FTS.Application.Handlers.Users.Commands;
 
