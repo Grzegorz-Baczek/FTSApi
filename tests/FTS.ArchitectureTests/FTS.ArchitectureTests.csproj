@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\FTS.Core\FTS.Core.csproj" />
     <ProjectReference Include="..\..\src\FTS.Application\FTS.Application.csproj" />
+    <ProjectReference Include="..\..\src\FTS.Infrastructure\FTS.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

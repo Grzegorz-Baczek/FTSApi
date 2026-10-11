@@ -1,6 +1,7 @@
 ﻿using FTS.Application;
 using FTS.Core.Entities;
 using FTS.Core.Exceptions;
+using FTS.Infrastructure.DAL;
 using MediatR;
 using NetArchTest.Rules;
 
@@ -46,19 +47,19 @@ public class ArchitectureTests
     public void Request_handlers_are_internal_and_sealed()
     {
         // Arrange
-        var applicationTypes = typeof(Extensions).Assembly.GetTypes();
+        var assemblies = new[]
+        {
+            typeof(Extensions).Assembly,typeof(FTSDbContext).Assembly
+        };
 
         // Act
-        var handlerTypes = applicationTypes
-            .Where(type => type.GetInterfaces().Any(@interface =>
-                @interface == typeof(IRequestHandler<>) ||
-                (@interface.IsGenericType && @interface.GetGenericTypeDefinition() == typeof(IRequestHandler<>)) ||
-                (@interface.IsGenericType && @interface.GetGenericTypeDefinition() == typeof(IRequestHandler<,>))))
-            .ToArray();
-
-        var violatingTypes = handlerTypes
-            .Where(type => type.IsPublic || !type.IsSealed)
-            .Select(type => type.FullName ?? type.Name)
+        var violatingTypes = assemblies
+            .SelectMany(a => a.GetTypes())
+            .Where(t => t.GetInterfaces().Any(i => i.IsGenericType &&
+                (i.GetGenericTypeDefinition() == typeof(IRequestHandler<>) ||
+                 i.GetGenericTypeDefinition() == typeof(IRequestHandler<,>))))
+            .Where(t => t.IsPublic || t.IsNestedPublic || !t.IsSealed)
+            .Select(t => t.FullName ?? t.Name)
             .ToArray();
 
         // Assert: every request handler follows the internal sealed convention.
@@ -75,7 +76,6 @@ public class ArchitectureTests
         // Act
         var exceptionTypes = coreTypes
             .Where(type =>
-                type.Namespace == typeof(CustomException).Namespace &&
                 type.Name.EndsWith("Exception", StringComparison.Ordinal) &&
                 type != typeof(CustomException))
             .ToArray();

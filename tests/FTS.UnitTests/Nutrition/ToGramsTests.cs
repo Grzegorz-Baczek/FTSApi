@@ -30,8 +30,6 @@ public class ToGramsTests
         // Arrange
         var ingredient = IngredientSalt;
 
-        // Act
-
         // Assert: NutritionAssert verifies the calculated gram amount.
         NutritionAssert.Grams(expected: expected, amount: amount, unit: unit, ingredient: ingredient);
     }
@@ -44,9 +42,7 @@ public class ToGramsTests
         // Arrange
         var ingredient = IngredientFlour;
 
-        // Act
-
-        // Assert: NutritionAssert verifies the calculated gram amount.
+        // Act & Assert: NutritionAssert verifies the calculated gram amount.
         NutritionAssert.Grams(expected: expected, amount: amount, unit: unit, ingredient: ingredient);
     }
 
@@ -57,11 +53,9 @@ public class ToGramsTests
     public void Milk_volume_units_use_density(decimal amount, Unit unit, decimal expected)
     {
         // Arrange
-        var ingredient = IngredientMilk;
+        var ingredient = IngredientMilk; 
 
-        // Act
-
-        // Assert: NutritionAssert verifies the calculated gram amount.
+        // Act & Assert: NutritionAssert verifies the calculated gram amount.
         NutritionAssert.Grams(expected: expected, amount: amount, unit: unit, ingredient: ingredient);
     }
 
@@ -71,9 +65,7 @@ public class ToGramsTests
         // Arrange
         var ingredient = IngredientMilk;
 
-        // Act
-
-        // Assert: NutritionAssert verifies that 200 grams remains 200 grams.
+        // Act & Assert: NutritionAssert verifies that 200 grams remains 200 grams.
         NutritionAssert.Grams(expected: 200m, amount: 200m, unit: Unit.Gram, ingredient: ingredient);
     }
 
@@ -83,9 +75,7 @@ public class ToGramsTests
         // Arrange
         var ingredient = IngredientEgg;
 
-        // Act
-
-        // Assert: NutritionAssert verifies that two eggs weigh 116 grams.
+        // Act & Assert: NutritionAssert verifies that two eggs weigh 116 grams.
         NutritionAssert.Grams(expected: 116m, amount: 2m, unit: Unit.Piece, ingredient: ingredient);
     }
 
@@ -97,9 +87,7 @@ public class ToGramsTests
         // Arrange
         var ingredient = IngredientSalt;
 
-        // Act
-
-        // Assert: NutritionAssert verifies that the unit contributes zero grams.
+        // Act & Assert: NutritionAssert verifies that the unit contributes zero grams.
         NutritionAssert.Grams(expected: 0m, amount: 1m, unit: unit, ingredient: ingredient);
     }
 

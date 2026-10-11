@@ -43,7 +43,7 @@ public class NutritionTests
         var ingredients = new Dictionary<Guid, Ingredient> { [flour.Id] = flour };
 
         var recipe = CreateRecipe(servings: 1);
-        recipe.RecipeIngredients.Add(RecipeIngredient.Create(amount: 1m, 
+        recipe.RecipeIngredients.Add(RecipeIngredient.Create(amount: 1m,
             unit: Unit.Cup, recipeId: recipe.Id, ingredient: flour));
 
         // Act
